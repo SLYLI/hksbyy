@@ -1240,7 +1240,7 @@ a {
     <h2 class="section-title">管理后台</h2>
     <p class="section-sub">Administrator Console</p>
     <div class="text-block">
-        <p>医院管理员专属后台：可发布带图片、带视频的新闻（自动发布到「新闻信息」页对应栏目顶部），并查看访问统计。本机发布的数据保存在当前浏览器中，建议定期「导出备份」。</p>
+        <p>医院管理员专属后台：可发布带图片、带视频的新闻（自动发布到「新闻信息」页对应栏目顶部），并查看访问统计。新闻数据自动保存到云端数据库（全网访客可见、跨设备共享），同时在本机浏览器保留镜像，云端不可用时自动回退本机数据。</p>
     </div>
 </section>
 
@@ -1395,6 +1395,7 @@ a {
   function pad(n) { return n < 10 ? '0' + n : '' + n; }
   function today() { var d = new Date(); return d.getFullYear() + '-' + pad(d.getMonth() + 1) + '-' + pad(d.getDate()); }
   function esc(s) { return ('' + (s == null ? '' : s)).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
+  /* 本机镜像 */
   function loadNews() { try { return JSON.parse(localStorage.getItem(NEWS_KEY) || '[]'); } catch (e) { return []; } }
   function saveNews(arr) {
     try { localStorage.setItem(NEWS_KEY, JSON.stringify(arr)); return true; }
@@ -1402,9 +1403,70 @@ a {
   }
   function logged() { try { return localStorage.getItem(LOGIN_KEY) === '1'; } catch (e) { return false; } }
 
+  /* 云库优先合并：云端列表为主，本机补充云端缺失的记录 */
+  var cloudNews = null;
+  function mergeNews(cloud, local) {
+    var out = (cloud || []).slice();
+    var ids = {};
+    out.forEach(function (n) { ids[String(n.id)] = true; });
+    for (var i = 0; i < local.length; i++) {
+      if (!ids[String(local[i].id)]) out.push(local[i]);
+    }
+    out.sort(function (a, b) { return (b.date || '').localeCompare(a.date || ''); });
+    return out;
+  }
+
+  function renderList() {
+    var box = document.getElementById('newsList');
+    var countEl = document.getElementById('newsCount');
+    var show = function (arr) {
+      if (!arr.length) {
+        box.innerHTML = '<p style="color:#b5a678;font-size:13px;">还没有发布新闻。填写上方表单发布第一篇。</p>';
+        return;
+      }
+      var html = '';
+      arr.forEach(function (n) {
+        var extra = [];
+        if (n.imgs && n.imgs.length) extra.push('图片 ' + n.imgs.length + ' 张');
+        if (n.video && n.video.src) extra.push('视频');
+        if (n.content) extra.push('正文 ' + n.content.length + ' 字');
+        html += '<div class="news-item">';
+        html += '<div class="ni-main"><b>' + esc(n.title) + '</b>';
+        html += '<span class="ni-meta">' + esc(n.date || '') + ' · ' + esc(n.cat || '医院动态') + (extra.length ? ' · ' + esc(extra.join('、')) : '') + '</span></div>';
+        html += '<div class="ni-btns"><button class="ni-edit" data-id="' + esc(n.id) + '" type="button">编辑</button><button class="ni-del" data-id="' + esc(n.id) + '" type="button">删除</button></div>';
+        html += '</div>';
+      });
+      box.innerHTML = html;
+      var edits = box.querySelectorAll('.ni-edit');
+      for (var i = 0; i < edits.length; i++) {
+        edits[i].onclick = function () { editNews(this.getAttribute('data-id')); };
+      }
+      var dels = box.querySelectorAll('.ni-del');
+      for (var j = 0; j < dels.length; j++) {
+        dels[j].onclick = function () { delNews(this.getAttribute('data-id')); };
+      }
+    };
+    var local = loadNews();
+    countEl.textContent = mergeNews(cloudNews, local).length;
+    show(mergeNews(cloudNews, local));
+    /* 云端数据到达后刷新 */
+    if (window.HKDB && cloudNews === null) {
+      HKDB.listNews().then(function (rows) {
+        if (!rows) return;
+        cloudNews = rows.map(function (r) {
+          var v = r.video ? { src: r.video, type: (r.video.indexOf('http') === 0 ? 'url' : 'file') } : null;
+          var imgs = [];
+          try { imgs = JSON.parse(r.imgs || '[]'); } catch (e) { imgs = []; }
+          return { id: r.id, title: r.title, date: r.date, cat: r.cat, content: r.content || '', imgs: imgs, video: v };
+        });
+        countEl.textContent = mergeNews(cloudNews, local).length;
+        show(mergeNews(cloudNews, local));
+      });
+    }
+  }
+
   var gate = document.getElementById('loginGate');
   var area = document.getElementById('adminArea');
-
   var curImgs = [];
 
   function setMsg(txt, ok) {
@@ -1413,40 +1475,8 @@ a {
     m.textContent = txt;
   }
 
-  function renderList() {
-    var news = loadNews();
-    news.sort(function (a, b) { return (b.date || '').localeCompare(a.date || ''); });
-    document.getElementById('newsCount').textContent = news.length;
-    var box = document.getElementById('newsList');
-    if (!news.length) {
-      box.innerHTML = '<p style="color:#b5a678;font-size:13px;">还没有发布新闻。填写上方表单发布第一篇。</p>';
-      return;
-    }
-    var html = '';
-    news.forEach(function (n) {
-      var extra = [];
-      if (n.imgs && n.imgs.length) extra.push('图片 ' + n.imgs.length + ' 张');
-      if (n.video && n.video.src) extra.push('视频');
-      if (n.content) extra.push('正文 ' + n.content.length + ' 字');
-      html += '<div class="news-item">';
-      html += '<div class="ni-main"><b>' + esc(n.title) + '</b>';
-      html += '<span class="ni-meta">' + esc(n.date || '') + ' · ' + esc(n.cat || '医院动态') + (extra.length ? ' · ' + esc(extra.join('、')) : '') + '</span></div>';
-      html += '<div class="ni-btns"><button class="ni-edit" data-id="' + n.id + '" type="button">编辑</button><button class="ni-del" data-id="' + n.id + '" type="button">删除</button></div>';
-      html += '</div>';
-    });
-    box.innerHTML = html;
-    var edits = box.querySelectorAll('.ni-edit');
-    for (var i = 0; i < edits.length; i++) {
-      edits[i].onclick = function () { editNews(this.getAttribute('data-id')); };
-    }
-    var dels = box.querySelectorAll('.ni-del');
-    for (var j = 0; j < dels.length; j++) {
-      dels[j].onclick = function () { delNews(this.getAttribute('data-id')); };
-    }
-  }
-
   function editNews(id) {
-    var news = loadNews();
+    var news = mergeNews(cloudNews, loadNews());
     var n = null;
     for (var i = 0; i < news.length; i++) { if (String(news[i].id) === String(id)) { n = news[i]; break; } }
     if (!n) return;
@@ -1481,11 +1511,23 @@ a {
   }
 
   function delNews(id) {
-    if (!confirm('确定删除这条新闻吗？')) return;
+    if (!confirm('确定删除这条新闻吗（云端 + 本机）？')) return;
     var news = loadNews().filter(function (n) { return String(n.id) !== String(id); });
     if (!saveNews(news)) return;
-    renderList();
-    setMsg('已删除。', true);
+    if (cloudNews) cloudNews = cloudNews.filter(function (n) { return String(n.id) !== String(id); });
+    if (window.HKDB) {
+      HKDB.deleteNews(id).then(function (ok) {
+        renderList();
+        if (ok === null) setMsg('已从本机删除；云端删除失败（网络异常），稍后可再次删除。', false);
+        else setMsg('已删除（云端 + 本机）。', true);
+      }, function () {
+        renderList();
+        setMsg('已从本机删除；云端删除失败（网络异常），稍后可再次删除。', false);
+      });
+    } else {
+      renderList();
+      setMsg('已删除。', true);
+    }
   }
 
   function renderImgPreview() {
@@ -1553,9 +1595,29 @@ a {
       news.push(item);
     }
     if (!saveNews(news)) return;
-    resetForm();
-    renderList();
-    setMsg('新闻已发布到「新闻信息」页「' + cat + '」栏目顶部。', true);
+
+    var finish = function (cloudOk) {
+      if (cloudNews) {
+        var exists = false;
+        for (var j = 0; j < cloudNews.length; j++) {
+          if (String(cloudNews[j].id) === String(item.id)) { cloudNews[j] = item; exists = true; break; }
+        }
+        if (!exists) cloudNews.push(item);
+      }
+      resetForm();
+      renderList();
+      if (cloudOk === true) setMsg('新闻已发布到云端「' + cat + '」栏目顶部，全网可见。', true);
+      else if (cloudOk === false) setMsg('已保存到本机；云端同步失败（网络异常），联网后请重新保存。', false);
+      else setMsg('新闻已发布到「新闻信息」页「' + cat + '」栏目顶部。', true);
+    };
+
+    if (window.HKDB) {
+      var dbItem = { id: item.id, title: item.title, date: item.date, cat: item.cat, content: item.content, imgs: JSON.stringify(item.imgs), video: item.video ? item.video.src : '' };
+      var p = id ? HKDB.updateNews(item.id, dbItem) : HKDB.insertNews(dbItem);
+      p.then(function () { finish(true); }, function () { finish(false); });
+    } else {
+      finish(null);
+    }
   }
 
   function resetForm() {
@@ -1575,7 +1637,7 @@ a {
   }
 
   function exportNews() {
-    var news = loadNews();
+    var news = mergeNews(cloudNews, loadNews());
     if (!news.length) { setMsg('当前没有可导出的新闻。', false); return; }
     var blob = new Blob([JSON.stringify(news, null, 2)], { type: 'application/json' });
     var a = document.createElement('a');
@@ -1584,7 +1646,7 @@ a {
     document.body.appendChild(a);
     a.click();
     setTimeout(function () { URL.revokeObjectURL(a.href); a.remove(); }, 800);
-    setMsg('已导出 ' + news.length + ' 条新闻备份。', true);
+    setMsg('已导出 ' + news.length + ' 条新闻备份（云端 + 本机）。', true);
   }
 
   function showArea() {
@@ -1636,10 +1698,35 @@ a {
       try {
         var arr = JSON.parse(r.result);
         if (!arr || !arr.length || !arr[0] || !arr[0].title) throw new Error('格式不正确');
-        if (!confirm('将导入 ' + arr.length + ' 条新闻（覆盖当前全部新闻），确定继续吗？')) return;
+        if (!confirm('将导入 ' + arr.length + ' 条新闻（覆盖当前云端 + 本机全部新闻），确定继续吗？')) return;
         if (!saveNews(arr)) return;
-        renderList();
-        setMsg('已导入 ' + arr.length + ' 条新闻。', true);
+        cloudNews = null;
+        if (window.HKDB) {
+          /* 云库：清空后全量重写 */
+          var ins = arr.map(function (n) {
+            return { id: String(n.id), title: n.title, date: n.date, cat: n.cat || '医院动态', content: n.content || '', imgs: JSON.stringify(n.imgs || []), video: n.video && n.video.src ? n.video.src : '' };
+          });
+          var doInsert = function () {
+            var q = ins.slice();
+            var next = function () {
+              if (!q.length) {
+                renderList();
+                setMsg('已导入 ' + arr.length + ' 条新闻（云端 + 本机）。', true);
+                return;
+              }
+              var it = q.shift();
+              HKDB.insertNews(it).then(next, function () {
+                renderList();
+                setMsg('已保存到本机；云端部分导入失败（网络异常），请稍后重新导入。', false);
+              });
+            };
+            next();
+          };
+          HKDB.clearNewsAll().then(doInsert, doInsert);
+        } else {
+          renderList();
+          setMsg('已导入 ' + arr.length + ' 条新闻（本机模式）。', true);
+        }
       } catch (e) {
         setMsg('导入失败：备份文件格式不正确。', false);
       }
@@ -1648,10 +1735,21 @@ a {
     this.value = '';
   };
   document.getElementById('btnClearAll').onclick = function () {
-    if (!confirm('确定清空全部 ' + loadNews().length + ' 条本机新闻吗？此操作不可恢复。')) return;
+    if (!confirm('确定清空全部 ' + mergeNews(cloudNews, loadNews()).length + ' 条新闻吗（云端 + 本机）？此操作不可恢复。')) return;
     if (!saveNews([])) return;
-    renderList();
-    setMsg('已清空全部本机新闻。', true);
+    cloudNews = [];
+    if (window.HKDB) {
+      HKDB.clearNewsAll().then(function () {
+        renderList();
+        setMsg('已清空云端 + 本机全部新闻。', true);
+      }, function () {
+        renderList();
+        setMsg('已清空本机；云端清空失败（网络异常），稍后重试。', false);
+      });
+    } else {
+      renderList();
+      setMsg('已清空全部本机新闻。', true);
+    }
   };
   document.getElementById('btnLogout').onclick = function () {
     try { localStorage.removeItem(LOGIN_KEY); } catch (e) {}
@@ -1690,6 +1788,7 @@ a {
     <div class="footer-bottom">© 2026 鹤壁华康肾病专科医院　版权所有 | 备案号：豫ICP备XXXXXXXX号（示例）<br>本站内容根据医院公开信息整理，正式上线前请与医院核对</div>
 </footer>
 
+<script src="db.js"></script>
 <script src="stats.js"></script>
 </body>
 </html>

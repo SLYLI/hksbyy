@@ -1240,7 +1240,7 @@ a {
     <h2 class="section-title">访问统计</h2>
     <p class="section-sub">Daily Visit Statistics</p>
     <div class="text-block">
-        <p>本站提供每日访问量（PV）与站内点击量的本机统计。数据保存在当前浏览器的本地存储中，按天独立记录；更换电脑、浏览器或清理浏览器缓存后，数据会从新的一天开始累计。</p>
+        <p>本站提供每日访问量（PV）与站内点击量的全站统计。数据自动汇总到云端数据库，跨设备共享、不怕丢失；离线浏览时数据先记在本机，联网后自动合并。</p>
     </div>
 </section>
 
@@ -1465,8 +1465,21 @@ a {
     list.innerHTML = html;
   }
 
-  function renderAll() {
-    var data = load();
+  function rowsToData(rows) {
+    var out = {};
+    for (var i = 0; i < rows.length; i++) {
+      var r = rows[i];
+      var day = r.day, kind = r.kind || 'pv';
+      var key = kind === 'click' ? (r.target || '') + '｜' + (r.page || '') : (r.page || '');
+      if (!day) continue;
+      if (!out[day]) out[day] = { pv: {}, click: {} };
+      var sec = out[day][kind] || (out[day][kind] = {});
+      sec[key] = (sec[key] || 0) + (r.cnt || 0);
+    }
+    return out;
+  }
+
+  function render(data) {
     var days = Object.keys(data).sort();
     var recent = days.slice(-14);
     var t = data[today()] || { pv: {}, click: {} };
@@ -1484,13 +1497,45 @@ a {
     buildTrend(recent, data);
     buildDonut('pv', recent, data, '页面访问占比');
     buildDonut('click', recent, data, '点击入口占比');
+  }
+
+  function renderAll() {
+    /* 先渲染本机数据（立即出结果），随后云端数据到达后刷新为全站汇总 */
+    render(load());
+    if (window.HKDB) {
+      HKDB.loadStats().then(function (rows) {
+        if (!rows) return; /* 云端不可用，保留本机数据 */
+        var cloud = rowsToData(rows);
+        var local = load();
+        /* 合并：云端为主，本机补充云端缺失的天/项 */
+        var d1 = Object.keys(local);
+        for (var i = 0; i < d1.length; i++) {
+          var day = d1[i];
+          if (!cloud[day]) { cloud[day] = local[day]; continue; }
+          ['pv', 'click'].forEach(function (k) {
+            var lk = (local[day] || {})[k] || {};
+            var ck = cloud[day][k] || (cloud[day][k] = {});
+            for (var key in lk) { if (ck[key] === undefined) ck[key] = lk[key]; }
+          });
+        }
+        render(cloud);
+      });
+    }
 
     var btn = document.getElementById('statClear');
     if (btn) {
       btn.onclick = function () {
-        if (confirm('确定清空全部统计记录吗？此操作不可恢复。')) {
-          try { localStorage.removeItem(KEY); } catch (e) {}
-          location.reload();
+        if (confirm('确定清空全部统计记录吗（云端 + 本机）？此操作不可恢复。')) {
+          var done = function () {
+            try { localStorage.removeItem(KEY); } catch (e) {}
+            location.reload();
+          };
+          if (window.HKDB) {
+            HKDB.clearStats().then(done, function () { done(); });
+            setTimeout(done, 8000); /* 兜底：8 秒后无论如何刷新 */
+          } else {
+            done();
+          }
         }
       };
     }
@@ -1562,6 +1607,7 @@ a {
     <div class="footer-bottom">© 2026 鹤壁华康肾病专科医院　版权所有 | 备案号：豫ICP备XXXXXXXX号（示例）<br>本站内容根据医院公开信息整理，正式上线前请与医院核对</div>
 </footer>
 
+<script src="db.js"></script>
 <script src="stats.js"></script>
 </body>
 </html>

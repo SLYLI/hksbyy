@@ -1,8 +1,7 @@
-/* 鹤壁华康肾病专科医院官网 - 每日点击量统计（本地统计）
+/* 鹤壁华康肾病专科医院官网 - 每日点击量统计
  * 记录：每日页面访问量(PV) + 站内链接点击量
- * 数据保存在当前浏览器 localStorage，按天独立统计。
- * 说明：此为本机浏览器内统计；更换电脑/浏览器/清除缓存后数据从新开始，
- *       如需跨设备每日汇总请使用统计平台或部署到服务器后接入。 */
+ * 数据双写：云端数据库（跨设备汇总，不怕丢）+ 本机浏览器 localStorage（离线镜像）
+ * 云端不可用时自动回退本地，页面功能不受影响。 */
 (function () {
   'use strict';
 
@@ -21,7 +20,7 @@
 
   function save(s) {
     try { localStorage.setItem(KEY, JSON.stringify(s)); }
-    catch (e) { console.warn('[统计] 本地存储不可用（file:// 模式部分浏览器限制）：' + e.message); }
+    catch (e) { console.warn('[统计] 本地存储不可用：' + e.message); }
   }
 
   function bump(section, key, n) {
@@ -32,6 +31,18 @@
     if (!s[day][section][key]) s[day][section][key] = 0;
     s[day][section][key] += n;
     save(s);
+    /* 云端同步（尽力而为，不阻塞页面） */
+    if (window.HKDB) {
+      var kind = section === 'click' ? 'click' : 'pv';
+      var target = '';
+      var page = key;
+      if (kind === 'click') {
+        var sep = key.indexOf('｜');
+        target = sep >= 0 ? key.slice(0, sep) : key;
+        page = '';
+      }
+      HKDB.addStat(kind, page, target);
+    }
   }
 
   /* 页面访问 PV */
