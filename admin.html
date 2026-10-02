@@ -1288,37 +1288,77 @@ a {
                 <div class="af-row">
                     <label>正文内容（支持富文本：加粗、斜体、文字颜色、字号、对齐、列表等）</label>
                     <div class="rt-toolbar" id="rtToolbar">
-                        <button type="button" data-cmd="bold" title="加粗"><b>B</b></button>
-                        <button type="button" data-cmd="italic" title="斜体"><i>I</i></button>
-                        <button type="button" data-cmd="underline" title="下划线"><u>U</u></button>
-                        <button type="button" data-cmd="strikeThrough" title="删除线"><s>S</s></button>
-                        <select id="rtFontSize" title="字号">
-                            <option value="">字号</option>
-                            <option value="1">小号</option>
-                            <option value="3">正文</option>
-                            <option value="4">大号</option>
-                            <option value="5">特大</option>
-                            <option value="6">标题</option>
-                            <option value="7">超大</option>
-                        </select>
-                        <select id="rtColor" title="文字颜色">
-                            <option value="">颜色</option>
-                            <option value="#3a2f1f">默认深棕</option>
-                            <option value="#9c2727">红色</option>
-                            <option value="#0e5c42">墨绿</option>
-                            <option value="#b88646">金色</option>
-                            <option value="#1f4e8c">蓝色</option>
-                            <option value="#555555">灰色</option>
-                        </select>
-                        <button type="button" data-cmd="justifyLeft" title="左对齐">左</button>
-                        <button type="button" data-cmd="justifyCenter" title="居中">中</button>
-                        <button type="button" data-cmd="justifyRight" title="右对齐">右</button>
-                        <button type="button" data-cmd="insertUnorderedList" title="项目符号">• 列表</button>
-                        <button type="button" data-cmd="insertOrderedList" title="编号列表">1. 列表</button>
-                        <button type="button" data-cmd="createLink" title="插入链接">链接</button>
-                        <button type="button" data-cmd="removeFormat" title="清除格式">清除</button>
-                        <button type="button" data-cmd="undo" title="撤销">↶</button>
-                        <button type="button" data-cmd="redo" title="重做">↷</button>
+                        <div class="rt-row">
+                            <select id="rtBlock" class="rt-sel" data-tip="段落样式">
+                                <option value="">段落样式</option>
+                                <option value="P">正文</option>
+                                <option value="H1">标题 1</option>
+                                <option value="H2">标题 2</option>
+                                <option value="H3">标题 3</option>
+                                <option value="BLOCKQUOTE">引用</option>
+                                <option value="PRE">代码块</option>
+                            </select>
+                            <select id="rtFontName" class="rt-sel" data-tip="字体">
+                                <option value="">字体</option>
+                                <option value="'Microsoft YaHei', 'SimHei', sans-serif">微软雅黑</option>
+                                <option value="'SimSun', serif">宋体</option>
+                                <option value="'SimHei', sans-serif">黑体</option>
+                                <option value="'KaiTi', 'STKaiti', serif">楷体</option>
+                                <option value="'FangSong', 'STFangsong', serif">仿宋</option>
+                            </select>
+                            <select id="rtFontSize" class="rt-sel" data-tip="字号">
+                                <option value="">字号</option>
+                                <option value="1">10 小号</option>
+                                <option value="2">13 五号</option>
+                                <option value="3">16 四号</option>
+                                <option value="4">18 三号</option>
+                                <option value="5">24 二号</option>
+                                <option value="6">32 一号</option>
+                                <option value="7">48 特大</option>
+                            </select>
+                            <span class="rt-sep"></span>
+                            <button type="button" class="rt-btn" data-cmd="bold" data-tip="加粗"><b>B</b></button>
+                            <button type="button" class="rt-btn" data-cmd="italic" data-tip="斜体"><i>I</i></button>
+                            <button type="button" class="rt-btn" data-cmd="underline" data-tip="下划线"><u>U</u></button>
+                            <button type="button" class="rt-btn" data-cmd="strikeThrough" data-tip="删除线"><s>S</s></button>
+                            <button type="button" class="rt-btn" data-cmd="superscript" data-tip="上标">x²</button>
+                            <button type="button" class="rt-btn" data-cmd="subscript" data-tip="下标">x₂</button>
+                            <span class="rt-sep"></span>
+                            <div class="rt-ddl" id="rtColorDdl" data-tip="文字颜色">
+                                <button type="button" class="rt-btn" id="rtColorBtn"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><text x="5" y="17" font-size="15" font-weight="bold" stroke="none" fill="currentColor" font-family="Georgia,serif">A</text><path d="M3 21h18"/></svg></button>
+                                <div class="rt-pop" id="rtColorPop">
+                                    <div class="rt-swatches" id="rtColorSwatches"></div>
+                                    <label class="rt-custom">自定义：<input type="color" id="rtColorPick" value="#3a2f1f" /></label>
+                                </div>
+                            </div>
+                            <div class="rt-ddl" id="rtHiDdl" data-tip="背景高亮色">
+                                <button type="button" class="rt-btn" id="rtHiBtn"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9.5 9.5 18 1l5 5-8.5 8.5"/><path d="M9.5 9.5 5.6 11 1 16l7 7 5-4.6 1.5-3.9"/><path d="M16.5 16.5 19 19"/><path d="M1 21h9"/></svg></button>
+                                <div class="rt-pop" id="rtHiPop">
+                                    <div class="rt-swatches" id="rtHiSwatches"></div>
+                                    <label class="rt-custom">自定义：<input type="color" id="rtHiPick" value="#ffe9a8" /></label>
+                                </div>
+                            </div>
+                            <span class="rt-sep"></span>
+                            <button type="button" class="rt-btn" data-cmd="removeFormat" data-tip="清除格式"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7h18"/><path d="M12 7 9.5 21"/><path d="M14.5 21 12 7"/><path d="M7 13h6"/><path d="M17 9v5a3 3 0 0 0 3 3"/><path d="M20 17h0"/></svg></button>
+                        </div>
+                        <div class="rt-row">
+                            <button type="button" class="rt-btn" data-cmd="justifyLeft" data-tip="左对齐"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 6h16"/><path d="M3 12h10"/><path d="M3 18h7"/></svg></button>
+                            <button type="button" class="rt-btn" data-cmd="justifyCenter" data-tip="居中"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 6h14"/><path d="M4 12h16"/><path d="M5 18h14"/></svg></button>
+                            <button type="button" class="rt-btn" data-cmd="justifyRight" data-tip="右对齐"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 6h16"/><path d="M11 12h10"/><path d="M14 18h7"/></svg></button>
+                            <button type="button" class="rt-btn" data-cmd="justifyFull" data-tip="两端对齐"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 6h18"/><path d="M3 12h18"/><path d="M3 18h18"/></svg></button>
+                            <span class="rt-sep"></span>
+                            <button type="button" class="rt-btn" data-cmd="insertUnorderedList" data-tip="项目符号列表"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="4.5" cy="6" r="1.2" fill="currentColor" stroke="none"/><path d="M9 6h12"/><circle cx="4.5" cy="12" r="1.2" fill="currentColor" stroke="none"/><path d="M9 12h12"/><circle cx="4.5" cy="18" r="1.2" fill="currentColor" stroke="none"/><path d="M9 18h12"/></svg></button>
+                            <button type="button" class="rt-btn" data-cmd="insertOrderedList" data-tip="编号列表"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><text x="1" y="9" font-size="8" font-weight="bold" stroke="none" fill="currentColor" font-family="Arial">1</text><path d="M8 6h13"/><text x="1" y="15" font-size="8" font-weight="bold" stroke="none" fill="currentColor" font-family="Arial">2</text><path d="M8 12h13"/><text x="1" y="21" font-size="8" font-weight="bold" stroke="none" fill="currentColor" font-family="Arial">3</text><path d="M8 18h13"/></svg></button>
+                            <button type="button" class="rt-btn" data-cmd="indent" data-tip="增加缩进"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"/><path d="M3 12h18"/><path d="M3 18h18"/><path d="M13 9.5 16 12l-3 2.5"/></svg></button>
+                            <button type="button" class="rt-btn" data-cmd="outdent" data-tip="减少缩进"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"/><path d="M3 12h18"/><path d="M3 18h18"/><path d="M19 9.5 16 12l3 2.5"/></svg></button>
+                            <span class="rt-sep"></span>
+                            <button type="button" class="rt-btn" data-cmd="createLink" data-tip="插入链接"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></button>
+                            <button type="button" class="rt-btn" data-cmd="unlink" data-tip="取消链接"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/><path d="M2.5 21.5 21.5 2.5"/></svg></button>
+                            <button type="button" class="rt-btn" data-cmd="insertHorizontalRule" data-tip="插入分隔线"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M2 6h20"/><path d="M4 12h16"/><path d="M2 18h20"/></svg></button>
+                            <span class="rt-sep"></span>
+                            <button type="button" class="rt-btn" data-cmd="undo" data-tip="撤销"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 14 4 9l5-5"/><path d="M4 9h10a6 6 0 0 1 0 12h-3"/></svg></button>
+                            <button type="button" class="rt-btn" data-cmd="redo" data-tip="重做"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 14 5-5-5-5"/><path d="M20 9H10a6 6 0 0 0 0 12h3"/></svg></button>
+                        </div>
                     </div>
                     <div id="fContent" class="rt-editor" contenteditable="true" data-placeholder="在此输入新闻正文…支持加粗、斜体、颜色、字号、段落对齐、列表、链接等常用排版"></div>
                 </div>
@@ -1403,13 +1443,50 @@ a {
 .af-row label { display:block; font-size:12px; color:#8a7a55; letter-spacing:2px; margin-bottom:6px; }
 .af-row input[type=text], .af-row input[type=date], .af-row textarea, .af-row select { width:100%; box-sizing:border-box; padding:9px 12px; border:1px solid #d4c29a; border-radius:6px; background:#fffdf4; color:#4d3f24; font-size:14px; font-family:inherit; }
 .af-row input:focus, .af-row textarea:focus, .af-row select:focus { outline:none; border-color:#0e5c42; box-shadow:0 0 0 3px rgba(14,92,66,.10); }
-.rt-toolbar { display:flex; flex-wrap:wrap; gap:4px; padding:7px 8px; background:linear-gradient(180deg,#f3e8cc,#ecdcb6); border:1px solid #d4c29a; border-bottom:none; border-radius:6px 6px 0 0; }
-.rt-toolbar button { padding:3px 11px; border:1px solid #cbb88a; background:#fffdf4; border-radius:4px; cursor:pointer; font-size:13px; color:#4d3f24; font-family:inherit; min-width:32px; }
-.rt-toolbar button:hover { background:#e6d9b8; border-color:#b88646; }
-.rt-toolbar select { padding:3px 4px; border:1px solid #cbb88a; background:#fffdf4; border-radius:4px; font-size:12px; color:#4d3f24; }
-.rt-editor { width:100%; min-height:180px; box-sizing:border-box; padding:12px 14px; border:1px solid #d4c29a; border-radius:0 0 6px 6px; background:#fffdf4; color:#4d3f24; font-size:14px; line-height:1.9; font-family:inherit; overflow-y:auto; outline:none; text-align:left; }
+.rt-toolbar { background:linear-gradient(180deg,#f4ead0,#ecdcb6); border:1px solid #d4c29a; border-bottom:none; border-radius:8px 8px 0 0; padding:6px; }
+.rt-row { display:flex; flex-wrap:wrap; align-items:center; gap:3px; }
+.rt-row + .rt-row { margin-top:5px; padding-top:5px; border-top:1px dashed #d4c29a; }
+.rt-btn { display:inline-flex; align-items:center; justify-content:center; min-width:28px; height:28px; padding:0 7px; border:1px solid transparent; background:transparent; border-radius:5px; cursor:pointer; font-size:13px; color:#4d3f24; font-family:inherit; line-height:1; transition:background .12s, border-color .12s, box-shadow .12s; position:relative; }
+.rt-btn:hover { background:#e9dbb4; border-color:#cbb88a; }
+.rt-btn:active { background:#dcc889; }
+.rt-btn b { font-family:Georgia,'Times New Roman',serif; font-size:14px; }
+.rt-btn i { font-family:Georgia,'Times New Roman',serif; font-size:14px; }
+.rt-btn u { font-family:Georgia,'Times New Roman',serif; font-size:13px; }
+.rt-btn s { font-family:Georgia,'Times New Roman',serif; font-size:13px; }
+.rt-sel { height:28px; padding:0 4px; border:1px solid #cbb88a; background:#fffdf4; border-radius:5px; font-size:12px; color:#4d3f24; cursor:pointer; }
+.rt-sel:hover { border-color:#b88646; }
+.rt-sep { width:1px; height:20px; background:#d4c29a; margin:0 4px; flex-shrink:0; }
+/* 悬浮提示 */
+.rt-btn[data-tip]::after, .rt-sel[data-tip]::after, .rt-ddl[data-tip]::after {
+  content:attr(data-tip); position:absolute; bottom:calc(100% + 6px); left:50%; transform:translateX(-50%) translateY(3px);
+  background:rgba(46,37,18,.94); color:#fff; font-size:11px; line-height:1; padding:5px 9px; border-radius:4px;
+  white-space:nowrap; opacity:0; visibility:hidden; transition:opacity .15s, transform .15s; z-index:60; pointer-events:none; box-shadow:0 3px 10px rgba(0,0,0,.2); }
+.rt-btn[data-tip]:hover::after, .rt-sel[data-tip]:hover::after { opacity:1; visibility:visible; transform:translateX(-50%) translateY(0); }
+/* 颜色下拉面板 */
+.rt-ddl { position:relative; display:inline-flex; }
+.rt-ddl[data-tip]::after { left:50%; transform:translateX(-50%) translateY(3px); }
+.rt-ddl[data-tip]:hover::after { opacity:1; visibility:visible; transform:translateX(-50%) translateY(0); }
+.rt-pop { position:absolute; top:calc(100% + 6px); left:0; z-index:50; display:none; width:190px; padding:10px;
+  background:#fffdf4; border:1px solid #d4c29a; border-radius:8px; box-shadow:0 10px 28px rgba(80,58,20,.22); }
+.rt-ddl.open .rt-pop { display:block; }
+.rt-ddl.open .rt-btn { background:#e9dbb4; border-color:#cbb88a; }
+.rt-swatches { display:grid; grid-template-columns:repeat(6, 1fr); gap:5px; }
+.rt-swatch { width:100%; height:22px; border-radius:4px; cursor:pointer; border:1px solid rgba(0,0,0,.12); padding:0; transition:transform .1s, box-shadow .1s; }
+.rt-swatch:hover { transform:scale(1.12); box-shadow:0 2px 6px rgba(0,0,0,.25); }
+.rt-custom { display:flex; align-items:center; gap:6px; margin-top:9px; padding-top:8px; border-top:1px dashed #e0d2ab; font-size:12px; color:#6b5a3c; }
+.rt-custom input[type=color] { width:34px; height:24px; border:1px solid #cbb88a; border-radius:4px; padding:1px; background:#fff; cursor:pointer; }
+/* 编辑区与渲染样式 */
+.rt-editor { width:100%; min-height:200px; box-sizing:border-box; padding:14px 16px; border:1px solid #d4c29a; border-radius:0 0 8px 8px; background:#fffdf4; color:#4d3f24; font-size:14px; line-height:1.9; font-family:inherit; overflow-y:auto; outline:none; text-align:left; }
 .rt-editor:focus { border-color:#0e5c42; box-shadow:0 0 0 3px rgba(14,92,66,.10); }
-.rt-editor p { margin:0 0 8px; }
+.rt-editor p { margin:0 0 10px; }
+.rt-editor h1, .rt-editor h2, .rt-editor h3 { margin:14px 0 8px; line-height:1.4; color:#0e5c42; }
+.rt-editor h1 { font-size:26px; } .rt-editor h2 { font-size:22px; } .rt-editor h3 { font-size:18px; }
+.rt-editor blockquote { margin:10px 0; padding:8px 14px; border-left:4px solid #b88646; background:#f7f0dc; color:#5c4d2e; border-radius:0 6px 6px 0; }
+.rt-editor pre { margin:10px 0; padding:10px 14px; background:#2f2a20; color:#efe6cf; border-radius:6px; font-family:Consolas,Monaco,monospace; font-size:13px; overflow-x:auto; }
+.rt-editor ul, .rt-editor ol { margin:8px 0 10px; padding-left:24px; }
+.rt-editor li { margin:3px 0; }
+.rt-editor a { color:#1f4e8c; text-decoration:underline; }
+.rt-editor hr { border:none; border-top:1px solid #d4c29a; margin:14px 0; }
 .rt-editor:empty::before { content:attr(data-placeholder); color:#b5a678; pointer-events:none; }
 .af-2col { display:grid; grid-template-columns:1fr 1fr; gap:14px; }
 .af-radio { margin-bottom:8px; font-size:13px; color:#6b5a3c; }
@@ -1825,23 +1902,75 @@ a {
             if (url) rtExec('createLink', url);
             return;
           }
-          if (cmd === 'undo' || cmd === 'redo') { rtExec(cmd); return; }
           rtExec(cmd);
         };
       })(btns[b]);
     }
-    var fsEl = document.getElementById('rtFontSize');
-    if (fsEl) fsEl.onchange = function () {
-      rt.focus();
-      if (fsEl.value) rtExec('fontSize', fsEl.value);
-      fsEl.selectedIndex = 0;
+    var selMap = {
+      rtBlock: 'formatBlock',
+      rtFontName: 'fontName',
+      rtFontSize: 'fontSize'
     };
-    var clEl = document.getElementById('rtColor');
-    if (clEl) clEl.onchange = function () {
-      rt.focus();
-      if (clEl.value) rtExec('foreColor', clEl.value);
-      clEl.selectedIndex = 0;
-    };
+    for (var sid in selMap) {
+      (function (elId, cmd) {
+        var el = document.getElementById(elId);
+        if (!el) return;
+        el.onchange = function () {
+          rt.focus();
+          if (el.value) rtExec(cmd, el.value);
+          el.selectedIndex = 0;
+        };
+      })(sid, selMap[sid]);
+    }
+    /* 色板 */
+    var fgColors = ['#3a2f1f', '#9c2727', '#c0392b', '#e67e22', '#b88646', '#8b5a2b', '#0e5c42', '#1f8a4c', '#1f4e8c', '#2d6cdf', '#6c3483', '#7f8c8d', '#000000', '#ffffff'];
+    var hiColors = ['#ffe9a8', '#fff3cd', '#c9e9d0', '#cfe8ff', '#f9d6d6', '#e8d5f5', '#d9e2ec', '#f0e6d2', '#ffffff'];
+    function buildSwatches(boxId, colors, cmd) {
+      var box = document.getElementById(boxId);
+      if (!box) return;
+      for (var i = 0; i < colors.length; i++) {
+        (function (c) {
+          var sw = document.createElement('button');
+          sw.type = 'button';
+          sw.className = 'rt-swatch';
+          sw.style.background = c;
+          sw.title = c;
+          sw.onclick = function () {
+            rt.focus();
+            rtExec(cmd, c);
+            closePops();
+          };
+          box.appendChild(sw);
+        })(colors[i]);
+      }
+    }
+    buildSwatches('rtColorSwatches', fgColors, 'foreColor');
+    buildSwatches('rtHiSwatches', hiColors, 'hiliteColor');
+    var pick1 = document.getElementById('rtColorPick');
+    if (pick1) pick1.onchange = function () { rt.focus(); rtExec('foreColor', pick1.value); closePops(); };
+    var pick2 = document.getElementById('rtHiPick');
+    if (pick2) pick2.onchange = function () { rt.focus(); rtExec('hiliteColor', pick2.value); closePops(); };
+    var ddlBtns = [['rtColorDdl', 'rtColorBtn'], ['rtHiDdl', 'rtHiBtn']];
+    function closePops() {
+      for (var i = 0; i < ddlBtns.length; i++) {
+        var d = document.getElementById(ddlBtns[i][0]);
+        if (d) d.classList.remove('open');
+      }
+    }
+    for (var d2 = 0; d2 < ddlBtns.length; d2++) {
+      (function (ddlId, btnId) {
+        var ddl = document.getElementById(ddlId);
+        var btn = document.getElementById(btnId);
+        if (!ddl || !btn) return;
+        btn.onclick = function (e) {
+          e.stopPropagation();
+          var isOpen = ddl.classList.contains('open');
+          closePops();
+          if (!isOpen) ddl.classList.add('open');
+        };
+      })(ddlBtns[d2][0], ddlBtns[d2][1]);
+    }
+    document.addEventListener('click', function () { closePops(); });
   }
 
   if (logged()) { showArea(); }
