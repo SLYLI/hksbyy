@@ -52,6 +52,8 @@
         box.innerHTML = '<div class="detail-empty">未找到该新闻：可能已被删除。<br><a href="news.html" style="color:#0e5c42;">← 返回新闻信息</a></div>';
         return;
       }
+      var backHref = (item.cat === '健康科普') ? 'health-education.html' : 'news.html';
+      var backLabel = (item.cat === '健康科普') ? '健康科普' : '新闻信息';
       var html = '<article class="user-news detail">';
       html += '<h3>' + esc(item.title) + '</h3>';
       html += '<p class="un-meta">' + esc(item.date || '') + ' · ' + esc(item.cat || '医院动态') + ' · 医院发布</p>';
@@ -66,6 +68,7 @@
       if (item.video && item.video.src) {
         html += '<div class="un-video"><video controls preload="metadata" src="' + esc(item.video.src) + '"></video></div>';
       }
+      html += '<p style="margin-top:18px;"><a href="' + esc(backHref) + '" style="color:#0e5c42;">← 返回' + esc(backLabel) + '</a></p>';
       html += '</article>';
       box.innerHTML = html;
     };
