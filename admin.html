@@ -1285,7 +1285,43 @@ a {
                     <div><label>发布日期</label><input id="fDate" type="date" /></div>
                     <div><label>所属栏目</label><select id="fCat"><option>医院动态</option><option>通知公告</option><option>健康科普</option></select></div>
                 </div>
-                <div class="af-row"><label>正文内容</label><textarea id="fContent" rows="6" placeholder="新闻正文，支持换行"></textarea></div>
+                <div class="af-row">
+                    <label>正文内容（支持富文本：加粗、斜体、文字颜色、字号、对齐、列表等）</label>
+                    <div class="rt-toolbar" id="rtToolbar">
+                        <button type="button" data-cmd="bold" title="加粗"><b>B</b></button>
+                        <button type="button" data-cmd="italic" title="斜体"><i>I</i></button>
+                        <button type="button" data-cmd="underline" title="下划线"><u>U</u></button>
+                        <button type="button" data-cmd="strikeThrough" title="删除线"><s>S</s></button>
+                        <select id="rtFontSize" title="字号">
+                            <option value="">字号</option>
+                            <option value="1">小号</option>
+                            <option value="3">正文</option>
+                            <option value="4">大号</option>
+                            <option value="5">特大</option>
+                            <option value="6">标题</option>
+                            <option value="7">超大</option>
+                        </select>
+                        <select id="rtColor" title="文字颜色">
+                            <option value="">颜色</option>
+                            <option value="#3a2f1f">默认深棕</option>
+                            <option value="#9c2727">红色</option>
+                            <option value="#0e5c42">墨绿</option>
+                            <option value="#b88646">金色</option>
+                            <option value="#1f4e8c">蓝色</option>
+                            <option value="#555555">灰色</option>
+                        </select>
+                        <button type="button" data-cmd="justifyLeft" title="左对齐">左</button>
+                        <button type="button" data-cmd="justifyCenter" title="居中">中</button>
+                        <button type="button" data-cmd="justifyRight" title="右对齐">右</button>
+                        <button type="button" data-cmd="insertUnorderedList" title="项目符号">• 列表</button>
+                        <button type="button" data-cmd="insertOrderedList" title="编号列表">1. 列表</button>
+                        <button type="button" data-cmd="createLink" title="插入链接">链接</button>
+                        <button type="button" data-cmd="removeFormat" title="清除格式">清除</button>
+                        <button type="button" data-cmd="undo" title="撤销">↶</button>
+                        <button type="button" data-cmd="redo" title="重做">↷</button>
+                    </div>
+                    <div id="fContent" class="rt-editor" contenteditable="true" data-placeholder="在此输入新闻正文…支持加粗、斜体、颜色、字号、段落对齐、列表、链接等常用排版"></div>
+                </div>
                 <div class="af-row">
                     <label>图片（可多选，自动压缩；单篇最多 6 张，jpg/png）</label>
                     <input id="fImgs" type="file" accept="image/*" multiple />
@@ -1367,6 +1403,14 @@ a {
 .af-row label { display:block; font-size:12px; color:#8a7a55; letter-spacing:2px; margin-bottom:6px; }
 .af-row input[type=text], .af-row input[type=date], .af-row textarea, .af-row select { width:100%; box-sizing:border-box; padding:9px 12px; border:1px solid #d4c29a; border-radius:6px; background:#fffdf4; color:#4d3f24; font-size:14px; font-family:inherit; }
 .af-row input:focus, .af-row textarea:focus, .af-row select:focus { outline:none; border-color:#0e5c42; box-shadow:0 0 0 3px rgba(14,92,66,.10); }
+.rt-toolbar { display:flex; flex-wrap:wrap; gap:4px; padding:7px 8px; background:linear-gradient(180deg,#f3e8cc,#ecdcb6); border:1px solid #d4c29a; border-bottom:none; border-radius:6px 6px 0 0; }
+.rt-toolbar button { padding:3px 11px; border:1px solid #cbb88a; background:#fffdf4; border-radius:4px; cursor:pointer; font-size:13px; color:#4d3f24; font-family:inherit; min-width:32px; }
+.rt-toolbar button:hover { background:#e6d9b8; border-color:#b88646; }
+.rt-toolbar select { padding:3px 4px; border:1px solid #cbb88a; background:#fffdf4; border-radius:4px; font-size:12px; color:#4d3f24; }
+.rt-editor { width:100%; min-height:180px; box-sizing:border-box; padding:12px 14px; border:1px solid #d4c29a; border-radius:0 0 6px 6px; background:#fffdf4; color:#4d3f24; font-size:14px; line-height:1.9; font-family:inherit; overflow-y:auto; outline:none; text-align:left; }
+.rt-editor:focus { border-color:#0e5c42; box-shadow:0 0 0 3px rgba(14,92,66,.10); }
+.rt-editor p { margin:0 0 8px; }
+.rt-editor:empty::before { content:attr(data-placeholder); color:#b5a678; pointer-events:none; }
 .af-2col { display:grid; grid-template-columns:1fr 1fr; gap:14px; }
 .af-radio { margin-bottom:8px; font-size:13px; color:#6b5a3c; }
 .af-radio label { margin-right:18px; letter-spacing:0; }
@@ -1489,7 +1533,7 @@ a {
     document.getElementById('fTitle').value = n.title || '';
     document.getElementById('fDate').value = n.date || today();
     document.getElementById('fCat').value = n.cat || '医院动态';
-    document.getElementById('fContent').value = n.content || '';
+    document.getElementById('fContent').innerHTML = n.content || '';
     curImgs = (n.imgs || []).slice();
     renderImgPreview();
     if (n.video && n.video.src) {
@@ -1583,7 +1627,9 @@ a {
     if (!title) { setMsg('请填写新闻标题。', false); return; }
     if (!date) { setMsg('请选择发布日期。', false); return; }
     var cat = document.getElementById('fCat').value;
-    var content = document.getElementById('fContent').value.trim();
+    var content = (document.getElementById('fContent').innerHTML || '').trim();
+    /* 空内容清理（contenteditable 可能残留 <br> 等） */
+    if (!content.replace(/<br\s*\/?>/gi, '').replace(/<p[^>]*>\s*<\/p>/gi, '').replace(/&nbsp;/g, '').trim()) content = '';
     var vtype = document.querySelector('input[name=vtype]:checked').value;
     var vsrc = (vtype === 'url' ? document.getElementById('fVideoUrl').value : document.getElementById('fVideoFile').value).trim();
     var video = vsrc ? { src: vsrc, type: vtype } : null;
@@ -1629,7 +1675,7 @@ a {
     document.getElementById('fId').value = '';
     document.getElementById('fTitle').value = '';
     document.getElementById('fDate').value = today();
-    document.getElementById('fContent').value = '';
+    document.getElementById('fContent').innerHTML = '';
     document.getElementById('fVideoFile').value = '';
     document.getElementById('fVideoUrl').value = '';
     document.querySelector('input[name=vtype][value=file]').checked = true;
@@ -1759,6 +1805,44 @@ a {
     try { localStorage.removeItem(LOGIN_KEY); } catch (e) {}
     location.reload();
   };
+
+  /* ---- 富文本工具栏 ---- */
+  function rtExec(cmd, val) {
+    try { document.execCommand('styleWithCSS', false, true); } catch (e) {}
+    document.execCommand(cmd, false, val || null);
+  }
+  var rt = document.getElementById('fContent');
+  var tb = document.getElementById('rtToolbar');
+  if (rt && tb) {
+    var btns = tb.querySelectorAll('button[data-cmd]');
+    for (var b = 0; b < btns.length; b++) {
+      (function (btn) {
+        btn.onclick = function () {
+          rt.focus();
+          var cmd = btn.getAttribute('data-cmd');
+          if (cmd === 'createLink') {
+            var url = prompt('请输入链接地址（建议以 http:// 或 https:// 开头）：', 'https://');
+            if (url) rtExec('createLink', url);
+            return;
+          }
+          if (cmd === 'undo' || cmd === 'redo') { rtExec(cmd); return; }
+          rtExec(cmd);
+        };
+      })(btns[b]);
+    }
+    var fsEl = document.getElementById('rtFontSize');
+    if (fsEl) fsEl.onchange = function () {
+      rt.focus();
+      if (fsEl.value) rtExec('fontSize', fsEl.value);
+      fsEl.selectedIndex = 0;
+    };
+    var clEl = document.getElementById('rtColor');
+    if (clEl) clEl.onchange = function () {
+      rt.focus();
+      if (clEl.value) rtExec('foreColor', clEl.value);
+      clEl.selectedIndex = 0;
+    };
+  }
 
   if (logged()) { showArea(); }
 })();

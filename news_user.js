@@ -38,6 +38,18 @@
     return arr.slice().sort(function (a, b) { return (b.date || '').localeCompare(a.date || ''); });
   }
 
+  function renderRich(content) {
+    if (!content) return '';
+    /* 旧数据为纯文本（无富文本标签）→ 转义换行；新数据为富文本 HTML → 过滤后直接渲染 */
+    if (!/<(p|div|b|strong|i|em|u|s|font|span|ul|ol|li|h[1-6])[\s>]/i.test(content)) {
+      return esc(content).replace(/\n/g, '<br>');
+    }
+    return content
+      .replace(/<script[\s\S]*?<\/script>/gi, '')
+      .replace(/<iframe[\s\S]*?<\/iframe>/gi, '')
+      .replace(/\son\w+\s*=\s*("[^"]*"|'[^']*'|[^\s>]+)/gi, '');
+  }
+
   var isDetail = /news-detail\.html/i.test(location.pathname);
   var local = loadLocal();
 
@@ -58,7 +70,7 @@
       html += '<h3>' + esc(item.title) + '</h3>';
       html += '<p class="un-meta">' + esc(item.date || '') + ' · ' + esc(item.cat || '医院动态') + ' · 医院发布</p>';
       if (item.content) {
-        html += '<div class="un-body">' + esc(item.content).replace(/\n/g, '<br>') + '</div>';
+        html += '<div class="un-body">' + renderRich(item.content) + '</div>';
       }
       if (item.imgs && item.imgs.length) {
         html += '<div class="un-imgs">';
