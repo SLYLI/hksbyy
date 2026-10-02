@@ -1,0 +1,1293 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>新闻详情 - 鹤壁华康肾病专科医院</title>
+<meta name="description" content="鹤壁华康肾病专科医院本机发布新闻详情页。" />
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ccircle cx='32' cy='32' r='30' fill='%230e5c42' stroke='%23b88646' stroke-width='3'/%3E%3Ctext x='32' y='44' font-size='32' text-anchor='middle' fill='%23f8f3e6' font-family='serif'%3E华%3C/text%3E%3C/svg%3E" />
+<link rel="preconnect" href="https://miaoda.feishu.cn">
+<link href="https://miaoda.feishu.cn/fonts/css2?family=Noto+Serif+SC:wght@400;500;600;700;900&family=Ma+Shan+Zheng&display=swap" rel="stylesheet">
+<style>
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background-color: #f6efdd;
+    font-family: "Noto Serif SC", "Source Han Serif SC", "Songti SC", "STSong", "SimSun", "Microsoft YaHei", serif;
+    font-weight: 400;
+    color: #3a2f1f;
+}
+
+a {
+    color: inherit;
+}
+
+/* ===== 顶部墨绿栏 ===== */
+.top-dark-bar {
+    background: linear-gradient(135deg, #0b4530 0%, #14664c 100%);
+    height: 44px;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    padding: 0 40px;
+    gap: 28px;
+    border-bottom: 1px solid rgba(184, 134, 70, 0.45);
+}
+
+.top-dark-bar a {
+    color: #f0e6c8;
+    text-decoration: none;
+    font-size: 14px;
+    letter-spacing: 2px;
+    transition: color 0.2s;
+}
+
+.top-dark-bar a:hover {
+    color: #ffd98a;
+}
+
+/* ===== Logo 导航栏 ===== */
+.nav-wrap {
+    background: linear-gradient(180deg, #faf4e4 0%, #f3e8cc 100%);
+    display: flex;
+    align-items: center;
+    padding: 14px 40px;
+    gap: 24px;
+    border-bottom: 1px solid #d8c8a0;
+    flex-wrap: wrap;
+    box-shadow: 0 2px 10px rgba(80, 50, 20, 0.06);
+}
+
+.logo-circle {
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    background: radial-gradient(circle at 30% 28%, #1f8060 0%, #0e5c42 75%);
+    border: 2px solid #b88646;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #f8f3e6;
+    font-weight: bold;
+    font-size: 34px;
+    font-family: "Ma Shan Zheng", "KaiTi", "STKaiti", serif;
+    flex-shrink: 0;
+    text-decoration: none;
+    box-shadow: inset 0 0 0 2px rgba(248, 243, 230, 0.35), 0 3px 8px rgba(14, 92, 66, 0.35);
+}
+
+.main-nav ul {
+    display: flex;
+    list-style: none;
+    gap: 26px;
+    flex-wrap: wrap;
+    align-items: center;
+}
+
+.main-nav a {
+    text-decoration: none;
+    color: #3a2f1f;
+    font-size: 16px;
+    font-weight: 500;
+    letter-spacing: 1.5px;
+    position: relative;
+    padding: 4px 2px;
+    transition: color 0.25s;
+}
+
+.main-nav a::after {
+    content: '';
+    position: absolute;
+    left: 50%;
+    bottom: -2px;
+    width: 0;
+    height: 2px;
+    background: #9c2727;
+    transition: all 0.3s ease;
+    transform: translateX(-50%);
+}
+
+.main-nav a:hover {
+    color: #9c2727;
+}
+
+.main-nav a:hover::after,
+.main-nav a.active::after {
+    width: 100%;
+}
+
+.main-nav a.active {
+    color: #9c2727;
+}
+
+.search-icon {
+    margin-left: 8px;
+}
+
+.search-icon svg {
+    width: 19px;
+    height: 19px;
+    stroke: currentColor;
+    fill: none;
+    stroke-width: 1.8;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    display: block;
+}
+
+/* ===== 页头横幅 ===== */
+.page-banner {
+    width: 100%;
+    min-height: 330px;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    border-bottom: 1px solid rgba(184, 134, 70, 0.4);
+}
+
+.banner-bg {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url('tcm-bg.jpg');
+    background-size: cover;
+    background-position: center;
+    z-index: 0;
+}
+
+.banner-overlay {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(180deg,
+        rgba(255, 250, 235, 0.30) 0%,
+        rgba(255, 250, 235, 0.06) 45%,
+        rgba(246, 239, 221, 0.42) 100%);
+    z-index: 1;
+}
+
+.page-title-box {
+    position: relative;
+    z-index: 2;
+    width: 100%;
+    max-width: 1080px;
+    margin: 0 auto;
+    padding: 0 40px;
+}
+
+.page-title-box h1 {
+    font-size: 40px;
+    color: #0e5c42;
+    letter-spacing: 8px;
+    font-weight: 900;
+    text-shadow: 0 2px 10px rgba(255, 250, 235, 0.95);
+}
+
+.page-title-box p {
+    margin-top: 10px;
+    color: #5a4a30;
+    letter-spacing: 4px;
+    font-size: 16px;
+    text-shadow: 0 1px 6px rgba(255, 250, 235, 0.9);
+}
+
+.crumb {
+    margin-top: 18px;
+    font-size: 13px;
+    color: #8a7448;
+    letter-spacing: 1px;
+}
+
+.crumb a {
+    color: #0e5c42;
+    text-decoration: none;
+}
+
+.crumb a:hover {
+    color: #9c2727;
+}
+
+.crumb em {
+    font-style: normal;
+    color: #9c2727;
+}
+
+/* ===== 内容区 ===== */
+.inner-wrap {
+    max-width: 1080px;
+    margin: 0 auto;
+    padding: 48px 40px 70px;
+}
+
+.section {
+    margin-bottom: 54px;
+}
+
+.section:last-child {
+    margin-bottom: 0;
+}
+
+.section-title {
+    font-size: 26px;
+    color: #0e5c42;
+    font-weight: 700;
+    letter-spacing: 4px;
+    margin-bottom: 8px;
+    padding-left: 16px;
+    border-left: 4px solid #b88646;
+    line-height: 1.5;
+}
+
+.section-sub {
+    color: #8a7448;
+    letter-spacing: 2px;
+    font-size: 14px;
+    margin: 4px 0 26px;
+    padding-left: 16px;
+}
+
+.text-block p {
+    color: #5a4a30;
+    line-height: 2.1;
+    letter-spacing: 1px;
+    font-size: 15px;
+    margin-bottom: 14px;
+    text-align: justify;
+}
+
+/* ===== 通用卡片网格 ===== */
+.card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(235px, 1fr));
+    gap: 18px;
+}
+
+.tile {
+    background: linear-gradient(180deg, #faf4e4 0%, #f3e8cc 100%);
+    border: 1px solid #d8c8a0;
+    border-radius: 6px;
+    padding: 26px 20px 22px;
+    text-align: center;
+    transition: 0.3s ease;
+}
+
+.tile:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 22px rgba(80, 50, 20, 0.12);
+    border-color: #b88646;
+}
+
+.tile .t-icon {
+    width: 52px;
+    height: 52px;
+    margin: 0 auto 14px;
+    color: #0e5c42;
+}
+
+.tile .t-icon svg {
+    width: 100%;
+    height: 100%;
+    stroke: currentColor;
+    fill: none;
+    stroke-width: 1.6;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+.tile h4 {
+    font-size: 17px;
+    color: #0e5c42;
+    letter-spacing: 2px;
+    margin-bottom: 8px;
+}
+
+.tile p {
+    font-size: 13px;
+    color: #6b5a3c;
+    line-height: 1.85;
+    text-align: left;
+    letter-spacing: 0.5px;
+}
+
+.tile a.more {
+    display: inline-block;
+    margin-top: 10px;
+    font-size: 13px;
+    color: #9c2727;
+    text-decoration: none;
+    letter-spacing: 1px;
+}
+
+.tile a.more:hover {
+    text-decoration: underline;
+}
+
+/* ===== 医生照片 ===== */
+.doc-photo {
+    width: 150px;
+    height: 176px;
+    margin: 0 auto 16px;
+    border-radius: 12px;
+    border: 3px solid #b88646;
+    box-shadow: 0 8px 18px rgba(80, 50, 20, 0.18);
+    overflow: hidden;
+    background: #e9dcb8;
+}
+
+.doc-photo img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.doc-photo-noimg {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: radial-gradient(circle at 30% 28%, #1f8060 0%, #0e5c42 75%);
+    color: #f8f3e6;
+    font-family: "Ma Shan Zheng", "KaiTi", "STKaiti", serif;
+    font-size: 52px;
+    font-weight: 700;
+    border-color: #b88646;
+}
+
+/* ===== 学科带头人：横向图文大卡 ===== */
+.doc-hero {
+    grid-column: 1 / -1;
+    display: flex;
+    gap: 28px;
+    align-items: flex-start;
+    background: linear-gradient(135deg, #faf4e4 0%, #f0e2c0 100%);
+    border: 1px solid #d8c8a0;
+    border-radius: 10px;
+    padding: 28px;
+    box-shadow: 0 6px 16px rgba(80, 50, 20, 0.08);
+}
+
+.doc-hero-photo {
+    flex: 0 0 auto;
+    width: 230px;
+    height: 280px;
+    border-radius: 12px;
+    border: 3px solid #b88646;
+    box-shadow: 0 8px 18px rgba(80, 50, 20, 0.18);
+    overflow: hidden;
+    background: #e9dcb8;
+}
+
+.doc-hero-photo img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.doc-hero-body {
+    flex: 1 1 auto;
+    text-align: left;
+}
+
+.doc-hero-body h4 {
+    font-size: 20px;
+    color: #0e5c42;
+    letter-spacing: 2px;
+    margin-bottom: 12px;
+}
+
+.doc-sec-t {
+    font-size: 14px;
+    color: #9c2727;
+    font-weight: 700;
+    letter-spacing: 2px;
+    margin: 14px 0 5px;
+    padding-left: 8px;
+    border-left: 3px solid #b88646;
+}
+
+.doc-hero-body p:not(.doc-sec-t) {
+    font-size: 13px;
+    color: #6b5a3c;
+    line-height: 1.9;
+    text-align: justify;
+    letter-spacing: 0.5px;
+    margin-bottom: 4px;
+}
+
+@media (max-width: 720px) {
+    .doc-hero {
+        flex-direction: column;
+        align-items: center;
+        padding: 22px 18px;
+    }
+    .doc-hero-body {
+        text-align: left;
+    }
+}
+
+/* 医师团队横排卡（小一号） */
+.doc-hero.sm {
+    padding: 20px 24px;
+    gap: 22px;
+}
+
+.doc-hero.sm .doc-hero-photo {
+    width: 170px;
+    height: 204px;
+}
+
+.doc-hero.sm .doc-hero-body h4 {
+    font-size: 18px;
+    margin-bottom: 8px;
+}
+
+/* 医师团队：3 列紧凑卡片 */
+.team-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 18px;
+}
+
+.team-card {
+    background: linear-gradient(180deg, #faf4e4 0%, #f3e8cc 100%);
+    border: 1px solid #d8c8a0;
+    border-radius: 8px;
+    padding: 20px 18px 18px;
+    text-align: center;
+    transition: 0.3s ease;
+}
+
+.team-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 18px rgba(80, 50, 20, 0.12);
+    border-color: #b88646;
+}
+
+.team-photo {
+    width: 128px;
+    height: 154px;
+    margin: 0 auto 12px;
+    border-radius: 10px;
+    border: 3px solid #b88646;
+    box-shadow: 0 6px 14px rgba(80, 50, 20, 0.16);
+    overflow: hidden;
+    background: #e9dcb8;
+}
+
+.team-photo img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.team-photo-noimg {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: radial-gradient(circle at 30% 28%, #1f8060 0%, #0e5c42 75%);
+    color: #f8f3e6;
+    font-family: "Ma Shan Zheng", "KaiTi", "STKaiti", serif;
+    font-size: 44px;
+    font-weight: 700;
+    border-color: #b88646;
+}
+
+.team-card h4 {
+    font-size: 16px;
+    color: #0e5c42;
+    letter-spacing: 1px;
+    margin-bottom: 6px;
+}
+
+.team-card .doc-sec-t {
+    font-size: 12.5px;
+    margin: 10px 0 4px;
+    padding-left: 6px;
+    text-align: left;
+}
+
+.team-card p:not(.doc-sec-t) {
+    font-size: 12px;
+    color: #6b5a3c;
+    line-height: 1.8;
+    text-align: left;
+    letter-spacing: 0.4px;
+    margin-bottom: 2px;
+}
+
+@media (max-width: 900px) {
+    .team-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 640px) {
+    .team-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* 医师团队：3 列紧凑卡片 */
+.team-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 18px;
+}
+
+.team-card {
+    background: linear-gradient(180deg, #faf4e4 0%, #f3e8cc 100%);
+    border: 1px solid #d8c8a0;
+    border-radius: 8px;
+    padding: 20px 18px 18px;
+    text-align: center;
+    transition: 0.3s ease;
+}
+
+.team-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 18px rgba(80, 50, 20, 0.12);
+    border-color: #b88646;
+}
+
+.team-photo {
+    width: 128px;
+    height: 154px;
+    margin: 0 auto 12px;
+    border-radius: 10px;
+    border: 3px solid #b88646;
+    box-shadow: 0 6px 14px rgba(80, 50, 20, 0.16);
+    overflow: hidden;
+    background: #e9dcb8;
+}
+
+.team-photo img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.team-photo-noimg {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: radial-gradient(circle at 30% 28%, #1f8060 0%, #0e5c42 75%);
+    color: #f8f3e6;
+    font-family: "Ma Shan Zheng", "KaiTi", "STKaiti", serif;
+    font-size: 44px;
+    font-weight: 700;
+    border-color: #b88646;
+}
+
+.team-card h4 {
+    font-size: 16px;
+    color: #0e5c42;
+    letter-spacing: 1px;
+    margin-bottom: 6px;
+}
+
+.team-card .doc-sec-t {
+    font-size: 12.5px;
+    margin: 10px 0 4px;
+    padding-left: 6px;
+    text-align: left;
+}
+
+.team-card p:not(.doc-sec-t) {
+    font-size: 12px;
+    color: #6b5a3c;
+    line-height: 1.8;
+    text-align: left;
+    letter-spacing: 0.4px;
+    margin-bottom: 2px;
+}
+
+@media (max-width: 900px) {
+    .team-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 640px) {
+    .team-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 720px) {
+    .doc-hero.sm {
+        padding: 18px 16px;
+        gap: 16px;
+    }
+}
+
+/* ===== 步骤条 ===== */
+.steps {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 16px;
+    counter-reset: step;
+}
+
+.step {
+    position: relative;
+    background: #faf4e4;
+    border: 1px solid #d8c8a0;
+    border-radius: 6px;
+    padding: 26px 16px 18px;
+    text-align: center;
+}
+
+.step::before {
+    counter-increment: step;
+    content: counter(step);
+    position: absolute;
+    top: -14px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #14664c, #0b4530);
+    color: #f8f3e6;
+    font-size: 14px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 0 0 3px #f6efdd;
+}
+
+.step h4 {
+    font-size: 15px;
+    color: #0e5c42;
+    letter-spacing: 1px;
+    margin-bottom: 6px;
+}
+
+.step p {
+    font-size: 12.5px;
+    color: #6b5a3c;
+    line-height: 1.7;
+}
+
+/* ===== 时间轴（时间 / 轴 / 内容 三列） ===== */
+.timeline {
+    display: grid;
+    grid-template-columns: 110px 34px 1fr;
+}
+
+.tl-node {
+    display: contents;
+}
+
+.tl-time {
+    padding: 8px 0 26px;
+    text-align: right;
+    font-size: 15px;
+    color: #0e5c42;
+    font-weight: 600;
+    letter-spacing: 1px;
+}
+
+.tl-axis {
+    position: relative;
+}
+
+.tl-axis::before {
+    content: '';
+    position: absolute;
+    left: 50%;
+    top: 8px;
+    bottom: 8px;
+    width: 2px;
+    background: linear-gradient(180deg, #b88646, #0e5c42);
+    transform: translateX(-50%);
+}
+
+.tl-node:last-child .tl-axis::before {
+    bottom: auto;
+    height: calc(100% - 20px);
+}
+
+.tl-dot {
+    position: absolute;
+    left: 50%;
+    top: 10px;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: #9c2727;
+    border: 2px solid #f6efdd;
+    box-shadow: 0 0 0 2px #b88646;
+    transform: translateX(-50%);
+    z-index: 1;
+}
+
+.tl-body {
+    padding: 0 0 26px 18px;
+}
+
+.tl-body h4 {
+    font-size: 16px;
+    color: #3a2f1f;
+    letter-spacing: 1px;
+    margin-bottom: 4px;
+}
+
+.tl-body p {
+    font-size: 13.5px;
+    color: #6b5a3c;
+    line-height: 1.85;
+}
+
+.tl-node:last-child .tl-time,
+.tl-node:last-child .tl-body {
+    padding-bottom: 0;
+}
+
+/* ===== 表格 ===== */
+.table-scroll {
+    overflow-x: auto;
+}
+
+.info-table {
+    width: 100%;
+    table-layout: fixed;
+    border-collapse: collapse;
+    background: #faf4e4;
+    min-width: 620px;
+}
+
+.info-table th,
+.info-table td {
+    border: 1px solid #d8c8a0;
+    padding: 12px 14px;
+    font-size: 14px;
+    letter-spacing: 0.5px;
+    text-align: left;
+    line-height: 1.7;
+}
+
+.info-table th {
+    background: linear-gradient(135deg, #14664c, #0e5c42);
+    color: #f8f3e6;
+    font-weight: 600;
+    letter-spacing: 2px;
+}
+
+.info-table td {
+    color: #4a3d24;
+}
+
+.info-table tr:nth-child(even) td {
+    background: #f3e8cc;
+}
+
+.info-table caption {
+    caption-side: bottom;
+    padding-top: 10px;
+    font-size: 12.5px;
+    color: #8a7448;
+    letter-spacing: 1px;
+}
+
+/* ===== 提示框 ===== */
+.notice-box {
+    border: 1px solid #b88646;
+    border-left: 4px solid #9c2727;
+    background: #faf4e4;
+    padding: 18px 22px;
+    border-radius: 4px;
+}
+
+.notice-box h4 {
+    color: #9c2727;
+    letter-spacing: 2px;
+    margin-bottom: 8px;
+    font-size: 16px;
+}
+
+.notice-box ul {
+    padding-left: 20px;
+}
+
+.notice-box li,
+.notice-box p {
+    font-size: 14px;
+    color: #5a4a30;
+    line-height: 1.95;
+    letter-spacing: 0.5px;
+}
+
+/* ===== 图文双栏 ===== */
+.split {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+    align-items: start;
+}
+
+.herb-card {
+    border-radius: 6px;
+    overflow: hidden;
+    border: 1px solid #d8c8a0;
+    background: #faf4e4;
+}
+
+.herb-card img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    display: block;
+}
+
+.herb-card .h-body {
+    padding: 16px 18px 18px;
+}
+
+.herb-card h4 {
+    font-size: 17px;
+    color: #0e5c42;
+    letter-spacing: 2px;
+    margin-bottom: 6px;
+}
+
+.herb-card p {
+    font-size: 13px;
+    color: #6b5a3c;
+    line-height: 1.85;
+    letter-spacing: 0.5px;
+}
+
+/* ===== 医生卡片 ===== */
+.doctor-card {
+    text-align: center;
+}
+
+.seal {
+    width: 64px;
+    height: 64px;
+    margin: 0 auto 12px;
+    border-radius: 50%;
+    background: radial-gradient(circle at 30% 28%, #1f8060 0%, #0e5c42 75%);
+    border: 2px solid #b88646;
+    color: #f8f3e6;
+    font-size: 26px;
+    font-family: "Ma Shan Zheng", "KaiTi", "STKaiti", serif;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: inset 0 0 0 2px rgba(248, 243, 230, 0.35), 0 3px 8px rgba(14, 92, 66, 0.35);
+}
+
+.doctor-card .tag {
+    display: inline-block;
+    font-size: 12px;
+    color: #9c2727;
+    border: 1px solid #d8a878;
+    border-radius: 20px;
+    padding: 2px 12px;
+    margin-bottom: 8px;
+    letter-spacing: 1px;
+    background: #faf4e4;
+}
+
+.doctor-card h4 {
+    font-size: 16px;
+    color: #3a2f1f;
+    letter-spacing: 1px;
+    margin-bottom: 4px;
+}
+
+.doctor-card .role {
+    font-size: 13px;
+    color: #0e5c42;
+    letter-spacing: 1px;
+    margin-bottom: 6px;
+}
+
+.doctor-card p {
+    font-size: 12.5px;
+    color: #6b5a3c;
+    line-height: 1.8;
+    text-align: left;
+}
+
+/* ===== 新闻列表 ===== */
+.news-list {
+    list-style: none;
+}
+
+.news-list li {
+    display: flex;
+    gap: 16px;
+    padding: 15px 6px;
+    border-bottom: 1px dashed #d8c8a0;
+    align-items: baseline;
+    flex-wrap: wrap;
+}
+
+.news-list .nd {
+    flex-shrink: 0;
+    font-size: 13px;
+    color: #8a7448;
+    letter-spacing: 1px;
+    width: 150px;
+}
+
+.news-list .n-title a {
+    font-size: 15px;
+    color: #3a2f1f;
+    text-decoration: none;
+    letter-spacing: 1px;
+}
+
+.news-list .n-title a:hover {
+    color: #9c2727;
+}
+
+.news-list .n-ex {
+    font-size: 12.5px;
+    color: #8a7448;
+    flex-shrink: 0;
+}
+
+/* ===== 搜索页 ===== */
+.search-panel {
+    background: linear-gradient(180deg, #faf4e4 0%, #f3e8cc 100%);
+    border: 1px solid #d8c8a0;
+    border-radius: 6px;
+    padding: 34px 30px;
+}
+
+.search-box {
+    display: flex;
+    gap: 12px;
+    max-width: 680px;
+    margin: 0 auto;
+}
+
+.search-box input {
+    flex: 1;
+    padding: 14px 18px;
+    font-size: 15px;
+    border: 1px solid #b88646;
+    border-radius: 4px;
+    background: #fffdf4;
+    color: #3a2f1f;
+    outline: none;
+    font-family: inherit;
+    letter-spacing: 1px;
+}
+
+.search-box input:focus {
+    border-color: #0e5c42;
+}
+
+.search-box button {
+    padding: 14px 30px;
+    background: linear-gradient(145deg, #a83232 0%, #851f1f 100%);
+    color: #f8f3e6;
+    border: none;
+    border-radius: 4px;
+    font-size: 15px;
+    letter-spacing: 3px;
+    cursor: pointer;
+    font-family: inherit;
+}
+
+.search-box button:hover {
+    background: linear-gradient(145deg, #c04040 0%, #9c2727 100%);
+}
+
+.search-results {
+    margin-top: 26px;
+}
+
+.search-results h4 {
+    color: #0e5c42;
+    letter-spacing: 2px;
+    margin-bottom: 12px;
+    font-size: 16px;
+}
+
+.search-results ul {
+    list-style: none;
+}
+
+.search-results li {
+    padding: 13px 8px;
+    border-bottom: 1px dashed #d8c8a0;
+}
+
+.search-results a {
+    color: #3a2f1f;
+    text-decoration: none;
+    font-size: 15px;
+    letter-spacing: 1px;
+}
+
+.search-results a:hover {
+    color: #9c2727;
+}
+
+.search-results .s-desc {
+    font-size: 12.5px;
+    color: #8a7448;
+    margin-top: 3px;
+}
+
+/* ===== 页脚 ===== */
+.site-footer {
+    background: linear-gradient(135deg, #0b4530 0%, #14664c 100%);
+    color: #f0e6c8;
+    padding: 44px 40px 20px;
+    border-top: 1px solid rgba(184, 134, 70, 0.45);
+}
+
+.footer-grid {
+    max-width: 1080px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 28px;
+}
+
+.footer-grid h4 {
+    font-size: 15px;
+    letter-spacing: 3px;
+    color: #ffd98a;
+    margin-bottom: 14px;
+    font-weight: 600;
+}
+
+.footer-grid p,
+.footer-grid a {
+    font-size: 13px;
+    line-height: 2.1;
+    color: #e8dcc0;
+    letter-spacing: 1px;
+    text-decoration: none;
+}
+
+.footer-grid a:hover {
+    color: #ffd98a;
+}
+
+.footer-bottom {
+    max-width: 1080px;
+    margin: 22px auto 0;
+    padding-top: 16px;
+    border-top: 1px solid rgba(240, 230, 200, 0.18);
+    font-size: 12.5px;
+    color: #c9bb9c;
+    text-align: center;
+    letter-spacing: 1px;
+}
+
+/* ===== 移动端适配 ===== */
+@media (max-width: 768px) {
+    .top-dark-bar,
+    .nav-wrap {
+        padding: 0 20px;
+    }
+
+    .top-dark-bar {
+        gap: 18px;
+    }
+
+    .nav-wrap {
+        flex-direction: column;
+        align-items: flex-start;
+        padding-top: 14px;
+        padding-bottom: 14px;
+    }
+
+    .main-nav ul {
+        gap: 14px;
+        margin-top: 8px;
+    }
+
+    .main-nav a {
+        font-size: 15px;
+    }
+
+    .page-banner {
+        min-height: 240px;
+    }
+
+    .page-title-box {
+        padding: 0 20px;
+    }
+
+    .page-title-box h1 {
+        font-size: 28px;
+        letter-spacing: 5px;
+    }
+
+    .page-title-box p {
+        font-size: 14px;
+        letter-spacing: 2px;
+    }
+
+    .inner-wrap {
+        padding: 34px 20px 50px;
+    }
+
+    .section-title {
+        font-size: 21px;
+        letter-spacing: 2px;
+    }
+
+    .split {
+        grid-template-columns: 1fr;
+    }
+
+    .timeline {
+        grid-template-columns: 84px 26px 1fr;
+    }
+
+    .tl-time {
+        font-size: 13.5px;
+    }
+
+    .footer-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 22px;
+    }
+
+    .site-footer {
+        padding: 34px 20px 16px;
+    }
+
+    .news-list .nd {
+        width: 100%;
+    }
+
+    .search-box {
+        flex-direction: column;
+    }
+
+    .search-box button {
+        width: 100%;
+    }
+}
+
+@media (max-width: 460px) {
+    .footer-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+</style>
+</head>
+
+<body>
+
+<header>
+    <div class="top-dark-bar">
+        <a href="index.html">公众版</a>
+        <a href="professional.html">专业版</a>
+        <a href="english.html">English</a>
+    </div>
+    <div class="nav-wrap">
+        <a class="logo-circle" href="index.html">华</a>
+        <nav class="main-nav">
+            <ul>
+<li><a href="index.html">首页</a></li>
+            <li><a href="hospital-overview.html">医院概况</a></li>
+            <li><a href="medical-guide.html">就医指南</a></li>
+            <li><a href="internet-clinic.html">互联网诊疗</a></li>
+            <li><a href="specialty-care.html">特色医疗</a></li>
+            <li><a href="departments.html">科室导览</a></li>
+            <li><a href="doctors.html">医生介绍</a></li>
+            <li><a href="health-education.html">健康科普</a></li>
+            <li><a href="news.html">新闻信息</a></li>
+            <li><a href="culture.html">文化传承</a></li>
+            <li><a href="cooperation.html">国内外合作</a></li>
+            <li><a href="admin.html">管理后台</a></li>
+            <li class="search-icon"><a href="search.html" aria-label="站内搜索"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></a></li>
+            </ul>
+        </nav>
+    </div>
+</header>
+
+<div class="page-banner">
+    <div class="banner-bg"></div>
+    <div class="banner-overlay"></div>
+    <div class="page-title-box">
+        <h1>新闻详情</h1>
+        <p>本机发布 · 新闻正文</p>
+        <div class="crumb"><a href="index.html">首页</a><span> / </span><em>新闻详情</em></div>
+    </div>
+</div>
+
+<main class="inner-wrap">
+<section class="section">
+    <h2 class="section-title">新闻详情</h2>
+    <p class="section-sub">News Detail</p>
+    <div id="newsDetail" class="news-detail-wrap">
+        <p class="detail-empty" style="color:#8a7a55;">正在加载…</p>
+    </div>
+    <p class="detail-back" style="margin-top:20px;"><a href="news.html" style="color:#0e5c42; text-decoration:none; letter-spacing:1px;">← 返回新闻信息</a></p>
+</section>
+
+<style>
+.news-detail-wrap { max-width: 880px; }
+.detail-empty { font-size:14px; line-height:2; color:#8a7a55; }
+.user-news.detail { background:#faf4e4; border:1px solid #d8c8a0; border-radius:10px; padding:26px 28px; box-shadow:0 4px 14px rgba(110,80,30,.08); }
+.user-news.detail h3 { margin:0 0 10px; color:#0e5c42; font-size:22px; letter-spacing:1px; line-height:1.5; }
+.user-news .un-meta { margin:0 0 16px; font-size:12px; color:#8a7a55; letter-spacing:1px; padding-bottom:12px; border-bottom:1px dashed #e6d9b8; }
+.user-news .un-body { font-size:15px; line-height:2.05; color:#5c4d31; }
+.user-news .un-imgs { display:flex; flex-wrap:wrap; gap:12px; margin-top:16px; }
+.user-news .un-imgs img { width:320px; max-width:100%; border-radius:8px; border:1px solid #e6d9b8; }
+.user-news .un-video { margin-top:16px; }
+.user-news .un-video video { width:100%; max-width:720px; border-radius:8px; background:#efe3c4; display:block; }
+@media (max-width:860px){ .user-news.detail h3{font-size:18px;} }
+</style>
+<script src="news_user.js"></script>
+
+</main>
+
+<footer class="site-footer">
+    <div class="footer-grid">
+        <div>
+            <h4>鹤壁华康肾病专科医院</h4>
+            <p>专注肾康 · 专研肾病<br>二级中医肾病专科医院 · 医保定点医院<br>全国医保异地结算定点单位</p>
+        </div>
+        <div>
+            <h4>联系方式</h4>
+            <p>地址：河南省鹤壁市淇县工业路87号</p>
+            <p>24H热线：0392-7135999</p>
+            <p>官网：www.hksbyy.com</p>
+        </div>
+        <div>
+            <h4>快速导航</h4>
+            <p><a href="appointment.html">预约挂号</a>　<a href="schedule.html">出诊信息</a></p>
+            <p><a href="emergency-guide.html">门急诊指南</a>　<a href="volunteer.html">志愿服务</a></p>
+        </div>
+        <div>
+            <h4>官方平台</h4>
+            <p><a href="official-platform.html">官方微信</a>　<a href="official-platform.html">官方微博</a></p>
+            <p><a href="info-disclosure.html">信息公开</a>　<a href="search.html">站内搜索</a></p>
+        </div>
+    </div>
+    <div class="footer-bottom">© 2026 鹤壁华康肾病专科医院　版权所有 | 备案号：豫ICP备XXXXXXXX号（示例）<br>本站内容根据医院公开信息整理，正式上线前请与医院核对</div>
+</footer>
+
+<script src="stats.js"></script>
+</body>
+</html>

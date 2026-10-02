@@ -1,0 +1,1269 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>鹤壁华康肾病专科医院官网</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ccircle cx='32' cy='32' r='30' fill='%230e5c42' stroke='%23b88646' stroke-width='3'/%3E%3Ctext x='32' y='44' font-size='32' text-anchor='middle' fill='%23f8f3e6' font-family='serif'%3E华%3C/text%3E%3C/svg%3E" />
+<link rel="preconnect" href="https://miaoda.feishu.cn">
+<link href="https://miaoda.feishu.cn/fonts/css2?family=Noto+Serif+SC:wght@400;500;600;700;900&family=Ma+Shan+Zheng&display=swap" rel="stylesheet">
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background-color: #f6efdd;
+    font-family: "Noto Serif SC", "Source Han Serif SC", "Songti SC", "STSong", "SimSun", "Microsoft YaHei", serif;
+    font-weight: 400;
+    color: #3a2f1f;
+}
+
+/* 顶部墨绿栏 */
+.top-dark-bar {
+    background: linear-gradient(135deg, #0b4530 0%, #14664c 100%);
+    height: 44px;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    padding: 0 40px;
+    gap: 28px;
+    border-bottom: 1px solid rgba(184, 134, 70, 0.45);
+}
+
+.top-dark-bar a {
+    color: #f0e6c8;
+    text-decoration: none;
+    font-size: 14px;
+    letter-spacing: 2px;
+    transition: color 0.2s;
+}
+
+.top-dark-bar a:hover {
+    color: #ffd98a;
+}
+
+/* Logo 导航栏 */
+.nav-wrap {
+    background: linear-gradient(180deg, #faf4e4 0%, #f3e8cc 100%);
+    display: flex;
+    align-items: center;
+    padding: 14px 40px;
+    gap: 24px;
+    border-bottom: 1px solid #d8c8a0;
+    flex-wrap: wrap;
+    box-shadow: 0 2px 10px rgba(80, 50, 20, 0.06);
+}
+
+/* 玉印风格 Logo */
+.logo-circle {
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    background: radial-gradient(circle at 30% 28%, #1f8060 0%, #0e5c42 75%);
+    border: 2px solid #b88646;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #f8f3e6;
+    font-weight: bold;
+    font-size: 34px;
+    font-family: "Ma Shan Zheng", "KaiTi", "STKaiti", serif;
+    flex-shrink: 0;
+    box-shadow:
+        inset 0 0 0 2px rgba(248, 243, 230, 0.35),
+        0 3px 8px rgba(14, 92, 66, 0.35);
+}
+
+.main-nav ul {
+    display: flex;
+    list-style: none;
+    gap: 28px;
+    flex-wrap: wrap;
+}
+
+.main-nav a {
+    text-decoration: none;
+    color: #3a2f1f;
+    font-size: 16px;
+    font-weight: 500;
+    letter-spacing: 1.5px;
+    cursor: pointer;
+    position: relative;
+    padding: 4px 2px;
+    transition: color 0.25s;
+}
+
+/* 导航下划线动画 */
+.main-nav a::after {
+    content: '';
+    position: absolute;
+    left: 50%;
+    bottom: -2px;
+    width: 0;
+    height: 2px;
+    background: #9c2727;
+    transition: all 0.3s ease;
+    transform: translateX(-50%);
+}
+
+.main-nav a:hover {
+    color: #9c2727;
+}
+
+.main-nav a:hover::after {
+    width: 100%;
+}
+
+/* 卡片与悬浮按钮作为链接时去掉下划线 */
+a.card-green,
+a.card-beige,
+a.card-trans {
+    text-decoration: none;
+}
+
+a.float-btn {
+    text-decoration: none;
+}
+
+.search-icon {
+    margin-left: 12px;
+    font-size: 16px;
+}
+
+.search-icon svg {
+    width: 19px;
+    height: 19px;
+    stroke: currentColor;
+    fill: none;
+    stroke-width: 1.8;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    display: block;
+}
+
+/* Banner 大图区域 */
+.banner {
+    width: 100%;
+    min-height: 540px;
+    position: relative;
+    overflow: hidden;
+}
+
+/* 轮播背景图组 */
+.banner-slides {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+}
+
+.banner-slide {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+    background-position: center;
+    opacity: 0;
+    transition: opacity 1.2s ease;
+}
+
+.banner-slide.active {
+    opacity: 1;
+}
+
+.banner-slide.s0 { background-image: url('tcm-bg.jpg'); }
+.banner-slide.s1 { background-image: url('banner-1.jpg'); }
+.banner-slide.s2 { background-image: url('banner-2.jpg'); }
+.banner-slide.s3 { background-image: url('banner-3.jpg'); }
+
+/* 轮播指示点 */
+.banner-dots {
+    position: absolute;
+    bottom: 18px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 10px;
+    z-index: 4;
+}
+
+.banner-dots span {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: rgba(250, 244, 228, 0.65);
+    border: 1px solid rgba(184, 134, 70, 0.75);
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.banner-dots span.active {
+    background: #9c2727;
+    border-color: #9c2727;
+    transform: scale(1.3);
+}
+
+/* 柔光遮罩，提升文字可读性 */
+.banner-overlay {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(180deg,
+        rgba(255, 250, 235, 0.28) 0%,
+        rgba(255, 250, 235, 0.08) 45%,
+        rgba(246, 239, 221, 0.38) 100%);
+    z-index: 1;
+}
+
+/* 中间功能卡片组：靠左排列 */
+.card-group {
+    position: absolute;
+    top: 110px;
+    left: 80px;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+    z-index: 3;
+}
+
+.card-green,
+.card-beige,
+.card-trans {
+    width: 180px;
+    height: 200px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: 0.3s ease;
+    letter-spacing: 4px;
+    font-size: 17px;
+    font-weight: 600;
+    color: #fff8dc;
+    position: relative;
+    overflow: hidden;
+    background-size: cover;
+    background-position: center;
+    border: 1px solid rgba(184, 134, 70, 0.5);
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.25);
+}
+
+/* 卡片深色渐变遮罩 */
+.card-green::before,
+.card-beige::before,
+.card-trans::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg,
+        rgba(10, 40, 28, 0.3) 0%,
+        rgba(10, 40, 28, 0.65) 100%);
+    z-index: 0;
+}
+
+.card-green:hover,
+.card-beige:hover,
+.card-trans:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 26px rgba(0, 0, 0, 0.35);
+}
+
+/* 四个卡片分别配中药图 */
+.card-huanglian {
+    background-image: url('card-huanglian.jpg');
+}
+.card-renshen {
+    background-image: url('card-renshen.jpg');
+}
+.card-gouqi {
+    background-image: url('card-gouqi.jpg');
+}
+.card-dengcheng {
+    background-image: url('card-dengcheng.jpg');
+}
+
+/* 规范线描图标 */
+.card-icon {
+    width: 56px;
+    height: 56px;
+    margin-bottom: 14px;
+    position: relative;
+    z-index: 1;
+    color: #fff8dc;
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.45));
+}
+
+.card-icon svg {
+    width: 100%;
+    height: 100%;
+    stroke: currentColor;
+    fill: none;
+    stroke-width: 1.8;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+.card-label {
+    position: relative;
+    z-index: 1;
+    text-shadow: 0 2px 6px rgba(0, 0, 0, 0.55);
+}
+
+/* 右下角悬浮按钮组 */
+.float-right-box {
+    position: absolute;
+    bottom: 40px;
+    right: 40px;
+    display: flex;
+    gap: 8px;
+    background: rgba(250, 244, 228, 0.92);
+    padding: 10px;
+    border: 1px solid #b88646;
+    border-radius: 4px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+    z-index: 3;
+}
+
+.float-btn {
+    width: 60px;
+    height: 50px;
+    background: linear-gradient(145deg, #a83232 0%, #851f1f 100%);
+    color: #f8f3e6;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    letter-spacing: 1px;
+    text-align: center;
+    line-height: 1.4;
+    border-radius: 3px;
+    cursor: pointer;
+    transition: 0.25s;
+    font-family: "Noto Serif SC", "SimSun", serif;
+}
+
+.float-btn:hover {
+    background: linear-gradient(145deg, #c04040 0%, #9c2727 100%);
+    transform: translateY(-2px);
+}
+
+/* 下方内容区域 */
+.content-section {
+    padding: 60px 40px 70px;
+    background:
+        radial-gradient(circle at 20% 10%, rgba(184, 134, 70, 0.05) 0%, transparent 40%),
+        radial-gradient(circle at 80% 90%, rgba(14, 92, 66, 0.05) 0%, transparent 40%),
+        #f6efdd;
+    text-align: center;
+}
+
+.content-section h3 {
+    font-family: "Noto Serif SC", "SimSun", serif;
+    font-weight: 700;
+    font-size: 28px;
+    color: #0e5c42;
+    letter-spacing: 6px;
+    margin-bottom: 22px;
+    padding-bottom: 18px;
+    position: relative;
+    display: inline-block;
+}
+
+.content-section h3::after {
+    content: '';
+    position: absolute;
+    left: 50%;
+    bottom: 0;
+    transform: translateX(-50%);
+    width: 80px;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, #b88646, transparent);
+}
+
+.content-section p {
+    color: #5a4a30;
+    letter-spacing: 2px;
+    line-height: 2;
+    font-size: 16px;
+    max-width: 720px;
+    margin: 0 auto;
+}
+
+/* ===== 首页新增板块：数据 / 专家 / 特色 / 动态 ===== */
+.home-section {
+    padding: 56px 40px 60px;
+    text-align: center;
+    background: #f6efdd;
+}
+
+.home-section.alt {
+    background:
+        radial-gradient(circle at 85% 15%, rgba(184, 134, 70, 0.07) 0%, transparent 45%),
+        linear-gradient(180deg, #f8f2e0 0%, #f1e6ca 100%);
+}
+
+.home-section h3 {
+    font-family: "Noto Serif SC", "SimSun", serif;
+    font-weight: 700;
+    font-size: 26px;
+    color: #0e5c42;
+    letter-spacing: 6px;
+    margin-bottom: 14px;
+    padding-bottom: 16px;
+    position: relative;
+    display: inline-block;
+}
+
+.home-section h3::after {
+    content: '';
+    position: absolute;
+    left: 50%;
+    bottom: 0;
+    transform: translateX(-50%);
+    width: 70px;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, #b88646, transparent);
+}
+
+.home-section .sec-sub {
+    color: #7a6a4a;
+    letter-spacing: 2px;
+    font-size: 14px;
+    margin-bottom: 34px;
+}
+
+/* 医院一览数字 */
+.stat-bar {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 16px;
+    max-width: 1080px;
+    margin: 0 auto;
+}
+
+.stat-item {
+    background: linear-gradient(160deg, #0e5c42 0%, #0b4530 100%);
+    border: 1px solid rgba(184, 134, 70, 0.5);
+    border-radius: 4px;
+    padding: 26px 12px 22px;
+}
+
+.stat-item b {
+    display: block;
+    font-size: 30px;
+    font-weight: 700;
+    color: #ffd98a;
+    letter-spacing: 1px;
+    margin-bottom: 6px;
+}
+
+.stat-item span {
+    font-size: 14px;
+    letter-spacing: 2px;
+    color: #e9dcb8;
+}
+
+/* 专家卡片（轮播） */
+.expert-wrap {
+    position: relative;
+    max-width: 1080px;
+    margin: 0 auto;
+    padding: 0 6px;
+}
+
+.expert-carousel {
+    overflow: hidden;
+}
+
+.expert-track {
+    display: flex;
+    transition: transform 0.6s ease;
+}
+
+.expert-track .expert-card {
+    flex: 0 0 25%;
+    width: 25%;
+    box-sizing: border-box;
+    padding: 28px 14px 24px;
+}
+
+.car-arrow {
+    position: absolute;
+    top: 46%;
+    transform: translateY(-50%);
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: rgba(11, 69, 48, 0.78);
+    color: #ffd98a;
+    border: 1px solid #b88646;
+    cursor: pointer;
+    font-size: 22px;
+    line-height: 1;
+    font-family: "Noto Serif SC", serif;
+    z-index: 5;
+    transition: background 0.2s;
+}
+
+.car-arrow:hover {
+    background: #0b4530;
+}
+
+.car-arrow.prev {
+    left: -56px;
+}
+
+.car-arrow.next {
+    right: -56px;
+}
+
+.car-dots {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    margin-top: 18px;
+}
+
+.car-dots span {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: rgba(184, 134, 70, 0.4);
+    border: 1px solid #b88646;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.car-dots span.active {
+    background: #9c2727;
+    border-color: #9c2727;
+    transform: scale(1.25);
+}
+
+a.expert-card {
+    text-decoration: none;
+    display: block;
+}
+
+.expert-card {
+    background: #fdf8ea;
+    border: 1px solid #d8c8a0;
+    border-top: 3px solid #b88646;
+    border-radius: 4px;
+    padding: 28px 20px 24px;
+    text-align: center;
+    transition: 0.3s ease;
+}
+
+.expert-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 22px rgba(80, 50, 20, 0.14);
+}
+
+.expert-avatar {
+    width: 100px;
+    height: 100px;
+    margin: 0 auto 16px;
+    border-radius: 50%;
+    background: radial-gradient(circle at 30% 28%, #1f8060 0%, #0e5c42 75%);
+    border: 3px solid #b88646;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #f8f3e6;
+    font-size: 38px;
+    font-weight: 700;
+    font-family: "Ma Shan Zheng", "KaiTi", "STKaiti", serif;
+    box-shadow: inset 0 0 0 2px rgba(248, 243, 230, 0.3), 0 3px 8px rgba(14, 92, 66, 0.3);
+    overflow: hidden;
+}
+
+.expert-avatar img {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    object-fit: cover;
+    display: block;
+}
+
+.expert-card h4 {
+    font-size: 18px;
+    color: #3a2f1f;
+    letter-spacing: 2px;
+    margin-bottom: 4px;
+}
+
+.expert-card .et {
+    display: block;
+    font-size: 13px;
+    color: #9c2727;
+    letter-spacing: 1px;
+    margin-bottom: 10px;
+}
+
+.expert-card p {
+    font-size: 13px;
+    color: #6b5a3c;
+    line-height: 1.9;
+    letter-spacing: 1px;
+    text-align: left;
+}
+
+/* 特色医疗卡片 */
+.feature-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+    max-width: 1080px;
+    margin: 0 auto;
+}
+
+a.feature-card {
+    text-decoration: none;
+    display: block;
+}
+
+.feature-card {
+    background: #fffdf4;
+    border: 1px solid #ddd0ac;
+    border-radius: 4px;
+    padding: 26px 18px;
+    text-align: center;
+    transition: 0.3s ease;
+}
+
+.feature-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 22px rgba(80, 50, 20, 0.14);
+    border-color: #b88646;
+}
+
+.feature-card .f-icon {
+    width: 46px;
+    height: 46px;
+    margin: 0 auto 12px;
+    color: #0e5c42;
+}
+
+.feature-card .f-icon svg {
+    width: 100%;
+    height: 100%;
+    stroke: currentColor;
+    fill: none;
+    stroke-width: 1.8;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+.feature-card h4 {
+    font-size: 16px;
+    color: #3a2f1f;
+    letter-spacing: 2px;
+    margin-bottom: 8px;
+}
+
+.feature-card p {
+    font-size: 13px;
+    color: #6b5a3c;
+    line-height: 1.9;
+    letter-spacing: 1px;
+}
+
+/* 医院动态列表 */
+.news-mini {
+    max-width: 1080px;
+    margin: 0 auto;
+    background: #fdf8ea;
+    border: 1px solid #ddd0ac;
+    border-radius: 4px;
+    padding: 8px 28px;
+    text-align: left;
+}
+
+.news-mini li {
+    list-style: none;
+    display: flex;
+    align-items: baseline;
+    gap: 18px;
+    padding: 13px 0;
+    border-bottom: 1px dashed #d8c8a0;
+}
+
+.news-mini li:last-child {
+    border-bottom: none;
+}
+
+.news-mini .nd {
+    color: #9c2727;
+    font-size: 13px;
+    letter-spacing: 1px;
+    flex-shrink: 0;
+    min-width: 74px;
+}
+
+.news-mini a {
+    color: #3a2f1f;
+    text-decoration: none;
+    font-size: 15px;
+    letter-spacing: 1px;
+}
+
+.news-mini a:hover {
+    color: #9c2727;
+}
+
+.more-link {
+    display: inline-block;
+    margin-top: 24px;
+    color: #9c2727;
+    font-size: 15px;
+    letter-spacing: 2px;
+    text-decoration: none;
+    border-bottom: 1px solid rgba(156, 39, 39, 0.4);
+    padding-bottom: 2px;
+}
+
+.more-link:hover {
+    color: #7d1f1f;
+    border-color: #7d1f1f;
+}
+
+/* 首页页脚 */
+.home-footer {
+    background: linear-gradient(135deg, #0b4530 0%, #14664c 100%);
+    color: #e9dcb8;
+    padding: 44px 40px 30px;
+    font-size: 14px;
+    letter-spacing: 1px;
+}
+
+.home-footer .f-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr;
+    gap: 30px;
+    max-width: 1080px;
+    margin: 0 auto;
+    text-align: left;
+}
+
+.home-footer h5 {
+    color: #ffd98a;
+    font-size: 16px;
+    letter-spacing: 2px;
+    margin-bottom: 14px;
+    font-weight: 600;
+}
+
+.home-footer p,
+.home-footer a {
+    color: #e9dcb8;
+    line-height: 2;
+    text-decoration: none;
+    font-size: 14px;
+}
+
+.home-footer a:hover {
+    color: #ffd98a;
+}
+
+.f-brand b {
+    font-size: 18px;
+    color: #fff8dc;
+    letter-spacing: 2px;
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 700;
+}
+
+.f-copy {
+    border-top: 1px solid rgba(184, 134, 70, 0.35);
+    margin-top: 30px;
+    padding-top: 18px;
+    text-align: center;
+    font-size: 13px;
+    color: #c9b98f;
+    letter-spacing: 1px;
+}
+
+@media (max-width: 768px) {
+    .stat-bar {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .expert-track .expert-card {
+        flex: 0 0 50%;
+        width: 50%;
+    }
+
+    .car-arrow {
+        display: none;
+    }
+
+    .feature-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .home-footer .f-grid {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+@media (max-width: 480px) {
+    .feature-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* 移动端适配 */
+@media (max-width: 768px) {
+    .top-dark-bar,
+    .nav-wrap {
+        padding: 0 20px;
+    }
+
+    .top-dark-bar {
+        gap: 18px;
+    }
+
+    .nav-wrap {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .main-nav ul {
+        gap: 16px;
+        margin-top: 10px;
+    }
+
+    .banner {
+        min-height: auto;
+        height: auto;
+        padding: 60px 20px 80px;
+    }
+
+    .card-group {
+        position: static;
+        transform: none;
+        top: auto;
+        left: auto;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 16px;
+        margin: 0 auto;
+        max-width: 400px;
+    }
+
+    .card-green,
+    .card-beige,
+    .card-trans {
+        width: 100%;
+        height: 160px;
+        letter-spacing: 2px;
+        font-size: 15px;
+    }
+
+    .card-icon {
+        width: 44px;
+        height: 44px;
+        margin-bottom: 10px;
+    }
+
+    .float-right-box {
+        right: 20px;
+        bottom: 20px;
+    }
+
+    .float-btn {
+        width: 50px;
+        height: 45px;
+        font-size: 12px;
+    }
+
+    .content-section {
+        padding: 40px 20px;
+    }
+
+    .content-section h3 {
+        font-size: 22px;
+        letter-spacing: 4px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<!-- 顶部绿色栏 -->
+<div class="top-dark-bar">
+    <a href="index.html">公众版</a>
+    <a href="professional.html">专业版</a>
+    <a href="english.html">English</a>
+</div>
+
+<!-- Logo + 主导航 -->
+<div class="nav-wrap">
+    <div class="logo-circle">华</div>
+    <div class="main-nav">
+        <ul>
+            <li><a href="index.html">首页</a></li>
+            <li><a href="hospital-overview.html">医院概况</a></li>
+            <li><a href="medical-guide.html">就医指南</a></li>
+            <li><a href="internet-clinic.html">互联网诊疗</a></li>
+            <li><a href="specialty-care.html">特色医疗</a></li>
+            <li><a href="departments.html">科室导览</a></li>
+            <li><a href="doctors.html">医生介绍</a></li>
+            <li><a href="health-education.html">健康科普</a></li>
+            <li><a href="news.html">新闻信息</a></li>
+            <li><a href="culture.html">文化传承</a></li>
+            <li><a href="cooperation.html">国内外合作</a>
+                <a href="admin.html">管理后台</a></li>
+            <li class="search-icon"><a href="search.html" aria-label="站内搜索"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></a></li>
+        </ul>
+    </div>
+</div>
+
+<!-- Banner 大图区（轮播） -->
+<div class="banner">
+    <!-- 轮播背景图组 -->
+    <div class="banner-slides">
+        <div class="banner-slide s0 active"></div>
+        <div class="banner-slide s1"></div>
+        <div class="banner-slide s2"></div>
+        <div class="banner-slide s3"></div>
+    </div>
+    <div class="banner-overlay"></div>
+
+    <!-- 中间功能卡片：左侧排列 -->
+    <div class="card-group">
+        <a class="card-green card-huanglian" href="specialty-care.html">
+            <div class="card-icon">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z"/>
+                    <path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12"/>
+                </svg>
+            </div>
+            <div class="card-label">特色医疗</div>
+        </a>
+        <a class="card-green card-renshen" href="schedule.html">
+            <div class="card-icon">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                    <rect width="18" height="18" x="3" y="4" rx="2" ry="2"/>
+                    <line x1="16" x2="16" y1="2" y2="6"/>
+                    <line x1="8" x2="8" y1="2" y2="6"/>
+                    <line x1="3" x2="21" y1="10" y2="10"/>
+                </svg>
+            </div>
+            <div class="card-label">出诊信息</div>
+        </a>
+        <a class="card-trans card-gouqi" href="emergency-guide.html">
+            <div class="card-icon">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/>
+                    <circle cx="12" cy="10" r="3"/>
+                </svg>
+            </div>
+            <div class="card-label">门急诊指南</div>
+        </a>
+        <a class="card-beige card-dengcheng" href="appointment.html">
+            <div class="card-icon">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                    <rect width="8" height="4" x="8" y="2" rx="1" ry="1"/>
+                    <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/>
+                    <path d="m9 14 2 2 4-4"/>
+                </svg>
+            </div>
+            <div class="card-label">预约挂号</div>
+        </a>
+    </div>
+
+    <!-- 右下角悬浮按钮 -->
+    <div class="float-right-box">
+        <a class="float-btn" href="info-disclosure.html">信息<br>公开</a>
+        <a class="float-btn" href="official-platform.html">官方<br>微信</a>
+        <a class="float-btn" href="official-platform.html">官方<br>微博</a>
+        <a class="float-btn" href="volunteer.html">志愿<br>服务</a>
+    </div>
+
+    <!-- 轮播指示点 -->
+    <div class="banner-dots">
+        <span class="active"></span><span></span><span></span><span></span>
+    </div>
+</div>
+
+<!-- 下方内容区域 -->
+<div class="content-section">
+    <h3>欢迎访问鹤壁华康肾病专科医院</h3>
+    <p>医院专注肾康、专研肾病，是二级中医肾病专科医院、医保定点及全国医保异地结算定点单位，也是鹤壁市中医临床重点建设专科、北京301医院与北京协和医院远程会诊定点医院。上方导航可进入医院概况、特色医疗、科室导览、医生介绍、健康科普等栏目，首页卡片支持快捷预约挂号与出诊查询。</p>
+</div>
+
+<!-- 医院一览 -->
+<div class="home-section">
+    <h3>医院一览</h3>
+    <p class="sec-sub">A Glimpse of Our Hospital</p>
+    <div class="stat-bar">
+        <div class="stat-item"><b>2010</b><span>始创年份</span></div>
+        <div class="stat-item"><b>80</b><span>标准床位</span></div>
+        <div class="stat-item"><b>13168㎡</b><span>建筑面积</span></div>
+        <div class="stat-item"><b>40+</b><span>医疗设备</span></div>
+        <div class="stat-item"><b>30年</b><span>专注肾病</span></div>
+    </div>
+</div>
+
+<!-- 专家团队 -->
+<div class="home-section alt">
+    <h3>专家团队</h3>
+    <p class="sec-sub">Expert Team</p>
+        <div class="expert-wrap">
+        <button class="car-arrow prev" id="expertPrev" aria-label="上一组专家">&#8249;</button>
+        <div class="expert-carousel">
+        <div class="expert-track" id="expertTrack">
+        <a class="expert-card" href="doctors.html">
+            <div class="expert-avatar"><img src="experts/wangjinfeng.jpg" alt="王金峰"></div>
+            <h4>王金峰</h4>
+            <span class="et">副主任医师 · 院长</span>
+            <p>学科带头人，“阴阳平衡和免疫修复双重疗法”创始人之一，深耕肾病诊疗三十余年。</p>
+        </a>
+        <a class="expert-card" href="doctors.html">
+            <div class="expert-avatar"><img src="experts/wulijun.jpg" alt="吴利军"></div>
+            <h4>吴利军</h4>
+            <span class="et">主任医师 · 常务副院长</span>
+            <p>1983年毕业于河南医学院，内科主任医师，肾病相关内科疾病诊治经验丰富。</p>
+        </a>
+        <a class="expert-card" href="doctors.html">
+            <div class="expert-avatar"><img src="experts/yangxiaohai.jpg" alt="杨小海"></div>
+            <h4>杨小海</h4>
+            <span class="et">主治医师</span>
+            <p>肾脏病临床25余年，301/南京军区总医院进修，参与双重疗法研发，发表论文3篇。</p>
+        </a>
+        <a class="expert-card" href="doctors.html">
+            <div class="expert-avatar"><img src="experts/husuwei.jpg" alt="胡素巍"></div>
+            <h4>胡素巍</h4>
+            <span class="et">主治医师</span>
+            <p>301/协和/郑大一附院进修，擅长IgA肾病、膜性肾病、糖尿病肾病等中西医结合治疗。</p>
+        </a>
+        <a class="expert-card" href="doctors.html">
+            <div class="expert-avatar"><img src="experts/wangyuanjun.jpg" alt="王院军"></div>
+            <h4>王院军</h4>
+            <span class="et">主治医师</span>
+            <p>毕业于河南中医药大学，擅长各类肾脏疾病、心脑血管及内科疑难杂症，专注早中期肾功能不全保守治疗。</p>
+        </a>
+        <a class="expert-card" href="doctors.html">
+            <div class="expert-avatar"><img src="experts/liuqingyun.jpg" alt="刘青云"></div>
+            <h4>刘青云</h4>
+            <span class="et">主治医师</span>
+            <p>肾内科临床十余年，擅长IgA肾病、膜性肾病、狼疮性肾炎、高血压肾病个体化诊疗。</p>
+        </a>
+        <a class="expert-card" href="doctors.html">
+            <div class="expert-avatar"><img src="experts/dugang.jpg" alt="杜刚"></div>
+            <h4>杜刚</h4>
+            <span class="et">主治医师</span>
+            <p>深耕肾内科十余年，两次荣获“鹤壁市优秀医师”，擅长肾病综合征、慢性肾衰竭综合救治。</p>
+        </a>
+        <a class="expert-card" href="doctors.html">
+            <div class="expert-avatar"><img src="experts/zhaoyulong.jpg" alt="赵玉龙"></div>
+            <h4>赵玉龙</h4>
+            <span class="et">主治医师</span>
+            <p>主攻血液透析治疗，熟练处理各类透析并发症，多次获评“优秀医师”。</p>
+        </a></div>
+        </div>
+        <button class="car-arrow next" id="expertNext" aria-label="下一组专家">&#8250;</button>
+        <div class="car-dots" id="expertDots"></div>
+    </div>
+    <a class="more-link" href="doctors.html">查看全部专家</a>
+</div>
+
+<!-- 特色医疗 -->
+<div class="home-section">
+    <h3>特色医疗</h3>
+    <p class="sec-sub">Featured Services</p>
+    <div class="feature-grid">
+        <a class="feature-card" href="specialty-care.html">
+            <div class="f-icon">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21s-7-4.6-9.5-9A5.5 5.5 0 0 1 12 6.6 5.5 5.5 0 0 1 21.5 12C19 16.4 12 21 12 21Z"/><path d="M12 9v4"/><path d="M12 16.5v.5"/></svg>
+            </div>
+            <h4>阴阳平衡和免疫修复双重疗法</h4>
+            <p>2005年获河南省科学技术进步奖，国家"十一五"中西医结合肾病重点推广项目。</p>
+        </a>
+        <a class="feature-card" href="specialty-care.html">
+            <div class="f-icon">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10 2v7.5L4.5 20a2 2 0 0 0 1.8 3h11.4a2 2 0 0 0 1.8-3L14 9.5V2"/><path d="M8 2h8"/></svg>
+            </div>
+            <h4>自研中药制剂</h4>
+            <p>五种制剂获批"豫药制备字"批号，七味参地、九味黄芪胶囊已纳入医保。</p>
+        </a>
+        <a class="feature-card" href="specialty-care.html">
+            <div class="f-icon">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.7S5.8 9.4 5.8 13.5a6.2 6.2 0 0 0 12.4 0C18.2 9.4 12 2.7 12 2.7Z"/><path d="M12 8v5"/><path d="M9 11h6"/></svg>
+            </div>
+            <h4>血液透析中心</h4>
+            <p>尼普洛高通量透析机，分区管理，接受市级透析质控督导，节假日不停诊。</p>
+        </a>
+        <a class="feature-card" href="specialty-care.html">
+            <div class="f-icon">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2Z"/></svg>
+            </div>
+            <h4>中医特色疗法</h4>
+            <p>黄龙督脉灸、中药熏洗、结肠水疗、中药塌渍等特色外治疗法，一人一方辨证施治。</p>
+        </a>
+    </div>
+    <a class="more-link" href="specialty-care.html">了解更多特色医疗</a>
+</div>
+
+<!-- 医院动态 -->
+<div class="home-section alt">
+    <h3>医院动态</h3>
+    <p class="sec-sub">Hospital News</p>
+    <ul class="news-mini">
+        <li><span class="nd">2026-09</span><a href="news.html">鹤壁市血液透析质控组莅临我院检查指导血液透析工作</a></li>
+        <li><span class="nd">2026</span><a href="news.html">王金峰院长获"淇·先锋 党员先锋标兵"称号</a></li>
+        <li><span class="nd">2024-12</span><a href="news.html">我院当选鹤壁市中西医结合慢性肾脏病专委会主任委员单位</a></li>
+        <li><span class="nd">2024-07</span><a href="news.html">我院获评鹤壁市中医临床重点建设专科</a></li>
+        <li><span class="nd">2005</span><a href="news.html">双重疗法获河南省科学技术进步奖，入选国家"十一五"重点推广项目</a></li>
+    </ul>
+    <a class="more-link" href="news.html">查看全部新闻</a>
+</div>
+
+<!-- 首页页脚 -->
+<footer class="home-footer">
+    <div class="f-grid">
+        <div class="f-brand">
+            <b>鹤壁华康肾病专科医院</b>
+            <p>专注肾康 · 专研肾病</p>
+            <p>二级中医肾病专科医院 · 医保定点医院</p>
+            <p>全国医保异地结算定点单位</p>
+        </div>
+        <div>
+            <h5>联系方式</h5>
+            <p>地址：河南省鹤壁市淇县工业路87号</p>
+            <p>24H热线：0392-7135999</p>
+            <p>官网：www.hksbyy.com</p>
+        </div>
+        <div>
+            <h5>快速导航</h5>
+            <p><a href="appointment.html">预约挂号</a>　<a href="schedule.html">出诊信息</a></p>
+            <p><a href="emergency-guide.html">门急诊指南</a>　<a href="volunteer.html">志愿服务</a></p>
+        </div>
+        <div>
+            <h5>官方平台</h5>
+            <p><a href="official-platform.html">官方微信</a>　<a href="official-platform.html">官方微博</a></p>
+            <p><a href="info-disclosure.html">信息公开</a>　<a href="search.html">站内搜索</a></p>
+        </div>
+    </div>
+    <div class="f-copy">
+        ©2026 鹤壁华康肾病专科医院 版权所有 | 备案号：豫ICP备XXXXXXXX号（示例）<br>
+        本站内容根据医院公开信息整理，正式上线前请与医院核对
+    </div>
+</footer>
+
+<!-- 首页轮播控制 -->
+<script>
+(function () {
+    var slides = document.querySelectorAll('.banner-slide');
+    var dots = document.querySelectorAll('.banner-dots span');
+    var idx = 0, N = slides.length;
+
+    function go(i) {
+        // 取模循环：到最后一张后自动回到第一张，永不停止
+        idx = (i + N) % N;
+        for (var k = 0; k < N; k++) {
+            slides[k].classList.toggle('active', k === idx);
+            dots[k].classList.toggle('active', k === idx);
+        }
+    }
+
+    // 每 7 秒自动切换，全程不停
+    var timer = setInterval(function () { go(idx + 1); }, 7000);
+
+    // 点击指示点可跳转到对应图片，跳转后继续自动轮播
+    for (var k = 0; k < N; k++) {
+        (function (k) {
+            dots[k].addEventListener('click', function () { go(k); });
+        })(k);
+    }
+})();
+</script>
+
+
+<!-- 专家团队轮播控制 -->
+<script>
+(function () {
+    var track = document.querySelector('#expertTrack');
+    if (!track) return;
+    var cards = track.querySelectorAll('.expert-card');
+    var dotsBox = document.querySelector('#expertDots');
+    var prevBtn = document.querySelector('#expertPrev');
+    var nextBtn = document.querySelector('#expertNext');
+    var N = cards.length;
+    var per = 4;
+    var page = 0, pages = 1, timer = null;
+
+    function calc() {
+        per = window.innerWidth <= 768 ? 2 : 4;
+        pages = Math.max(1, Math.ceil(N / per));
+        if (page >= pages) page = 0;
+        renderDots();
+        apply();
+    }
+
+    function apply() {
+        track.style.transform = 'translateX(' + (-page * track.scrollWidth / pages) + 'px)';
+        var ds = dotsBox.querySelectorAll('span');
+        for (var i = 0; i < ds.length; i++) {
+            ds[i].classList.toggle('active', i === page);
+        }
+    }
+
+    function renderDots() {
+        dotsBox.innerHTML = '';
+        for (var i = 0; i < pages; i++) {
+            (function (i) {
+                var span = document.createElement('span');
+                span.addEventListener('click', function () {
+                    page = i;
+                    apply();
+                    restart();
+                });
+                dotsBox.appendChild(span);
+            })(i);
+        }
+    }
+
+    function next() {
+        page = (page + 1) % pages;
+        apply();
+    }
+
+    function restart() {
+        if (timer) clearInterval(timer);
+        timer = setInterval(next, 5000);
+    }
+
+    prevBtn.addEventListener('click', function () {
+        page = (page - 1 + pages) % pages;
+        apply();
+        restart();
+    });
+    nextBtn.addEventListener('click', function () {
+        page = (page + 1) % pages;
+        apply();
+        restart();
+    });
+
+    window.addEventListener('resize', calc);
+    calc();
+    restart();
+})();
+</script>
+<script src="stats.js"></script>
+</body>
+</html>
