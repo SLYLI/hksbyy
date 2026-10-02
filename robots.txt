@@ -6,4 +6,4 @@ Disallow: /stats.html
 Disallow: /news-detail.html
 
 # 部署后请把下面一行域名替换为你的实际网址，并删除前面的 # 号：
-# Sitemap: https://YOUR-SITE.pages.dev/sitemap.xml
+Sitemap: https://slyli.github.io/hksbyy/sitemap.xml
