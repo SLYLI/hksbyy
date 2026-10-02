@@ -320,42 +320,53 @@ a.float-btn {
     text-shadow: 0 2px 6px rgba(0, 0, 0, 0.55);
 }
 
-/* 右下角悬浮按钮组 */
+/* 右下角浮动条（固定悬浮） */
 .float-right-box {
-    position: absolute;
-    bottom: 40px;
-    right: 40px;
+    position: fixed;
+    right: 24px;
+    bottom: 120px;
     display: flex;
-    gap: 8px;
-    background: rgba(250, 244, 228, 0.92);
-    padding: 10px;
-    border: 1px solid #b88646;
-    border-radius: 4px;
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
-    z-index: 3;
+    flex-direction: column;
+    overflow: hidden;
+    background: linear-gradient(145deg, #a83232 0%, #851f1f 100%);
+    border: 1px solid rgba(184, 134, 70, 0.65);
+    border-radius: 10px;
+    box-shadow: 0 10px 28px rgba(0, 0, 0, 0.25);
+    z-index: 999;
 }
 
 .float-btn {
-    width: 60px;
-    height: 50px;
-    background: linear-gradient(145deg, #a83232 0%, #851f1f 100%);
+    width: 76px;
+    height: 60px;
     color: #f8f3e6;
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
-    font-size: 13px;
+    gap: 4px;
+    font-size: 12px;
     letter-spacing: 1px;
     text-align: center;
-    line-height: 1.4;
-    border-radius: 3px;
+    line-height: 1.2;
     cursor: pointer;
-    transition: 0.25s;
+    transition: background 0.22s;
     font-family: "Noto Serif SC", "SimSun", serif;
+    text-decoration: none;
+    border-bottom: 1px solid rgba(248, 243, 230, 0.22);
+}
+
+.float-btn:last-child {
+    border-bottom: none;
+}
+
+.float-btn svg {
+    width: 22px;
+    height: 22px;
+    display: block;
 }
 
 .float-btn:hover {
     background: linear-gradient(145deg, #c04040 0%, #9c2727 100%);
-    transform: translateY(-2px);
 }
 
 /* 下方内容区域 */
@@ -879,14 +890,21 @@ a.feature-card {
     }
 
     .float-right-box {
-        right: 20px;
-        bottom: 20px;
+        right: 10px;
+        bottom: 80px;
+        border-radius: 8px;
     }
 
     .float-btn {
-        width: 50px;
-        height: 45px;
-        font-size: 12px;
+        width: 58px;
+        height: 48px;
+        font-size: 11px;
+        gap: 2px;
+    }
+
+    .float-btn svg {
+        width: 17px;
+        height: 17px;
     }
 
     .content-section {
@@ -986,12 +1004,12 @@ a.feature-card {
         </a>
     </div>
 
-    <!-- 右下角悬浮按钮 -->
+    <!-- 右下角浮动条 -->
     <div class="float-right-box">
-        <a class="float-btn" href="info-disclosure.html">信息<br>公开</a>
-        <a class="float-btn" href="official-platform.html">官方<br>微信</a>
-        <a class="float-btn" href="official-platform.html">官方<br>微博</a>
-        <a class="float-btn" href="volunteer.html">志愿<br>服务</a>
+        <a class="float-btn" href="info-disclosure.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 8h.01"/><path d="M11 12h1v4h1"/></svg><span>信息公开</span></a>
+        <a class="float-btn" href="official-platform.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg><span>官方微信</span></a>
+        <a class="float-btn" href="official-platform.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M22 4.01c-1 .49-1.98.69-3 .99-1.21-1.35-3-1.5-4.5-.5-1.5 1-2.1 2.9-1.3 4.5-3.9-.2-6.7-2.1-8.5-5-.5 1.3-.1 2.7 1 3.5-.5 0-1-.2-1.5-.5 0 1.5 1.1 2.8 2.5 3-.8.4-1.6.5-2.5.4 1 1.5 2.5 2.2 4.2 2.2C8 15.6 5.5 15 4 13c1.5 3 4.5 4.5 8 4.5 3.5 0 6.7-1.8 8.2-4.8.9-1.8 1.3-3.8 1.2-5.8 0-.2.2-.4.6-.9z"/></svg><span>官方微博</span></a>
+        <a class="float-btn" href="volunteer.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-4.6-9.5-9A5.5 5.5 0 0 1 12 6.6 5.5 5.5 0 0 1 21.5 12C19 16.4 12 21 12 21Z"/><path d="M9.5 11.5 11 13l3.5-3.5"/></svg><span>志愿服务</span></a>
     </div>
 
     <!-- 轮播指示点 -->
