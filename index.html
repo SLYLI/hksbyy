@@ -1253,15 +1253,22 @@ a.feature-card {
         } else {
             fallback();
         }
-        /* 2) 云端数据到达后无缝替换（失败则保持当前显示，不影响首屏） */
+        /* 2) 云端数据到达后无缝替换；首屏连接不稳时 3s/6s 自动重试，最多 3 次 */
         if (window.HKDB && HKDB.listBanners) {
-            HKDB.listBanners().then(function (list) {
-                var items = normalize(list);
-                if (items.length) {
-                    try { localStorage.setItem(BNR_CACHE_KEY, JSON.stringify(items)); } catch (e) {}
-                    build(items.map(function (b) { return { img: b.img, link: b.link || '' }; }));
-                }
-            }).catch(function () { /* 云端暂不可用：保持当前显示 */ });
+            var tries = 0;
+            var fetchCloud = function () {
+                HKDB.listBanners().then(function (list) {
+                    var items = normalize(list);
+                    if (items.length) {
+                        try { localStorage.setItem(BNR_CACHE_KEY, JSON.stringify(items)); } catch (e) {}
+                        build(items.map(function (b) { return { img: b.img, link: b.link || '' }; }));
+                    }
+                }).catch(function () {
+                    if (tries < 2) { tries++; setTimeout(fetchCloud, 3000); }
+                    /* 3 次仍失败则保持当前显示（缓存或内置），不影响浏览 */
+                });
+            };
+            fetchCloud();
         }
     }
     load();
