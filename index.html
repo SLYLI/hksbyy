@@ -956,13 +956,8 @@ a.feature-card {
 
 <!-- Banner 大图区（轮播） -->
 <div class="banner">
-    <!-- 轮播背景图组 -->
-    <div class="banner-slides">
-        <div class="banner-slide s0 active"></div>
-        <div class="banner-slide s1"></div>
-        <div class="banner-slide s2"></div>
-        <div class="banner-slide s3"></div>
-    </div>
+    <!-- 轮播背景图组（由云端轮播配置驱动，后台可管理） -->
+    <div class="banner-slides" id="bannerSlides"></div>
     <div class="banner-overlay"></div>
 
     <!-- 中间功能卡片：左侧排列 -->
@@ -1017,9 +1012,7 @@ a.feature-card {
     </div>
 
     <!-- 轮播指示点 -->
-    <div class="banner-dots">
-        <span class="active"></span><span></span><span></span><span></span>
-    </div>
+    <div class="banner-dots" id="bannerDots"></div>
 </div>
 
 <!-- 下方内容区域 -->
@@ -1187,14 +1180,20 @@ a.feature-card {
     </div>
 </footer>
 
-<!-- 首页轮播控制 -->
+<script src="db.js"></script>
+
+<!-- 首页轮播控制（云端轮播配置驱动；后台「轮播图管理」可自行增删排序） -->
 <script>
 (function () {
-    var slides = document.querySelectorAll('.banner-slide');
-    var dots = document.querySelectorAll('.banner-dots span');
-    var idx = 0, N = slides.length;
+    var slidesBox = document.getElementById('bannerSlides');
+    var dotsBox = document.getElementById('bannerDots');
+    if (!slidesBox || !dotsBox) return;
+    var fallbackBgs = ['banner-1.jpg', 'banner-2.jpg', 'banner-3.jpg', 'tcm-bg.jpg'];
+    var slides = [], dots = [], idx = 0, timer = null;
 
     function go(i) {
+        var N = slides.length;
+        if (!N) return;
         // 取模循环：到最后一张后自动回到第一张，永不停止
         idx = (i + N) % N;
         for (var k = 0; k < N; k++) {
@@ -1203,15 +1202,56 @@ a.feature-card {
         }
     }
 
-    // 每 7 秒自动切换，全程不停
-    var timer = setInterval(function () { go(idx + 1); }, 7000);
-
-    // 点击指示点可跳转到对应图片，跳转后继续自动轮播
-    for (var k = 0; k < N; k++) {
-        (function (k) {
-            dots[k].addEventListener('click', function () { go(k); });
-        })(k);
+    function build(items) {
+        slidesBox.innerHTML = '';
+        dotsBox.innerHTML = '';
+        slides = []; dots = [];
+        for (var i = 0; i < items.length; i++) {
+            var it = items[i];
+            var s = document.createElement('div');
+            s.className = 'banner-slide' + (i === 0 ? ' active' : '');
+            s.style.backgroundImage = "url('" + it.img + "')";
+            if (it.link) {
+                s.style.cursor = 'pointer';
+                (function (ss, lk) {
+                    ss.addEventListener('click', function () { location.href = lk; });
+                })(s, it.link);
+            }
+            slidesBox.appendChild(s);
+            slides.push(s);
+            var d = document.createElement('span');
+            if (i === 0) d.className = 'active';
+            dotsBox.appendChild(d);
+            dots.push(d);
+        }
+        for (var k = 0; k < dots.length; k++) {
+            (function (k) { dots[k].addEventListener('click', function () { go(k); }); })(k);
+        }
+        if (timer) clearInterval(timer);
+        if (slides.length > 1) timer = setInterval(function () { go(idx + 1); }, 7000);
     }
+
+    function fallback() {
+        build(fallbackBgs.map(function (p) { return { img: p }; }));
+    }
+
+    function load() {
+        if (window.HKDB && HKDB.listBanners) {
+            HKDB.listBanners().then(function (list) {
+                var items = (list || []).filter(function (b) {
+                    return b.img && b.enabled !== false;
+                }).sort(function (a, b) { return (a.sort || 0) - (b.sort || 0); });
+                if (items.length) {
+                    build(items.map(function (b) { return { img: b.img, link: b.link || '' }; }));
+                } else {
+                    fallback();
+                }
+            }).catch(function () { fallback(); });
+        } else {
+            fallback();
+        }
+    }
+    load();
 })();
 </script>
 
@@ -1286,7 +1326,6 @@ a.feature-card {
     restart();
 })();
 </script>
-<script src="db.js"></script>
 <script src="stats.js"></script>
 </body>
 </html>

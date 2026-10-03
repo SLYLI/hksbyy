@@ -80,6 +80,25 @@
     },
     clearStats: function () {
       return req('DELETE', '/stats?day=gte.2020-01-01', null, 10000).catch(function () { return null; });
+    },
+
+    /* ================= 首页轮播图 =================
+     * 结构：一行 = (id, title, img, link, sort, enabled)
+     * img 存 base64 或相对/绝对图片地址；sort 越小越靠前；enabled=false 不展示 */
+    listBanners: function () {
+      return req('GET', '/banners?select=*&order=sort.asc').catch(function () { return null; });
+    },
+    insertBanner: function (item) {
+      return req('POST', '/banners', item, 12000);
+    },
+    updateBanner: function (id, item) {
+      return req('PATCH', '/banners?id=eq.' + enc(id), item, 10000);
+    },
+    deleteBanner: function (id) {
+      return req('DELETE', '/banners?id=eq.' + enc(id), null, 8000);
+    },
+    clearBannersAll: function () {
+      return req('DELETE', '/banners?id=neq.0', null, 10000).catch(function () { return null; });
     }
   };
 
