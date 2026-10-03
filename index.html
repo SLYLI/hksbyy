@@ -1235,28 +1235,34 @@ a.feature-card {
         build(fallbackBgs.map(function (p) { return { img: p }; }));
     }
 
+    var BNR_CACHE_KEY = 'hksb_banner_cache';
+
+    function normalize(list) {
+        return (list || []).filter(function (b) {
+            return b.img && b.enabled !== false;
+        }).sort(function (a, b) { return (a.sort || 0) - (b.sort || 0); });
+    }
+
     function load() {
-        var tries = 0;
-        var attempt = function () {
-            if (window.HKDB && HKDB.listBanners) {
-                HKDB.listBanners().then(function (list) {
-                    var items = (list || []).filter(function (b) {
-                        return b.img && b.enabled !== false;
-                    }).sort(function (a, b) { return (a.sort || 0) - (b.sort || 0); });
-                    if (items.length) {
-                        build(items.map(function (b) { return { img: b.img, link: b.link || '' }; }));
-                    } else {
-                        fallback();
-                    }
-                }).catch(function () {
-                    /* 首次连接可能较慢：2.5s 后若仍是内置图则重试一次，争取载入云端轮播 */
-                    if (tries < 1) { tries++; setTimeout(attempt, 2500); } else { fallback(); }
-                });
-            } else {
-                fallback();
-            }
-        };
-        attempt();
+        /* 1) 立即展示：优先上次云端缓存，无缓存则内置横幅 —— 首屏永不空白 */
+        var cached = null;
+        try { cached = JSON.parse(localStorage.getItem(BNR_CACHE_KEY) || 'null'); } catch (e) { cached = null; }
+        var cItems = normalize(cached);
+        if (cItems.length) {
+            build(cItems.map(function (b) { return { img: b.img, link: b.link || '' }; }));
+        } else {
+            fallback();
+        }
+        /* 2) 云端数据到达后无缝替换（失败则保持当前显示，不影响首屏） */
+        if (window.HKDB && HKDB.listBanners) {
+            HKDB.listBanners().then(function (list) {
+                var items = normalize(list);
+                if (items.length) {
+                    try { localStorage.setItem(BNR_CACHE_KEY, JSON.stringify(items)); } catch (e) {}
+                    build(items.map(function (b) { return { img: b.img, link: b.link || '' }; }));
+                }
+            }).catch(function () { /* 云端暂不可用：保持当前显示 */ });
+        }
     }
     load();
 })();
