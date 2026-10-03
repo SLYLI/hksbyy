@@ -1217,7 +1217,7 @@ a {
     margin-bottom: 28px;
     overflow-x: auto;
 }
-.route-map svg { display: block; margin: 0 auto; min-width: 660px; }
+.route-map svg { display: block; margin: 0 auto; min-width: 680px; }
 
 .route-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 18px; margin-bottom: 26px; }
 
@@ -1335,7 +1335,7 @@ a {
 
     <!-- 路线总览图 -->
     <div class="route-map">
-        <svg viewBox="0 0 780 372" width="780" height="372" xmlns="http://www.w3.org/2000/svg" font-family="Microsoft YaHei, sans-serif">
+        <svg viewBox="0 0 780 430" width="780" height="430" xmlns="http://www.w3.org/2000/svg" font-family="Microsoft YaHei, sans-serif">
             <defs>
                 <linearGradient id="gGreen" x1="0" y1="0" x2="0" y2="1">
                     <stop offset="0" stop-color="#17704f"/><stop offset="1" stop-color="#0a4230"/>
@@ -1354,88 +1354,67 @@ a {
                 </filter>
             </defs>
 
-            <!-- ===== 第一行：郑州东站（高铁）→ 鹤壁东站 → 医院 ===== -->
+            <!-- ===== 第一行：郑州东站（高铁）→ 鹤壁东站 ===== -->
             <g filter="url(#sh)">
-                <rect x="20" y="66" width="190" height="58" rx="12" fill="url(#gGreen)"/>
+                <rect x="20" y="58" width="190" height="58" rx="12" fill="url(#gGreen)"/>
             </g>
-            <text x="115" y="95" text-anchor="middle" fill="#fff8dc" font-size="16" font-weight="bold">郑州东站</text>
-            <text x="115" y="114" text-anchor="middle" fill="#cfe3d4" font-size="11">高铁发车 · 每天60多趟</text>
+            <text x="115" y="88" text-anchor="middle" fill="#fff8dc" font-size="16" font-weight="bold">郑州东站</text>
+            <text x="115" y="107" text-anchor="middle" fill="#cfe3d4" font-size="10.5">高铁 30-47分钟 · 47-68元</text>
 
-            <line x1="210" y1="95" x2="288" y2="95" stroke="#b88646" stroke-width="3" stroke-linecap="round"/>
-            <polygon points="300,95 288,89 288,101" fill="#b88646"/>
-            <g>
-                <rect x="188" y="108" width="136" height="24" rx="12" fill="#fffdf6" stroke="#c8b078" stroke-width="1"/>
-                <text x="256" y="124" text-anchor="middle" fill="#8a7448" font-size="12">高铁 30-47分钟 · 47-68元</text>
-            </g>
+            <line x1="210" y1="87" x2="288" y2="87" stroke="#b88646" stroke-width="3" stroke-linecap="round"/>
+            <polygon points="300,87 288,81 288,93" fill="#b88646"/>
 
             <g filter="url(#sh)">
-                <rect x="300" y="66" width="190" height="58" rx="12" fill="url(#gGreen)"/>
+                <rect x="300" y="58" width="190" height="58" rx="12" fill="url(#gGreen)"/>
             </g>
-            <text x="395" y="95" text-anchor="middle" fill="#fff8dc" font-size="16" font-weight="bold">鹤壁东站</text>
-            <text x="395" y="114" text-anchor="middle" fill="#cfe3d4" font-size="11">距医院约15公里 · 最近高铁站</text>
+            <text x="395" y="88" text-anchor="middle" fill="#fff8dc" font-size="16" font-weight="bold">鹤壁东站</text>
+            <text x="395" y="107" text-anchor="middle" fill="#cfe3d4" font-size="10.5">距医院15公里 · 打车约25分钟</text>
 
-            <line x1="490" y1="95" x2="628" y2="95" stroke="#b88646" stroke-width="3" stroke-linecap="round"/>
-            <line x1="640" y1="95" x2="640" y2="120" stroke="#b88646" stroke-width="3" stroke-linecap="round"/>
-            <polygon points="640,132 635,119 645,119" fill="#b88646"/>
-            <g>
-                <rect x="548" y="108" width="130" height="24" rx="12" fill="#fffdf6" stroke="#c8b078" stroke-width="1"/>
-                <text x="613" y="124" text-anchor="middle" fill="#8a7448" font-size="12">打车约25分钟</text>
-            </g>
+            <!-- 第一行 → 医院（斜线） -->
+            <line x1="490" y1="87" x2="620" y2="160" stroke="#b88646" stroke-width="3" stroke-linecap="round"/>
+            <polygon points="620,164 612,155 628,155" fill="#b88646"/>
 
-            <!-- ===== 第二行：郑州站（普速）→ 鹤壁站 → 医院 ===== -->
+            <!-- ===== 第二行：郑州站（普速）→ 鹤壁站 ===== -->
             <g filter="url(#sh)">
-                <rect x="20" y="176" width="190" height="58" rx="12" fill="url(#gBrown)"/>
+                <rect x="20" y="210" width="190" height="58" rx="12" fill="url(#gBrown)"/>
             </g>
-            <text x="115" y="205" text-anchor="middle" fill="#f8f3e6" font-size="16" font-weight="bold">郑州站</text>
-            <text x="115" y="224" text-anchor="middle" fill="#e6dcc8" font-size="11">京广线普速列车 · 票价低</text>
+            <text x="115" y="240" text-anchor="middle" fill="#f8f3e6" font-size="16" font-weight="bold">郑州站</text>
+            <text x="115" y="259" text-anchor="middle" fill="#e6dcc8" font-size="10.5">京广线约1小时 · 硬座20-30元</text>
 
-            <line x1="210" y1="205" x2="288" y2="205" stroke="#b88646" stroke-width="3" stroke-linecap="round"/>
-            <polygon points="300,205 288,199 288,211" fill="#b88646"/>
-            <g>
-                <rect x="205" y="218" width="110" height="24" rx="12" fill="#fffdf6" stroke="#c8b078" stroke-width="1"/>
-                <text x="260" y="234" text-anchor="middle" fill="#8a7448" font-size="12">普速约1小时</text>
-            </g>
+            <line x1="210" y1="239" x2="288" y2="239" stroke="#b88646" stroke-width="3" stroke-linecap="round"/>
+            <polygon points="300,239 288,233 288,245" fill="#b88646"/>
 
             <g filter="url(#sh)">
-                <rect x="300" y="176" width="190" height="58" rx="12" fill="url(#gBrown)"/>
+                <rect x="300" y="210" width="190" height="58" rx="12" fill="url(#gBrown)"/>
             </g>
-            <text x="395" y="205" text-anchor="middle" fill="#f8f3e6" font-size="16" font-weight="bold">鹤壁站</text>
-            <text x="395" y="224" text-anchor="middle" fill="#e6dcc8" font-size="11">市区站 · 距医院约26公里</text>
+            <text x="395" y="240" text-anchor="middle" fill="#f8f3e6" font-size="16" font-weight="bold">鹤壁站</text>
+            <text x="395" y="259" text-anchor="middle" fill="#e6dcc8" font-size="10.5">距医院26公里 · 打车约35分钟</text>
 
-            <line x1="490" y1="205" x2="628" y2="205" stroke="#b88646" stroke-width="3" stroke-linecap="round"/>
-            <line x1="640" y1="205" x2="640" y2="222" stroke="#b88646" stroke-width="3" stroke-linecap="round"/>
-            <polygon points="640,224 635,211 645,211" fill="#b88646"/>
-            <g>
-                <rect x="546" y="230" width="130" height="24" rx="12" fill="#fffdf6" stroke="#c8b078" stroke-width="1"/>
-                <text x="611" y="246" text-anchor="middle" fill="#8a7448" font-size="12">打车约35分钟</text>
-            </g>
+            <!-- 第二行 → 医院（水平线） -->
+            <line x1="490" y1="239" x2="600" y2="239" stroke="#b88646" stroke-width="3" stroke-linecap="round"/>
+            <polygon points="600,239 612,234 612,244" fill="#b88646"/>
 
             <!-- ===== 第三行：郑州新郑机场 →（城际）→ 郑州东站 ===== -->
             <g filter="url(#sh)">
-                <rect x="20" y="286" width="190" height="58" rx="12" fill="url(#gBlue)"/>
+                <rect x="20" y="310" width="190" height="58" rx="12" fill="url(#gBlue)"/>
             </g>
-            <text x="115" y="315" text-anchor="middle" fill="#fff" font-size="16" font-weight="bold">郑州新郑机场</text>
-            <text x="115" y="334" text-anchor="middle" fill="#d3e1f2" font-size="11">航站楼地下乘城际 · 12元</text>
+            <text x="115" y="340" text-anchor="middle" fill="#fff" font-size="16" font-weight="bold">郑州新郑机场</text>
+            <text x="115" y="359" text-anchor="middle" fill="#d3e1f2" font-size="10.5">地下乘城际15-22分钟 · 12元</text>
 
-            <path d="M 210 315 Q 258 205 295 100" fill="none" stroke="#2c5fa8" stroke-width="3" stroke-dasharray="7 5" stroke-linecap="round"/>
-            <polygon points="300,95 288,88 292,101" fill="#2c5fa8"/>
-            <g>
-                <rect x="196" y="252" width="128" height="24" rx="12" fill="#fffdf6" stroke="#8fa9cc" stroke-width="1"/>
-                <text x="260" y="268" text-anchor="middle" fill="#3a6395" font-size="12">城际 15-22分钟</text>
-            </g>
-            <text x="222" y="196" fill="#8a7448" font-size="11">郑州东站同站换乘高铁 →</text>
+            <path d="M 210 339 Q 255 155 300 87" fill="none" stroke="#2c5fa8" stroke-width="3" stroke-dasharray="7 5" stroke-linecap="round"/>
+            <polygon points="300,87 288,80 292,93" fill="#2c5fa8"/>
 
             <!-- ===== 医院（目的地） ===== -->
             <g filter="url(#sh)">
-                <rect x="600" y="132" width="180" height="94" rx="14" fill="url(#gRed)"/>
-                <rect x="600" y="132" width="180" height="94" rx="14" fill="none" stroke="#e8c96a" stroke-width="1.8"/>
+                <rect x="600" y="164" width="180" height="94" rx="14" fill="url(#gRed)"/>
+                <rect x="600" y="164" width="180" height="94" rx="14" fill="none" stroke="#e8c96a" stroke-width="1.8"/>
             </g>
-            <text x="690" y="162" text-anchor="middle" fill="#fff8dc" font-size="16" font-weight="bold">鹤壁华康肾病医院</text>
-            <text x="690" y="183" text-anchor="middle" fill="#f2ddae" font-size="11">淇县工业路87号</text>
-            <text x="690" y="201" text-anchor="middle" fill="#f2ddae" font-size="11">24H热线 0392-7135999</text>
+            <text x="690" y="194" text-anchor="middle" fill="#fff8dc" font-size="16" font-weight="bold">鹤壁华康肾病医院</text>
+            <text x="690" y="215" text-anchor="middle" fill="#f2ddae" font-size="11">淇县工业路87号</text>
+            <text x="690" y="233" text-anchor="middle" fill="#f2ddae" font-size="11">24H热线 0392-7135999</text>
 
             <!-- ===== 图例 ===== -->
-            <text x="20" y="364" fill="#a08a5c" font-size="11">时间与费用为常见参考值，请以当天实际车次与路况为准；急诊 24 小时接诊</text>
+            <text x="20" y="402" fill="#a08a5c" font-size="11">时间与费用为常见参考值，请以当天实际车次与路况为准；急诊 24 小时接诊</text>
         </svg>
     </div>
 
