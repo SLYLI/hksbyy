@@ -1196,6 +1196,90 @@ a {
 /* 院徽 logo */
 .logo-circle { overflow: hidden; background: #fff; }
 .logo-circle img { width: 100%; height: 100%; object-fit: contain; display: block; border-radius: 50%; }
+
+/* ===== 来院路线 ===== */
+.route-intro {
+    background: linear-gradient(180deg, #faf4e4, #f3e8cc);
+    border: 1px solid #d8c8a0;
+    border-left: 4px solid #b88646;
+    border-radius: 6px;
+    padding: 18px 22px;
+    margin-bottom: 26px;
+}
+.route-intro p { font-size: 15px; color: #5a4a30; line-height: 2; letter-spacing: 1px; text-align: justify; }
+.route-intro b { color: #9c2727; }
+
+.route-map {
+    background: #fffdf6;
+    border: 1px solid #d8c8a0;
+    border-radius: 8px;
+    padding: 18px 12px 10px;
+    margin-bottom: 28px;
+    overflow-x: auto;
+}
+.route-map svg { display: block; margin: 0 auto; min-width: 620px; }
+
+.route-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 18px; margin-bottom: 26px; }
+
+.route-card {
+    background: #faf4e4;
+    border: 1px solid #d8c8a0;
+    border-radius: 6px;
+    padding: 22px 20px 20px;
+    transition: 0.3s ease;
+}
+.route-card:hover { transform: translateY(-4px); box-shadow: 0 10px 22px rgba(80, 50, 20, 0.12); border-color: #b88646; }
+.rc-head { display: flex; align-items: center; gap: 10px; margin-bottom: 14px; }
+.rc-num {
+    flex: 0 0 auto;
+    width: 30px; height: 30px; border-radius: 50%;
+    background: linear-gradient(135deg, #14664c, #0b4530);
+    color: #f8f3e6; font-size: 15px; font-weight: 700;
+    display: flex; align-items: center; justify-content: center;
+}
+.rc-head h4 { font-size: 16px; color: #0e5c42; letter-spacing: 1px; line-height: 1.4; }
+.rc-tag {
+    display: inline-block;
+    margin-left: auto;
+    flex: 0 0 auto;
+    background: #b88646; color: #fff8dc;
+    font-size: 12px; letter-spacing: 1px;
+    padding: 3px 10px; border-radius: 20px;
+    white-space: nowrap;
+}
+.route-card ol { list-style: none; counter-reset: rc; margin: 0; padding: 0; }
+.route-card ol li {
+    counter-increment: rc;
+    position: relative;
+    padding: 0 0 14px 34px;
+    font-size: 13.5px; color: #5a4a30; line-height: 1.9; letter-spacing: 0.5px;
+    text-align: justify;
+}
+.route-card ol li::before {
+    content: counter(rc);
+    position: absolute; left: 0; top: 2px;
+    width: 22px; height: 22px; border-radius: 50%;
+    background: #efe3c4; color: #8a7448;
+    font-size: 12px; font-weight: 700;
+    display: flex; align-items: center; justify-content: center;
+}
+.route-card ol li:last-child { padding-bottom: 0; }
+.route-card ol li b { color: #0e5c42; }
+
+.route-tips {
+    background: #fdf8ec;
+    border: 1px dashed #c8b078;
+    border-radius: 6px;
+    padding: 18px 22px;
+}
+.route-tips h4 { font-size: 15px; color: #0e5c42; letter-spacing: 2px; margin-bottom: 10px; }
+.route-tips ul { margin: 0; padding-left: 20px; }
+.route-tips li { font-size: 13.5px; color: #5a4a30; line-height: 2; letter-spacing: 0.5px; }
+.route-tips b { color: #9c2727; }
+
+@media (max-width: 860px) {
+    .route-cards { grid-template-columns: 1fr; }
+}
 </style>
 </head>
 
@@ -1240,6 +1324,133 @@ a {
 </div>
 
 <main class="inner-wrap">
+
+<section class="section">
+    <h2 class="section-title">来院路线</h2>
+    <p class="section-sub">How to Get Here</p>
+
+    <div class="route-intro">
+        <p>医院地址：<b>河南省鹤壁市淇县工业路87号</b>。从郑州来院最方便的方式是<b>高铁</b>：郑州东站乘高铁约 30 分钟直达鹤壁东站，出站打车约 25 分钟即到医院。就诊途中如有路线疑问，可随时拨打 24 小时健康热线 <b>0392-7135999</b> 咨询。</p>
+    </div>
+
+    <!-- 路线总览图 -->
+    <div class="route-map">
+        <svg viewBox="0 0 720 300" width="720" height="300" xmlns="http://www.w3.org/2000/svg" font-family="Microsoft YaHei, sans-serif">
+            <!-- 节点1：郑州东站 -->
+            <g>
+                <rect x="20" y="34" width="150" height="52" rx="8" fill="#0e5c42"/>
+                <text x="95" y="64" text-anchor="middle" fill="#fff8dc" font-size="15" font-weight="bold">郑州东站（高铁）</text>
+            </g>
+            <line x1="170" y1="60" x2="240" y2="60" stroke="#b88646" stroke-width="2.5"/>
+            <polygon points="240,60 230,55 230,65" fill="#b88646"/>
+            <text x="205" y="48" text-anchor="middle" fill="#8a7448" font-size="12">高铁约30分钟</text>
+
+            <!-- 节点2：鹤壁东站 -->
+            <g>
+                <rect x="245" y="34" width="150" height="52" rx="8" fill="#14664c"/>
+                <text x="320" y="64" text-anchor="middle" fill="#fff8dc" font-size="15" font-weight="bold">鹤壁东站</text>
+            </g>
+            <line x1="395" y1="60" x2="465" y2="60" stroke="#b88646" stroke-width="2.5"/>
+            <polygon points="465,60 455,55 455,65" fill="#b88646"/>
+            <text x="430" y="48" text-anchor="middle" fill="#8a7448" font-size="12">打车约25分钟</text>
+
+            <!-- 医院 -->
+            <g>
+                <rect x="470" y="34" width="150" height="52" rx="8" fill="#9c2727"/>
+                <text x="545" y="64" text-anchor="middle" fill="#fff8dc" font-size="15" font-weight="bold">鹤壁华康肾病医院</text>
+            </g>
+
+            <!-- 节点3：郑州站 -->
+            <g>
+                <rect x="20" y="126" width="150" height="52" rx="8" fill="#6b5a3c"/>
+                <text x="95" y="156" text-anchor="middle" fill="#f8f3e6" font-size="15" font-weight="bold">郑州站（普速）</text>
+            </g>
+            <line x1="170" y1="152" x2="240" y2="152" stroke="#b88646" stroke-width="2.5"/>
+            <polygon points="240,152 230,147 230,157" fill="#b88646"/>
+            <text x="205" y="140" text-anchor="middle" fill="#8a7448" font-size="12">普速约1小时</text>
+
+            <!-- 节点4：鹤壁站 -->
+            <g>
+                <rect x="245" y="126" width="150" height="52" rx="8" fill="#6b5a3c"/>
+                <text x="320" y="156" text-anchor="middle" fill="#f8f3e6" font-size="15" font-weight="bold">鹤壁站（市区）</text>
+            </g>
+            <line x1="395" y1="152" x2="465" y2="152" stroke="#b88646" stroke-width="2.5"/>
+            <polygon points="465,152 455,147 455,157" fill="#b88646"/>
+            <text x="430" y="140" text-anchor="middle" fill="#8a7448" font-size="12">打车约35分钟</text>
+
+            <!-- 节点5：新郑机场 -->
+            <g>
+                <rect x="20" y="218" width="150" height="52" rx="8" fill="#1f4e8c"/>
+                <text x="95" y="248" text-anchor="middle" fill="#fff" font-size="15" font-weight="bold">郑州新郑机场</text>
+            </g>
+            <line x1="170" y1="244" x2="240" y2="220" stroke="#b88646" stroke-width="2.5"/>
+            <polygon points="240,220 229,218 234,227" fill="#b88646"/>
+            <text x="200" y="208" text-anchor="middle" fill="#8a7448" font-size="12">城际约15-22分钟</text>
+
+            <!-- 机场 → 郑州东站 合并线 -->
+            <line x1="240" y1="220" x2="320" y2="60" stroke="#1f4e8c" stroke-width="2" stroke-dasharray="5,4"/>
+            <polygon points="320,60 310,57 312,67" fill="#1f4e8c"/>
+            <text x="252" y="130" fill="#8a7448" font-size="11">郑州东站同站换乘高铁</text>
+
+            <!-- 图例 -->
+            <text x="20" y="290" fill="#8a7448" font-size="11">图中时间、费用为常见参考值，实际以当天路况与车次为准</text>
+        </svg>
+    </div>
+
+    <!-- 详细路线 -->
+    <div class="route-cards">
+        <div class="route-card">
+            <div class="rc-head">
+                <span class="rc-num">1</span>
+                <h4>郑州东站 · 高铁</h4>
+                <span class="rc-tag">最推荐</span>
+            </div>
+            <ol>
+                <li><b>第一步 · 郑州东站上车</b>：购"郑州东 → 鹤壁东"高铁票（G 字头）。车次非常多，每天 60 多趟、约 10-30 分钟一班，随到随买通常也有票；全程约 30-47 分钟，二等座约 47-68 元。</li>
+                <li><b>第二步 · 鹤壁东站下车</b>：出站口即是出租车 / 网约车候客区，认准正规车辆。</li>
+                <li><b>第三步 · 打车到医院</b>：导航"鹤壁华康肾病专科医院"（淇县工业路87号），约 15 公里、25 分钟，车费约 30-40 元；也可乘 107 路公交到淇县城区（约 40 分钟以上，行李多不建议）。</li>
+            </ol>
+        </div>
+
+        <div class="route-card">
+            <div class="rc-head">
+                <span class="rc-num">2</span>
+                <h4>郑州站 · 普速火车</h4>
+                <span class="rc-tag">票价低</span>
+            </div>
+            <ol>
+                <li><b>第一步 · 郑州站上车</b>：郑州站（市中心老火车站）乘京广线普速列车直达"鹤壁站"，全程约 1 小时左右，硬座约 20-30 元，适合不赶时间的旅客。</li>
+                <li><b>第二步 · 鹤壁站下车</b>：鹤壁站在市区（淇滨区），出站打车前往淇县。</li>
+                <li><b>第三步 · 打车到医院</b>：约 26 公里、35 分钟左右，车费约 50 元；也可换乘公交 / 班车到淇县后再打车至医院（约 5 分钟）。</li>
+            </ol>
+        </div>
+
+        <div class="route-card">
+            <div class="rc-head">
+                <span class="rc-num">3</span>
+                <h4>新郑机场 · 飞机</h4>
+                <span class="rc-tag">换乘方便</span>
+            </div>
+            <ol>
+                <li><b>第一步 · 机场乘城际高铁</b>：下飞机后按指示到航站楼地下"新郑机场站"，乘城际列车（C 字头）到<b>郑州东站</b>，约 15-22 分钟、票价 12 元；不用出站即可换乘。</li>
+                <li><b>第二步 · 同站换乘高铁</b>：在郑州东站不出站，直接换乘到"鹤壁东站"的高铁（约 30 分钟，二等座约 47-68 元）。</li>
+                <li><b>第三步 · 打车到医院</b>：鹤壁东站打车约 25 分钟即到。</li>
+                <li><b>深夜到达提醒</b>：城际列车约 23:00 停运；23 点后抵达可打车直接到院（约 1.5 小时、200 元左右），或先住郑州市区次日再乘高铁。</li>
+            </ol>
+        </div>
+    </div>
+
+    <div class="route-tips">
+        <h4>出行小提示</h4>
+        <ul>
+            <li><b>购票</b>：推荐"铁路12306"APP 提前购票；郑州东→鹤壁东白天车次密集，临近发车也有余票，但节假日务必提前。</li>
+            <li><b>打车</b>：认准正规出租车或高德 / 滴滴等平台网约车；鹤壁东站出站即有候车区，夜间建议提前约车。</li>
+            <li><b>老人与行动不便者</b>：可提前致电 0392-7135999 说明情况，医院可协助安排接站（以医院实际安排为准）。</li>
+            <li><b>到院时间</b>：门诊 8:00-12:00、14:00-17:30（以医院当日公告为准），急诊 24 小时接诊。</li>
+            <li><b>自驾来院</b>：走京港澳高速（G4）"淇县"收费站下，导航"鹤壁华康肾病专科医院"直达，门口可停车；郑州出发约 2 小时。</li>
+        </ul>
+    </div>
+</section>
 
 <section class="section">
     <h2 class="section-title">就诊流程</h2>
