@@ -1700,19 +1700,20 @@ a {
     }
   }
 
-  function fileToDataURL(file, cb) {
+  function fileToDataURL(file, cb, max, q) {
+    var mx = max || 1280, ql = q || 0.72;
     var r = new FileReader();
     r.onload = function () {
       var img = new Image();
       img.onload = function () {
-        var max = 1280, w = img.width, h = img.height, s = 1;
-        if (w > h && w > max) { s = max / w; }
-        else if (h >= w && h > max) { s = max / h; }
+        var w = img.width, h = img.height, s = 1;
+        if (w > h && w > mx) { s = mx / w; }
+        else if (h >= w && h > mx) { s = mx / h; }
         var cw = Math.round(w * s), ch = Math.round(h * s);
         var cv = document.createElement('canvas');
         cv.width = cw; cv.height = ch;
         cv.getContext('2d').drawImage(img, 0, 0, cw, ch);
-        try { cb(cv.toDataURL('image/jpeg', 0.72)); }
+        try { cb(cv.toDataURL('image/jpeg', ql)); }
         catch (e) { cb(r.result); }
       };
       img.onerror = function () { cb(r.result); };
@@ -1953,7 +1954,7 @@ a {
             done++;
             if (done === total) { alert('部分图片上传失败，请检查网络后重试。'); renderBanners(); }
           });
-        });
+        }, 1920, 0.88);
       })(files[k]);
     }
   }
