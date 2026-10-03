@@ -8,7 +8,7 @@
   var KEY = 'sb_publishable_ksEaxmM1cON_UiXAs7cpFg_DGcjA-22';
 
   function req(method, path, body, timeoutMs) {
-    var t = timeoutMs || 6000;
+    var t = timeoutMs || 15000;
     var ctrl = typeof AbortController !== 'undefined' ? new AbortController() : null;
     var timer = ctrl ? setTimeout(function () { ctrl.abort(); }, t) : null;
     var opts = {

@@ -1236,20 +1236,27 @@ a.feature-card {
     }
 
     function load() {
-        if (window.HKDB && HKDB.listBanners) {
-            HKDB.listBanners().then(function (list) {
-                var items = (list || []).filter(function (b) {
-                    return b.img && b.enabled !== false;
-                }).sort(function (a, b) { return (a.sort || 0) - (b.sort || 0); });
-                if (items.length) {
-                    build(items.map(function (b) { return { img: b.img, link: b.link || '' }; }));
-                } else {
-                    fallback();
-                }
-            }).catch(function () { fallback(); });
-        } else {
-            fallback();
-        }
+        var tries = 0;
+        var attempt = function () {
+            if (window.HKDB && HKDB.listBanners) {
+                HKDB.listBanners().then(function (list) {
+                    var items = (list || []).filter(function (b) {
+                        return b.img && b.enabled !== false;
+                    }).sort(function (a, b) { return (a.sort || 0) - (b.sort || 0); });
+                    if (items.length) {
+                        build(items.map(function (b) { return { img: b.img, link: b.link || '' }; }));
+                    } else {
+                        fallback();
+                    }
+                }).catch(function () {
+                    /* 首次连接可能较慢：2.5s 后若仍是内置图则重试一次，争取载入云端轮播 */
+                    if (tries < 1) { tries++; setTimeout(attempt, 2500); } else { fallback(); }
+                });
+            } else {
+                fallback();
+            }
+        };
+        attempt();
     }
     load();
 })();
