@@ -22,7 +22,6 @@
   健康科普     health-education.html
   新闻信息     news.html
   文化传承     culture.html
-  国内外合作   cooperation.html
   出诊信息     schedule.html
   门急诊指南   emergency-guide.html
   预约挂号     appointment.html
