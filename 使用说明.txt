@@ -18,7 +18,6 @@
   就医指南     medical-guide.html
   互联网诊疗   internet-clinic.html
   特色医疗     specialty-care.html
-  科室导览     departments.html
   医生介绍     doctors.html
   健康科普     health-education.html
   新闻信息     news.html
