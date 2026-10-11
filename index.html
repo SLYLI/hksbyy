@@ -147,9 +147,12 @@ a.float-btn {
 /* Banner 大图区域 */
 .banner {
     width: 100%;
+    max-width: 1200px;
     aspect-ratio: 16 / 9;
+    margin: 0 auto;
     position: relative;
     overflow: hidden;
+    background: #f2ead9;
 }
 
 /* 轮播背景图组 */
@@ -168,8 +171,9 @@ a.float-btn {
     top: 0;
     width: 100%;
     height: 100%;
-    background-size: cover;
+    background-size: contain;
     background-position: center;
+    background-repeat: no-repeat;
     opacity: 0;
     transition: opacity 1.2s ease;
 }
@@ -829,7 +833,8 @@ a.feature-card {
     .banner {
         min-height: auto;
         height: auto;
-        padding: 60px 20px 80px;
+        aspect-ratio: 16 / 9;
+        padding: 0;
     }
 
     .card-group {
@@ -1136,7 +1141,7 @@ a.feature-card {
     </div>
 </footer>
 
-<script src="db.js"></script>
+<script src="db.js?v=2"></script>
 
 <!-- 首页轮播控制（云端轮播配置驱动；后台「轮播图管理」可自行增删排序） -->
 <script>
@@ -1220,8 +1225,8 @@ a.feature-card {
                         build(items.map(function (b) { return { img: b.img, link: b.link || '' }; }));
                     }
                 }).catch(function () {
-                    if (tries < 2) { tries++; setTimeout(fetchCloud, 3000); }
-                    /* 3 次仍失败则保持当前显示（缓存或内置），不影响浏览 */
+                    if (tries < 4) { tries++; setTimeout(fetchCloud, 3000); }
+                    /* 多次仍失败则保持当前显示（缓存或内置），不影响浏览 */
                 });
             };
             fetchCloud();
