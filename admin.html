@@ -1883,7 +1883,7 @@ a {
 
   function bnrAction(act, id) {
     var idx = -1;
-    for (var i = 0; i < bnrList.length; i++) { if (bnrList[i].id === id) { idx = i; break; } }
+    for (var i = 0; i < bnrList.length; i++) { if (String(bnrList[i].id) === String(id)) { idx = i; break; } }
     if (idx < 0) return;
     var item = bnrList[idx];
     if (act === 'del') {
@@ -1915,12 +1915,24 @@ a {
     if (act === 'up' || act === 'down') {
       var j = act === 'up' ? idx - 1 : idx + 1;
       if (j < 0 || j >= bnrList.length) return;
-      var a = bnrList[idx], b2 = bnrList[j];
-      var sa = a.sort || 0, sb = b2.sort || 0;
-      var pa = HKDB.updateBanner(a.id, { sort: sb });
-      var pb = HKDB.updateBanner(b2.id, { sort: sa });
-      Promise.all([pa, pb]).then(function () {
-        a.sort = sb; b2.sort = sa;
+      /* 数组内交换位置 */
+      var t = bnrList[idx];
+      bnrList[idx] = bnrList[j];
+      bnrList[j] = t;
+      /* 按新顺序重写全部 sort 为 0..n-1（避免 sort 相同导致顺序不变） */
+      var updates = [];
+      for (var k = 0; k < bnrList.length; k++) {
+        if ((bnrList[k].sort || 0) !== k) {
+          bnrList[k].sort = k;
+          updates.push(HKDB.updateBanner(bnrList[k].id, { sort: k }));
+        }
+      }
+      if (!updates.length) {
+        try { localStorage.setItem(BNR_KEY, JSON.stringify(bnrList)); } catch (e) {}
+        renderBanners();
+        return;
+      }
+      Promise.all(updates).then(function () {
         try { localStorage.setItem(BNR_KEY, JSON.stringify(bnrList)); } catch (e) {}
         renderBanners();
         setMsg('已调整顺序。', true);
