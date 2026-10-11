@@ -1823,6 +1823,10 @@ a {
     var fromMirror = function () {
       var m = localStorage.getItem(BNR_KEY);
       try { bnrList = m ? JSON.parse(m) : []; } catch (e) { bnrList = []; }
+      if (!bnrList.length) {
+        box.innerHTML = '<p class="af-note" style="margin:8px 0 0;">正在从云端加载轮播图…</p>';
+        return;
+      }
       renderBanners();
     };
     var render = function (rows) {
@@ -1837,9 +1841,9 @@ a {
     var attempt = function () {
       if (window.HKDB && HKDB.listBanners) {
         HKDB.listBanners().then(render, fromMirror);
-        /* 首次连接可能较慢：若仍未渲染出列表，2.5s/5s/10s 依次重试 */
+        /* 首次连接可能较慢：若仍未渲染出列表，2.5s/5s/10s/15s/20s 依次重试 */
         setTimeout(function () {
-          if (window.HKDB && !box.querySelector('.bnr-item') && tries < 3) {
+          if (window.HKDB && !box.querySelector('.bnr-item') && tries < 5) {
             tries++;
             attempt();
           }
