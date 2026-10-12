@@ -147,22 +147,19 @@ a.float-btn {
 /* Banner 大图区域 */
 .banner {
     width: 100%;
-    max-width: 1200px;
-    aspect-ratio: 16 / 9;
+    max-width: 1920px;
     margin: 0 auto;
     position: relative;
     overflow: hidden;
     background: #f2ead9;
 }
 
-/* 轮播背景图组 */
+/* 轮播背景图组：高度随当前图片比例自适应（图片始终完整、铺满宽度、不裁切） */
 .banner-slides {
-    position: absolute;
-    left: 0;
-    top: 0;
+    position: relative;
     width: 100%;
-    height: 100%;
-    z-index: 0;
+    height: 0;
+    transition: height 0.45s ease;
 }
 
 .banner-slide {
@@ -170,16 +167,18 @@ a.float-btn {
     left: 0;
     top: 0;
     width: 100%;
-    height: 100%;
-    background-size: contain;
-    background-position: center;
-    background-repeat: no-repeat;
     opacity: 0;
     transition: opacity 1.2s ease;
 }
 
 .banner-slide.active {
     opacity: 1;
+}
+
+.banner-slide img {
+    width: 100%;
+    height: auto;
+    display: block;
 }
 
 .banner-slide.s0 { background-image: url('tcm-bg.jpg'); }
@@ -833,7 +832,6 @@ a.feature-card {
     .banner {
         min-height: auto;
         height: auto;
-        aspect-ratio: 16 / 9;
         padding: 0;
     }
 
@@ -1161,6 +1159,20 @@ a.feature-card {
             slides[k].classList.toggle('active', k === idx);
             dots[k].classList.toggle('active', k === idx);
         }
+        syncH();
+    }
+
+    /* 容器高度随当前图片比例自适应：整图完整显示、铺满宽度、不裁切。
+     * 桌面端保证不低于功能卡片区所需高度（约540px），避免卡片被裁 */
+    function syncH() {
+        if (!slidesBox || !slides[idx]) return;
+        var img = slides[idx].querySelector('img');
+        if (img && img.naturalWidth) {
+            var w = slidesBox.clientWidth || 1;
+            var naturalH = img.naturalHeight / img.naturalWidth * w;
+            var minH = window.innerWidth > 768 ? 540 : 0;
+            slidesBox.style.height = Math.round(Math.max(naturalH, minH)) + 'px';
+        }
     }
 
     function build(items) {
@@ -1171,7 +1183,11 @@ a.feature-card {
             var it = items[i];
             var s = document.createElement('div');
             s.className = 'banner-slide' + (i === 0 ? ' active' : '');
-            s.style.backgroundImage = "url('" + it.img + "')";
+            var im = document.createElement('img');
+            im.src = it.img;
+            im.alt = it.title || '轮播图';
+            im.onload = function () { syncH(); };
+            s.appendChild(im);
             if (it.link) {
                 s.style.cursor = 'pointer';
                 (function (ss, lk) {
@@ -1190,6 +1206,10 @@ a.feature-card {
         }
         if (timer) clearInterval(timer);
         if (slides.length > 1) timer = setInterval(function () { go(idx + 1); }, 7000);
+        syncH();
+        if (window.addEventListener) {
+            window.addEventListener('resize', function () { if (slides.length) syncH(); });
+        }
     }
 
     function fallback() {
