@@ -154,12 +154,11 @@ a.float-btn {
     background: #f2ead9;
 }
 
-/* 轮播背景图组：高度随当前图片比例自适应（图片始终完整、铺满宽度、不裁切） */
+/* 轮播背景图组：固定统一高度，图片居中完整显示（不裁切、不留大片空白） */
 .banner-slides {
     position: relative;
     width: 100%;
-    height: 0;
-    transition: height 0.45s ease;
+    height: 540px;
 }
 
 .banner-slide {
@@ -167,6 +166,10 @@ a.float-btn {
     left: 0;
     top: 0;
     width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     opacity: 0;
     transition: opacity 1.2s ease;
 }
@@ -176,8 +179,11 @@ a.float-btn {
 }
 
 .banner-slide img {
-    width: 100%;
+    max-width: 100%;
+    max-height: 100%;
+    width: auto;
     height: auto;
+    object-fit: contain;
     display: block;
 }
 
@@ -835,6 +841,10 @@ a.feature-card {
         padding: 0;
     }
 
+    .banner-slides {
+        height: 240px;
+    }
+
     .card-group {
         position: static;
         transform: none;
@@ -1159,20 +1169,6 @@ a.feature-card {
             slides[k].classList.toggle('active', k === idx);
             dots[k].classList.toggle('active', k === idx);
         }
-        syncH();
-    }
-
-    /* 容器高度随当前图片比例自适应：整图完整显示、铺满宽度、不裁切。
-     * 桌面端保证不低于功能卡片区所需高度（约540px），避免卡片被裁 */
-    function syncH() {
-        if (!slidesBox || !slides[idx]) return;
-        var img = slides[idx].querySelector('img');
-        if (img && img.naturalWidth) {
-            var w = slidesBox.clientWidth || 1;
-            var naturalH = img.naturalHeight / img.naturalWidth * w;
-            var minH = window.innerWidth > 768 ? 540 : 0;
-            slidesBox.style.height = Math.round(Math.max(naturalH, minH)) + 'px';
-        }
     }
 
     function build(items) {
@@ -1186,7 +1182,6 @@ a.feature-card {
             var im = document.createElement('img');
             im.src = it.img;
             im.alt = it.title || '轮播图';
-            im.onload = function () { syncH(); };
             s.appendChild(im);
             if (it.link) {
                 s.style.cursor = 'pointer';
@@ -1206,10 +1201,6 @@ a.feature-card {
         }
         if (timer) clearInterval(timer);
         if (slides.length > 1) timer = setInterval(function () { go(idx + 1); }, 7000);
-        syncH();
-        if (window.addEventListener) {
-            window.addEventListener('resize', function () { if (slides.length) syncH(); });
-        }
     }
 
     function fallback() {
