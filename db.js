@@ -99,6 +99,23 @@
     },
     clearBannersAll: function () {
       return req('DELETE', '/banners?id=neq.0', null, 10000).catch(function () { return null; });
+    },
+
+    /* ================= 医患情深视频 =================
+     * 结构：一行 = (id, title, platform, url, cover, sort, enabled)
+     * platform: 'douyin' 抖音 / 'kuaishou' 快手 / 'other' 其他
+     * url: 视频分享链接或 mp4 直链；cover: 封面图地址（可选） */
+    listVideos: function () {
+      return req('GET', '/videos?select=*&order=sort.asc', null, 20000).catch(function () { return null; });
+    },
+    insertVideo: function (item) {
+      return req('POST', '/videos', item, 12000);
+    },
+    updateVideo: function (id, item) {
+      return req('PATCH', '/videos?id=eq.' + enc(id), item, 10000);
+    },
+    deleteVideo: function (id) {
+      return req('DELETE', '/videos?id=eq.' + enc(id), null, 8000);
     }
   };
 

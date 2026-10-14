@@ -1219,7 +1219,7 @@ a {
             <li><a href="doctors.html">医生介绍</a></li>
             <li><a href="health-education.html">健康科普</a></li>
             <li><a href="news.html">新闻信息</a></li>
-            <li><a href="culture.html">文化传承</a></li>
+            <li><a href="culture.html">医患情深</a></li>
             <li><a class="active" href="admin.html">管理后台</a></li>
             <li class="search-icon"><a href="search.html" aria-label="站内搜索"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></a></li>
             </ul>
@@ -1406,6 +1406,40 @@ a {
             <p class="af-btns2" style="margin-top:14px;">
                 <button id="btnBnrRefresh" type="button">刷新列表</button>
                 <button id="btnBnrClear" type="button" style="background:#9c2727;">清空全部轮播图</button>
+            </p>
+        </div>
+
+        <div class="admin-panel">
+            <h3>医患情深视频管理</h3>
+            <p class="af-note">在抖音/快手 App 打开要发布的视频 → 点"分享" → "复制链接"，粘贴到下面"视频链接"框。填好标题后保存，医患情深页立即展示。封面图可选（不传则显示平台占位图）。</p>
+            <form id="vform" style="margin-bottom:16px;">
+                <div class="af-row">
+                    <label>视频标题</label>
+                    <input id="vTitle" type="text" placeholder="例如：透析三年的老李重新站起来了" />
+                </div>
+                <div class="af-row">
+                    <label>发布平台</label>
+                    <select id="vPlatform">
+                        <option value="douyin">抖音</option>
+                        <option value="kuaishou">快手</option>
+                        <option value="other">其他</option>
+                    </select>
+                </div>
+                <div class="af-row">
+                    <label>视频链接（抖音/快手分享链接，或 mp4 直链）</label>
+                    <input id="vUrl" type="text" placeholder="https://v.douyin.com/xxxxxx/  或  https://www.kuaishou.com/short-video/xxxx" />
+                </div>
+                <div class="af-row">
+                    <label>封面图（可选，建议 16:9 横图）</label>
+                    <input id="vCoverFile" type="file" accept="image/*" />
+                </div>
+                <div class="af-btns2">
+                    <button id="btnVideoAdd" type="button">添加视频</button>
+                </div>
+            </form>
+            <div id="videoList" class="bnr-list"></div>
+            <p class="af-btns2" style="margin-top:14px;">
+                <button id="btnVideoRefresh" type="button">刷新列表</button>
             </p>
         </div>
     </div>
@@ -1972,6 +2006,178 @@ a {
       })(files[k]);
     }
   }
+
+  /* ================= 医患情深视频管理 ================= */
+  var VID_KEY = 'hksb_videos';
+  var vidList = [];
+
+  function loadVideos() {
+    var box = document.getElementById('videoList');
+    if (!box) return;
+    var fromMirror = function () {
+      var m = localStorage.getItem(VID_KEY);
+      try { vidList = m ? JSON.parse(m) : []; } catch (e) { vidList = []; }
+      if (!vidList.length) {
+        box.innerHTML = '<p class="af-note" style="margin:8px 0 0;">暂无视频。在上方表单添加第一条医患故事视频。</p>';
+        return;
+      }
+      renderVideos();
+    };
+    if (window.HKDB && HKDB.listVideos) {
+      HKDB.listVideos().then(function (rows) {
+        if (rows && rows.length !== undefined) {
+          vidList = rows;
+          try { localStorage.setItem(VID_KEY, JSON.stringify(vidList)); } catch (e) {}
+          renderVideos();
+        } else {
+          fromMirror();
+        }
+      }, fromMirror);
+    } else {
+      fromMirror();
+    }
+  }
+
+  function renderVideos() {
+    var box = document.getElementById('videoList');
+    if (!box) return;
+    vidList.sort(function (a, b) { return (a.sort || 0) - (b.sort || 0); });
+    if (!vidList.length) {
+      box.innerHTML = '<p class="af-note" style="margin:8px 0 0;">暂无视频。在上方表单添加第一条医患故事视频。</p>';
+      return;
+    }
+    var html = '';
+    for (var i = 0; i < vidList.length; i++) {
+      var v = vidList[i];
+      var plat = v.platform === 'douyin' ? '抖音' : (v.platform === 'kuaishou' ? '快手' : '其他');
+      var coverHtml = v.cover
+        ? '<img src="' + esc(v.cover) + '" alt="封面">'
+        : '<div style="width:80px;height:48px;display:flex;align-items:center;justify-content:center;background:#0e5c42;color:#fff;border-radius:4px;font-size:12px;">' + plat + '</div>';
+      html += '<div class="bnr-item">'
+        + coverHtml
+        + '<div class="bnr-info"><b>' + esc(v.title || '未命名视频') + '</b>'
+        + '<span>' + plat + ' · ' + (v.enabled === false ? '已停用' : '展示中') + ' · 第 ' + (i + 1) + ' 条</span>'
+        + '<span style="display:block;font-size:11px;color:#8a7a55;word-break:break-all;max-width:260px;">' + esc(v.url || '') + '</span></div>'
+        + '<div class="bnr-ops">'
+        + '<button type="button" data-vact="up" data-vid="' + esc(v.id) + '"' + (i === 0 ? ' disabled' : '') + '>↑ 上移</button>'
+        + '<button type="button" data-vact="down" data-vid="' + esc(v.id) + '"' + (i === vidList.length - 1 ? ' disabled' : '') + '>↓ 下移</button>'
+        + '<button type="button" data-vact="toggle" data-vid="' + esc(v.id) + '">' + (v.enabled === false ? '启用' : '停用') + '</button>'
+        + '<button type="button" data-vact="del" data-vid="' + esc(v.id) + '" style="background:#9c2727;border-color:#9c2727;color:#fff;">删除</button>'
+        + '</div></div>';
+    }
+    box.innerHTML = html;
+  }
+
+  function vidAction(act, id) {
+    var idx = -1;
+    for (var i = 0; i < vidList.length; i++) { if (String(vidList[i].id) === String(id)) { idx = i; break; } }
+    if (idx < 0) return;
+    var item = vidList[idx];
+    if (act === 'del') {
+      if (!confirm('确定删除这条视频？')) return;
+      var del = HKDB.deleteVideo(id);
+      if (del && del.then) {
+        del.then(function () {
+          vidList.splice(idx, 1);
+          try { localStorage.setItem(VID_KEY, JSON.stringify(vidList)); } catch (e) {}
+          renderVideos();
+          setMsg('已删除视频。', true);
+        }).catch(function () { alert('删除失败，请检查网络后重试。'); });
+      }
+      return;
+    }
+    if (act === 'toggle') {
+      var next = item.enabled === false;
+      var upd = HKDB.updateVideo(id, { enabled: next });
+      if (upd && upd.then) {
+        upd.then(function () {
+          item.enabled = next;
+          try { localStorage.setItem(VID_KEY, JSON.stringify(vidList)); } catch (e) {}
+          renderVideos();
+          setMsg(next ? '已启用该视频。' : '已停用该视频。', true);
+        }).catch(function () { alert('操作失败，请检查网络后重试。'); });
+      }
+      return;
+    }
+    if (act === 'up' || act === 'down') {
+      var j = act === 'up' ? idx - 1 : idx + 1;
+      if (j < 0 || j >= vidList.length) return;
+      var t = vidList[idx]; vidList[idx] = vidList[j]; vidList[j] = t;
+      var updates = [];
+      for (var k = 0; k < vidList.length; k++) {
+        if ((vidList[k].sort || 0) !== k) {
+          vidList[k].sort = k;
+          updates.push(HKDB.updateVideo(vidList[k].id, { sort: k }));
+        }
+      }
+      if (!updates.length) {
+        try { localStorage.setItem(VID_KEY, JSON.stringify(vidList)); } catch (e) {}
+        renderVideos();
+        return;
+      }
+      Promise.all(updates).then(function () {
+        try { localStorage.setItem(VID_KEY, JSON.stringify(vidList)); } catch (e) {}
+        renderVideos();
+        setMsg('已调整顺序。', true);
+      }).catch(function () { alert('调整失败，请检查网络后重试。'); });
+    }
+  }
+
+  function bindVideoAdmin() {
+    loadVideos();
+    var addBtn = document.getElementById('btnVideoAdd');
+    if (addBtn) addBtn.onclick = function () {
+      var title = document.getElementById('vTitle').value.trim();
+      var platform = document.getElementById('vPlatform').value;
+      var url = document.getElementById('vUrl').value.trim();
+      var coverFile = document.getElementById('vCoverFile').files && document.getElementById('vCoverFile').files[0];
+      if (!title) { alert('请填写视频标题。'); return; }
+      if (!url) { alert('请填写视频链接。'); return; }
+      var base = 0;
+      for (var i = 0; i < vidList.length; i++) { if ((vidList[i].sort || 0) > base) base = vidList[i].sort; }
+      var doAdd = function (coverUrl) {
+        var item = {
+          id: 'v' + Date.now(),
+          title: title,
+          platform: platform,
+          url: url,
+          cover: coverUrl || '',
+          sort: base + 1,
+          enabled: true
+        };
+        var p = HKDB.insertVideo(item);
+        var finish = function () {
+          vidList.push(item);
+          try { localStorage.setItem(VID_KEY, JSON.stringify(vidList)); } catch (e) {}
+          renderVideos();
+          document.getElementById('vTitle').value = '';
+          document.getElementById('vUrl').value = '';
+          document.getElementById('vCoverFile').value = '';
+          setMsg('已添加视频，医患情深页立即展示。', true);
+        };
+        if (p && p.then) {
+          p.then(finish, function () {
+            /* 云端表可能尚未创建：仍写入本地镜像，页面可展示 */
+            finish();
+          });
+        } else {
+          finish();
+        }
+      };
+      if (coverFile) {
+        fileToDataURL(coverFile, function (url2) { doAdd(url2); }, 1280, 0.9);
+      } else {
+        doAdd('');
+      }
+    };
+    var refreshBtn = document.getElementById('btnVideoRefresh');
+    if (refreshBtn) refreshBtn.onclick = function () { loadVideos(); setMsg('已刷新视频列表。', true); };
+    document.getElementById('videoList').addEventListener('click', function (e) {
+      var btn = e.target.closest ? e.target.closest('button[data-vact]') : null;
+      if (btn) vidAction(btn.getAttribute('data-vact'), btn.getAttribute('data-vid'));
+    });
+  }
+  bindVideoAdmin();
 
   /* ---- 事件绑定 ---- */
   document.getElementById('loginBtn').onclick = function () {

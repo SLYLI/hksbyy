@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>文化传承 - 鹤壁华康肾病专科医院</title>
-<meta name="description" content="鹤壁华康肾病专科医院文化传承：办院宗旨、发展历程、公益活动。" />
+<title>医患情深 - 鹤壁华康肾病专科医院</title>
+<meta name="description" content="鹤壁华康肾病专科医院医患情深：真实医患故事、康复历程与短视频记录。" />
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ccircle cx='32' cy='32' r='30' fill='%230e5c42' stroke='%23b88646' stroke-width='3'/%3E%3Ctext x='32' y='44' font-size='32' text-anchor='middle' fill='%23f8f3e6' font-family='serif'%3E华%3C/text%3E%3C/svg%3E" />
 <link rel="preconnect" href="https://miaoda.feishu.cn">
 <link href="https://miaoda.feishu.cn/fonts/css2?family=Noto+Serif+SC:wght@400;500;600;700;900&family=Ma+Shan+Zheng&display=swap" rel="stylesheet">
@@ -1196,6 +1196,146 @@ a {
 /* 院徽 logo */
 .logo-circle { overflow: hidden; background: #fff; }
 .logo-circle img { width: 100%; height: 100%; object-fit: contain; display: block; border-radius: 50%; }
+
+/* ===== 医患情深视频卡片 ===== */
+.video-intro {
+    background: linear-gradient(135deg, #faf4e4 0%, #f0e2c0 100%);
+    border: 1px solid #d8c8a0;
+    border-left: 4px solid #9c2727;
+    border-radius: 6px;
+    padding: 18px 22px;
+    margin-bottom: 28px;
+    color: #5a4a30;
+    font-size: 14.5px;
+    line-height: 2;
+    letter-spacing: 1px;
+}
+.video-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 22px;
+}
+.video-card {
+    background: linear-gradient(180deg, #faf4e4 0%, #f3e8cc 100%);
+    border: 1px solid #d8c8a0;
+    border-radius: 10px;
+    overflow: hidden;
+    transition: 0.3s ease;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+}
+.video-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 26px rgba(80, 50, 20, 0.18);
+    border-color: #b88646;
+}
+.video-cover {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    background: #1a3a2c;
+    overflow: hidden;
+}
+.video-cover img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+.video-cover .cover-ph {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 8px;
+    color: #f8f3e6;
+    background: linear-gradient(135deg, #0e5c42 0%, #14664c 100%);
+}
+.video-cover .cover-ph .ph-icon {
+    font-size: 40px;
+    line-height: 1;
+    opacity: 0.9;
+}
+.video-cover .cover-ph .ph-txt {
+    font-size: 13px;
+    letter-spacing: 3px;
+    opacity: 0.85;
+}
+.video-play {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background: rgba(156, 39, 39, 0.92);
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.35);
+    transition: transform 0.2s;
+}
+.video-card:hover .video-play {
+    transform: translate(-50%, -50%) scale(1.12);
+}
+.video-play svg {
+    width: 26px;
+    height: 26px;
+    fill: #fff;
+    margin-left: 3px;
+}
+.video-platform {
+    position: absolute;
+    left: 10px;
+    top: 10px;
+    font-size: 12px;
+    padding: 3px 10px;
+    border-radius: 20px;
+    letter-spacing: 1px;
+    color: #fff;
+    background: rgba(0, 0, 0, 0.55);
+    backdrop-filter: blur(4px);
+}
+.video-platform.douyin { background: rgba(0, 0, 0, 0.7); }
+.video-platform.kuaishou { background: rgba(255, 122, 0, 0.85); }
+.video-body {
+    padding: 14px 16px 16px;
+    flex: 1;
+}
+.video-body h4 {
+    font-size: 15.5px;
+    color: #3a2f1f;
+    letter-spacing: 1px;
+    line-height: 1.6;
+    margin-bottom: 6px;
+}
+.video-body .video-meta {
+    font-size: 12.5px;
+    color: #8a7448;
+    letter-spacing: 1px;
+}
+.video-empty {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: 60px 20px;
+    color: #8a7448;
+    font-size: 14px;
+    letter-spacing: 2px;
+    background: #faf4e4;
+    border: 1px dashed #d8c8a0;
+    border-radius: 8px;
+}
+@media (max-width: 900px) {
+    .video-grid { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 600px) {
+    .video-grid { grid-template-columns: 1fr; }
+}
 </style>
 </head>
 
@@ -1219,7 +1359,7 @@ a {
             <li><a href="doctors.html">医生介绍</a></li>
             <li><a href="health-education.html">健康科普</a></li>
             <li><a href="news.html">新闻信息</a></li>
-            <li><a class="active" href="culture.html">文化传承</a></li>
+            <li><a class="active" href="culture.html">医患情深</a></li>
             <li><a href="admin.html">管理后台</a></li>
             <li class="search-icon"><a href="search.html" aria-label="站内搜索"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></a></li>
             </ul>
@@ -1231,105 +1371,24 @@ a {
     <div class="banner-bg"></div>
     <div class="banner-overlay"></div>
     <div class="page-title-box">
-        <h1>文化传承</h1>
-        <p>厚德博学 · 传承创新</p>
-        <div class="crumb"><a href="index.html">首页</a><span> / </span><em>文化传承</em></div>
+        <h1>医患情深</h1>
+        <p>真实故事 · 医患同心 · 康复之路</p>
+        <div class="crumb"><a href="index.html">首页</a><span> / </span><em>医患情深</em></div>
     </div>
 </div>
 
 <main class="inner-wrap">
 
 <section class="section">
-    <h2 class="section-title">办院宗旨与承诺</h2>
-    <p class="section-sub">Our Mission</p>
-    <div class="card-grid">
-        <div class="tile"><h4>一家对患者负责任的医院</h4><p>是医院不变的灵魂：专业研究、精准治疗，让患者得到疗效，使患者满意、让患者安心。</p></div>
-        <div class="tile"><h4>千里之外家的感觉</h4><p>是医院始终坚守的院内服务宗旨，让每一位来院患者感受到家的温暖。</p></div>
-        <div class="tile"><h4>余生健康，华康相伴</h4><p>是华康给予患者郑重的承诺：牢记医者使命，为肾脏病健康而奋斗终生。</p></div>
-        <div class="tile"><h4>党建引领发展</h4><p>医院设立党支部，坚持党建带动业务与公益建设，坚守医疗行业自律底线。</p></div>
+    <h2 class="section-title">医患故事短视频</h2>
+    <p class="section-sub">我们将真实的医患故事、康复历程与关怀瞬间记录成视频，分享在抖音、快手平台。点击视频卡片即可前往观看完整内容。</p>
+    <div class="video-intro">
+        这里记录的是一位位患者与华康医护团队之间的真实故事——从初诊时的焦虑迷茫，到治疗后的轻松笑容，每一段视频背后，都是一份"医患同心、共抗病魔"的信任与牵挂。欢迎前往我院抖音、快手官方账号观看更多康复故事。
+    </div>
+    <div id="videoGrid" class="video-grid">
+        <div class="video-empty">正在加载医患故事视频…</div>
     </div>
 </section>
-
-<section class="section">
-    <h2 class="section-title">发展历程</h2>
-    <p class="section-sub">Milestones</p>
-    <div class="timeline">
-        <div class="tl-node">
-            <div class="tl-time">2005 年</div>
-            <div class="tl-axis"><span class="tl-dot"></span></div>
-            <div class="tl-body"><h4>特色疗法获省级奖励</h4><p>《阴阳免疫平衡双重修复疗法在肾脏病中的应用》获河南省科学技术进步奖（三等奖）、鹤壁市科学技术奖二等奖，入选国家"十一五"中西医结合肾病重点推广项目。</p></div>
-        </div>
-        <div class="tl-node">
-            <div class="tl-time">2010-10</div>
-            <div class="tl-axis"><span class="tl-dot"></span></div>
-            <div class="tl-body"><h4>医院始创</h4><p>鹤壁华康肾病专科医院（原淇县华康医院）始创，专注肾病诊疗。</p></div>
-        </div>
-        <div class="tl-node">
-            <div class="tl-time">2021</div>
-            <div class="tl-axis"><span class="tl-dot"></span></div>
-            <div class="tl-body"><h4>公益获认可</h4><p>获评鹤壁市红十字系统"99公益日"筹资工作优秀爱心单位，连续当选淇县慈善会会长单位。</p></div>
-        </div>
-        <div class="tl-node">
-            <div class="tl-time">2022—2023</div>
-            <div class="tl-axis"><span class="tl-dot"></span></div>
-            <div class="tl-body"><h4>综合管理屡获表彰</h4><p>先后获评"树名医、建名科、铸名院"创建先进单位、全县卫生健康综合目标先进单位、争先晋位先进单位、安全生产暨信访稳定工作先进单位、党的建设奖等。</p></div>
-        </div>
-        <div class="tl-node">
-            <div class="tl-time">2024-07</div>
-            <div class="tl-axis"><span class="tl-dot"></span></div>
-            <div class="tl-body"><h4>获评市级重点建设专科</h4><p>获评鹤壁市中医临床重点建设专科（2024-2026建设周期）。</p></div>
-        </div>
-        <div class="tl-node">
-            <div class="tl-time">2024-12</div>
-            <div class="tl-axis"><span class="tl-dot"></span></div>
-            <div class="tl-body"><h4>学术平台成立</h4><p>当选鹤壁市中医药学会中西医结合慢性肾脏病专业委员会主任委员单位，首届成立大会在我县召开。</p></div>
-        </div>
-        <div class="tl-node">
-            <div class="tl-time">2024—2026</div>
-            <div class="tl-axis"><span class="tl-dot"></span></div>
-            <div class="tl-body"><h4>名医荣誉</h4><p>王金峰院长获授"患者信得过名医"（2024），获"淇·先锋 党员先锋标兵"（2026）。</p></div>
-        </div>
-    </div>
-</section>
-
-<section class="section">
-    <h2 class="section-title">公益活动</h2>
-    <p class="section-sub">Public Activities</p>
-    <div class="card-grid">
-        <div class="tile">
-            <div class="t-icon"><svg viewBox="0 0 24 24"><path d="M12 21s-7-4.6-9.5-9A5.5 5.5 0 0 1 12 6.6 5.5 5.5 0 0 1 21.5 12C19 16.4 12 21 12 21Z"/></svg></div>
-            <h4>世界肾脏日科普</h4>
-            <p>每年结合世界肾脏日举办大型肾友会、健康讲座与义诊筛查，普及早筛早治理念。</p>
-        </div>
-        <div class="tile">
-            <div class="t-icon"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
-            <h4>进社区进机关宣讲</h4>
-            <p>组织医疗团队走进街道、机关、乡村开展慢病与肾脏健康专题讲座、公益体检。</p>
-        </div>
-        <div class="tile">
-            <div class="t-icon"><svg viewBox="0 0 24 24"><path d="M12 3v4"/><path d="M12 17v4"/><path d="M4.9 4.9l2.8 2.8"/><path d="M16.3 16.3l2.8 2.8"/><path d="M2 12h4"/><path d="M18 12h4"/><path d="M4.9 19.1l2.8-2.8"/><path d="M16.3 7.7l2.8-2.8"/></svg></div>
-            <h4>献血与造血干细胞入库</h4>
-            <p>多次组织医护人员无偿献血、造血干细胞捐献入库，以医者带头参与社会公益。</p>
-        </div>
-        <div class="tile">
-            <div class="t-icon"><svg viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2Z"/></svg></div>
-            <h4>节日人文关怀</h4>
-            <p>冬至、腊八、端午、中秋等节日在病区开展暖心活动，为住院患者送温暖、送健康。</p>
-        </div>
-        <div class="tile">
-            <div class="t-icon"><svg viewBox="0 0 24 24"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg></div>
-            <h4>异地回访帮扶</h4>
-            <p>对山西、内蒙等外地出院患者上门回访，测血压血糖、调整用药，延伸出院后服务。</p>
-        </div>
-        <div class="tile">
-            <div class="t-icon"><svg viewBox="0 0 24 24"><path d="M12 3l2.2 4.9L19.5 8l-3.7 3.6.9 5.1L12 14.3 7.3 16.7l.9-5.1L4.5 8l5.3-.1Z"/></svg></div>
-            <h4>困难患者帮扶</h4>
-            <p>为长期透析、家庭经济压力较大的患者提供公益帮扶申请渠道，落实弱势群体医疗关怀。</p>
-        </div>
-    </div>
-</section>
-
-
 
 </main>
 
@@ -1361,5 +1420,88 @@ a {
 
 <script src="db.js"></script>
 <script src="stats.js"></script>
+<script>
+(function () {
+  var VKEY = 'hksb_videos';
+  var grid = document.getElementById('videoGrid');
+  if (!grid) return;
+
+  function esc(s) {
+    return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) {
+      return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
+    });
+  }
+  function platformLabel(p) {
+    if (p === 'douyin') return '抖音';
+    if (p === 'kuaishou') return '快手';
+    return '视频';
+  }
+  function isMp4(u) {
+    return /\.mp4(\?|$)/i.test(u || '');
+  }
+  function render(list) {
+    if (!list || !list.length) {
+      grid.innerHTML = '<div class="video-empty">暂无医患故事视频，敬请期待。</div>';
+      return;
+    }
+    var html = '';
+    for (var i = 0; i < list.length; i++) {
+      var v = list[i];
+      if (v.enabled === false) continue;
+      var plat = v.platform || 'other';
+      var cover = v.cover
+        ? '<img src="' + esc(v.cover) + '" alt="' + esc(v.title) + '">'
+        : '<div class="cover-ph"><div class="ph-icon">▶</div><div class="ph-txt">' + platformLabel(plat) + '</div></div>';
+      var playUrl = esc(v.url || '#');
+      html += '<div class="video-card" data-url="' + playUrl + '" data-mp4="' + (isMp4(v.url) ? '1' : '0') + '">'
+        + '<div class="video-cover">' + cover
+        + '<span class="video-platform ' + esc(plat) + '">' + platformLabel(plat) + '</span>'
+        + '<span class="video-play"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></span>'
+        + '</div>'
+        + '<div class="video-body"><h4>' + esc(v.title || '医患故事') + '</h4>'
+        + '<div class="video-meta">' + platformLabel(plat) + ' · 点击观看</div></div>'
+        + '</div>';
+    }
+    grid.innerHTML = html || '<div class="video-empty">暂无医患故事视频，敬请期待。</div>';
+    // 点击卡片
+    var cards = grid.querySelectorAll('.video-card');
+    for (var j = 0; j < cards.length; j++) {
+      cards[j].onclick = function () {
+        var url = this.getAttribute('data-url');
+        var mp4 = this.getAttribute('data-mp4') === '1';
+        if (!url || url === '#') return;
+        if (mp4) {
+          // mp4 直链：新窗口播放
+          window.open(url, '_blank');
+        } else {
+          // 抖音/快手分享链接：新窗口打开
+          window.open(url, '_blank', 'noopener');
+        }
+      };
+    }
+  }
+  function loadFromMirror() {
+    try {
+      var m = localStorage.getItem(VKEY);
+      var list = m ? JSON.parse(m) : [];
+      render(list);
+    } catch (e) {
+      render([]);
+    }
+  }
+  if (window.HKDB && HKDB.listVideos) {
+    HKDB.listVideos().then(function (rows) {
+      if (rows && rows.length !== undefined) {
+        try { localStorage.setItem(VKEY, JSON.stringify(rows)); } catch (e) {}
+        render(rows);
+      } else {
+        loadFromMirror();
+      }
+    }, loadFromMirror);
+  } else {
+    loadFromMirror();
+  }
+})();
+</script>
 </body>
 </html>
