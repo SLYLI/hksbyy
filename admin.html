@@ -1891,6 +1891,7 @@ a {
         + '<div class="bnr-ops">'
         + '<button type="button" data-act="up" data-id="' + esc(b.id) + '"' + (i === 0 ? ' disabled' : '') + '>↑ 上移</button>'
         + '<button type="button" data-act="down" data-id="' + esc(b.id) + '"' + (i === bnrList.length - 1 ? ' disabled' : '') + '>↓ 下移</button>'
+        + '<button type="button" data-act="replace" data-id="' + esc(b.id) + '">替换图</button>'
         + '<button type="button" data-act="toggle" data-id="' + esc(b.id) + '">' + (b.enabled === false ? '启用' : '停用') + '</button>'
         + '<button type="button" data-act="del" data-id="' + esc(b.id) + '" style="background:#9c2727;border-color:#9c2727;color:#fff;">删除</button>'
         + '</div></div>';
@@ -1903,57 +1904,55 @@ a {
     for (var i = 0; i < bnrList.length; i++) { if (String(bnrList[i].id) === String(id)) { idx = i; break; } }
     if (idx < 0) return;
     var item = bnrList[idx];
+    var saveBnr = function () {
+      try { localStorage.setItem(BNR_KEY, JSON.stringify(bnrList)); } catch (e) {}
+      renderBanners();
+    };
+    var cloud = function (p) { if (p && p.then) p.then(function () {}, function () {}); };
+    if (act === 'replace') {
+      var fi = document.createElement('input');
+      fi.type = 'file';
+      fi.accept = 'image/*';
+      fi.onchange = function () {
+        if (!fi.files || !fi.files[0]) return;
+        fileToDataURL(fi.files[0], function (url) {
+          item.img = url;
+          saveBnr();
+          cloud(HKDB.updateBanner(item.id, { img: url }));
+          setMsg('已替换轮播图。', true);
+        }, 1600, 0.82);
+      };
+      fi.click();
+      return;
+    }
     if (act === 'del') {
       if (!confirm('确定删除这张轮播图？')) return;
-      var del = HKDB.deleteBanner(id);
-      if (del && del.then) {
-        del.then(function () {
-          bnrList.splice(idx, 1);
-          try { localStorage.setItem(BNR_KEY, JSON.stringify(bnrList)); } catch (e) {}
-          renderBanners();
-          setMsg('已删除轮播图。', true);
-        }).catch(function () { alert('删除失败，请检查网络后重试。'); });
-      }
+      bnrList.splice(idx, 1);
+      saveBnr();
+      setMsg('已删除轮播图。', true);
+      cloud(HKDB.deleteBanner(id));
       return;
     }
     if (act === 'toggle') {
       var next = item.enabled === false;
-      var upd = HKDB.updateBanner(id, { enabled: next });
-      if (upd && upd.then) {
-        upd.then(function () {
-          item.enabled = next;
-          try { localStorage.setItem(BNR_KEY, JSON.stringify(bnrList)); } catch (e) {}
-          renderBanners();
-          setMsg(next ? '已启用该轮播图。' : '已停用该轮播图。', true);
-        }).catch(function () { alert('操作失败，请检查网络后重试。'); });
-      }
+      item.enabled = next;
+      saveBnr();
+      setMsg(next ? '已启用该轮播图。' : '已停用该轮播图。', true);
+      cloud(HKDB.updateBanner(id, { enabled: next }));
       return;
     }
     if (act === 'up' || act === 'down') {
       var j = act === 'up' ? idx - 1 : idx + 1;
       if (j < 0 || j >= bnrList.length) return;
-      /* 数组内交换位置 */
       var t = bnrList[idx];
       bnrList[idx] = bnrList[j];
       bnrList[j] = t;
-      /* 按新顺序重写全部 sort 为 0..n-1（避免 sort 相同导致顺序不变） */
-      var updates = [];
       for (var k = 0; k < bnrList.length; k++) {
-        if ((bnrList[k].sort || 0) !== k) {
-          bnrList[k].sort = k;
-          updates.push(HKDB.updateBanner(bnrList[k].id, { sort: k }));
-        }
+        bnrList[k].sort = k;
+        cloud(HKDB.updateBanner(bnrList[k].id, { sort: k }));
       }
-      if (!updates.length) {
-        try { localStorage.setItem(BNR_KEY, JSON.stringify(bnrList)); } catch (e) {}
-        renderBanners();
-        return;
-      }
-      Promise.all(updates).then(function () {
-        try { localStorage.setItem(BNR_KEY, JSON.stringify(bnrList)); } catch (e) {}
-        renderBanners();
-        setMsg('已调整顺序。', true);
-      }).catch(function () { alert('调整失败，请检查网络后重试。'); });
+      saveBnr();
+      setMsg('已调整顺序。', true);
     }
   }
 
@@ -2030,6 +2029,7 @@ a {
         + '<span>' + plat + ' · ' + (v.enabled === false ? '已停用' : '展示中') + ' · 第 ' + (i + 1) + ' 条</span>'
         + '<span style="display:block;font-size:11px;color:#8a7a55;word-break:break-all;max-width:260px;">' + esc(v.url || '') + '</span></div>'
         + '<div class="bnr-ops">'
+        + '<button type="button" data-vact="edit" data-vid="' + esc(v.id) + '">编辑</button>'
         + '<button type="button" data-vact="up" data-vid="' + esc(v.id) + '"' + (i === 0 ? ' disabled' : '') + '>↑ 上移</button>'
         + '<button type="button" data-vact="down" data-vid="' + esc(v.id) + '"' + (i === vidList.length - 1 ? ' disabled' : '') + '>↓ 下移</button>'
         + '<button type="button" data-vact="toggle" data-vid="' + esc(v.id) + '">' + (v.enabled === false ? '启用' : '停用') + '</button>'
@@ -2038,6 +2038,8 @@ a {
     }
     box.innerHTML = html;
   }
+
+  var editingVid = null; /* 正在编辑的视频 id，null=新增模式 */
 
   function saveVidMirror() {
     try { localStorage.setItem(VID_KEY, JSON.stringify(vidList)); } catch (e) {}
@@ -2052,6 +2054,17 @@ a {
     for (var i = 0; i < vidList.length; i++) { if (String(vidList[i].id) === String(id)) { idx = i; break; } }
     if (idx < 0) return;
     var item = vidList[idx];
+    if (act === 'edit') {
+      editingVid = id;
+      document.getElementById('vTitle').value = item.title || '';
+      document.getElementById('vPlatform').value = item.platform || 'other';
+      document.getElementById('vUrl').value = item.url || '';
+      document.getElementById('vCoverFile').value = '';
+      document.getElementById('btnVideoAdd').textContent = '保存修改';
+      document.getElementById('vTitle').scrollIntoView({ block: 'center' });
+      setMsg('正在编辑：' + (item.title || ''), true);
+      return;
+    }
     if (act === 'del') {
       if (!confirm('确定删除这条视频？')) return;
       vidList.splice(idx, 1);
@@ -2097,6 +2110,33 @@ a {
       var base = 0;
       for (var i = 0; i < vidList.length; i++) { if ((vidList[i].sort || 0) > base) base = vidList[i].sort; }
       var doAdd = function (coverUrl) {
+        var finish = function () {
+          saveVidMirror();
+          renderVideos();
+          document.getElementById('vTitle').value = '';
+          document.getElementById('vUrl').value = '';
+          document.getElementById('vCoverFile').value = '';
+          document.getElementById('btnVideoAdd').textContent = '添加视频';
+          editingVid = null;
+          setMsg('已保存，医患情深页立即生效。', true);
+        };
+        if (editingVid) {
+          /* 编辑模式：更新原条目 */
+          var found = null;
+          for (var i = 0; i < vidList.length; i++) {
+            if (String(vidList[i].id) === String(editingVid)) { found = vidList[i]; break; }
+          }
+          if (found) {
+            found.title = title;
+            found.platform = platform;
+            found.url = url;
+            if (coverUrl) found.cover = coverUrl; /* 没重新选封面则保留原封面 */
+            cloudSettled(HKDB.updateVideo(found.id, { title: title, platform: platform, url: url, cover: found.cover || '' }));
+          }
+          finish();
+          return;
+        }
+        /* 新增模式 */
         var item = {
           id: 'v' + Date.now(),
           title: title,
@@ -2106,24 +2146,9 @@ a {
           sort: base + 1,
           enabled: true
         };
-        var p = HKDB.insertVideo(item);
-        var finish = function () {
-          vidList.push(item);
-          try { localStorage.setItem(VID_KEY, JSON.stringify(vidList)); } catch (e) {}
-          renderVideos();
-          document.getElementById('vTitle').value = '';
-          document.getElementById('vUrl').value = '';
-          document.getElementById('vCoverFile').value = '';
-          setMsg('已添加视频，医患情深页立即展示。', true);
-        };
-        if (p && p.then) {
-          p.then(finish, function () {
-            /* 云端表可能尚未创建：仍写入本地镜像，页面可展示 */
-            finish();
-          });
-        } else {
-          finish();
-        }
+        vidList.push(item);
+        cloudSettled(HKDB.insertVideo(item));
+        finish();
       };
       if (coverFile) {
         fileToDataURL(coverFile, function (url2) { doAdd(url2); }, 1280, 0.9);
