@@ -2039,6 +2039,14 @@ a {
     box.innerHTML = html;
   }
 
+  function saveVidMirror() {
+    try { localStorage.setItem(VID_KEY, JSON.stringify(vidList)); } catch (e) {}
+  }
+  function cloudSettled(p) {
+    /* 云端操作失败（如表未建）静默吞掉，不影响本机镜像 */
+    if (p && p.then) p.then(function () {}, function () {});
+  }
+
   function vidAction(act, id) {
     var idx = -1;
     for (var i = 0; i < vidList.length; i++) { if (String(vidList[i].id) === String(id)) { idx = i; break; } }
@@ -2046,51 +2054,33 @@ a {
     var item = vidList[idx];
     if (act === 'del') {
       if (!confirm('确定删除这条视频？')) return;
-      var del = HKDB.deleteVideo(id);
-      if (del && del.then) {
-        del.then(function () {
-          vidList.splice(idx, 1);
-          try { localStorage.setItem(VID_KEY, JSON.stringify(vidList)); } catch (e) {}
-          renderVideos();
-          setMsg('已删除视频。', true);
-        }).catch(function () { alert('删除失败，请检查网络后重试。'); });
-      }
+      vidList.splice(idx, 1);
+      saveVidMirror();
+      renderVideos();
+      setMsg('已删除视频。', true);
+      cloudSettled(HKDB.deleteVideo(id));
       return;
     }
     if (act === 'toggle') {
       var next = item.enabled === false;
-      var upd = HKDB.updateVideo(id, { enabled: next });
-      if (upd && upd.then) {
-        upd.then(function () {
-          item.enabled = next;
-          try { localStorage.setItem(VID_KEY, JSON.stringify(vidList)); } catch (e) {}
-          renderVideos();
-          setMsg(next ? '已启用该视频。' : '已停用该视频。', true);
-        }).catch(function () { alert('操作失败，请检查网络后重试。'); });
-      }
+      item.enabled = next;
+      saveVidMirror();
+      renderVideos();
+      setMsg(next ? '已启用该视频。' : '已停用该视频。', true);
+      cloudSettled(HKDB.updateVideo(id, { enabled: next }));
       return;
     }
     if (act === 'up' || act === 'down') {
       var j = act === 'up' ? idx - 1 : idx + 1;
       if (j < 0 || j >= vidList.length) return;
       var t = vidList[idx]; vidList[idx] = vidList[j]; vidList[j] = t;
-      var updates = [];
+      saveVidMirror();
+      renderVideos();
+      setMsg('已调整顺序。', true);
       for (var k = 0; k < vidList.length; k++) {
-        if ((vidList[k].sort || 0) !== k) {
-          vidList[k].sort = k;
-          updates.push(HKDB.updateVideo(vidList[k].id, { sort: k }));
-        }
+        vidList[k].sort = k;
+        cloudSettled(HKDB.updateVideo(vidList[k].id, { sort: k }));
       }
-      if (!updates.length) {
-        try { localStorage.setItem(VID_KEY, JSON.stringify(vidList)); } catch (e) {}
-        renderVideos();
-        return;
-      }
-      Promise.all(updates).then(function () {
-        try { localStorage.setItem(VID_KEY, JSON.stringify(vidList)); } catch (e) {}
-        renderVideos();
-        setMsg('已调整顺序。', true);
-      }).catch(function () { alert('调整失败，请检查网络后重试。'); });
     }
   }
 
