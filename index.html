@@ -1212,30 +1212,37 @@ a.feature-card {
 
     function load() {
         /* 1) 立即展示：优先上次云端缓存，无缓存则内置横幅 —— 首屏永不空白 */
-        var cached = null;
-        try { cached = JSON.parse(localStorage.getItem(BNR_CACHE_KEY) || 'null'); } catch (e) { cached = null; }
+        var cached = null, cachedAt = 0;
+        try {
+            var raw = JSON.parse(localStorage.getItem(BNR_CACHE_KEY) || 'null');
+            if (raw && raw.items) { cached = raw.items; cachedAt = raw.at || 0; }
+            else if (Array.isArray(raw)) { cached = raw; } /* 兼容旧格式 */
+        } catch (e) { cached = null; }
         var cItems = normalize(cached);
         if (cItems.length) {
             build(cItems.map(function (b) { return { img: b.img, link: b.link || '' }; }));
         } else {
             fallback();
         }
-        /* 2) 云端数据到达后无缝替换；首屏连接不稳时 3s/6s 自动重试，最多 3 次 */
-        if (window.HKDB && HKDB.listBanners) {
+        /* 2) 云端数据：5 分钟内已拉过则不重复请求（省流量、首屏秒开）；
+         *    超过 5 分钟或无缓存时异步拉取，回来后无缝替换 */
+        var FRESH = 5 * 60 * 1000;
+        var age = Date.now() - cachedAt;
+        if (window.HKDB && HKDB.listBanners && (!cItems.length || age > FRESH)) {
             var tries = 0;
             var fetchCloud = function () {
                 HKDB.listBanners().then(function (list) {
                     var items = normalize(list);
                     if (items.length) {
-                        try { localStorage.setItem(BNR_CACHE_KEY, JSON.stringify(items)); } catch (e) {}
+                        try { localStorage.setItem(BNR_CACHE_KEY, JSON.stringify({ items: items, at: Date.now() })); } catch (e) {}
                         build(items.map(function (b) { return { img: b.img, link: b.link || '' }; }));
                     }
                 }).catch(function () {
-                    if (tries < 4) { tries++; setTimeout(fetchCloud, 3000); }
-                    /* 多次仍失败则保持当前显示（缓存或内置），不影响浏览 */
+                    if (tries < 1) { tries++; setTimeout(fetchCloud, 4000); }
+                    /* 失败保持当前显示，不影响浏览 */
                 });
             };
-            fetchCloud();
+            setTimeout(fetchCloud, 300);
         }
     }
     load();

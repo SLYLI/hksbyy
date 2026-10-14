@@ -31,7 +31,7 @@
     if (!s[day][section][key]) s[day][section][key] = 0;
     s[day][section][key] += n;
     save(s);
-    /* 云端同步（尽力而为，不阻塞页面） */
+    /* 云端同步（延迟到页面空闲后再发，不拖慢首屏；失败静默） */
     if (window.HKDB) {
       var kind = section === 'click' ? 'click' : 'pv';
       var target = '';
@@ -41,7 +41,9 @@
         target = sep >= 0 ? key.slice(0, sep) : key;
         page = '';
       }
-      HKDB.addStat(kind, page, target);
+      setTimeout(function () {
+        try { HKDB.addStat(kind, page, target); } catch (e) {}
+      }, 2500);
     }
   }
 

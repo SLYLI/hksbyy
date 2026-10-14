@@ -1853,41 +1853,20 @@ a {
   function loadBanners() {
     var box = document.getElementById('bannerList');
     if (!box) return;
-    var tries = 0;
-    var fromMirror = function () {
-      var m = localStorage.getItem(BNR_KEY);
-      try { bnrList = m ? JSON.parse(m) : []; } catch (e) { bnrList = []; }
-      if (!bnrList.length) {
-        box.innerHTML = '<p class="af-note" style="margin:8px 0 0;">正在从云端加载轮播图…</p>';
-        return;
-      }
-      renderBanners();
-    };
-    var render = function (rows) {
-      if (rows && rows.length !== undefined) {
-        bnrList = rows || [];
-        try { localStorage.setItem(BNR_KEY, JSON.stringify(bnrList)); } catch (e) {}
-        renderBanners();
-      } else {
-        fromMirror();
-      }
-    };
-    var attempt = function () {
-      if (window.HKDB && HKDB.listBanners) {
-        HKDB.listBanners().then(render, fromMirror);
-        /* 首次连接可能较慢：若仍未渲染出列表，2.5s/5s/10s/15s/20s 依次重试 */
-        setTimeout(function () {
-          if (window.HKDB && !box.querySelector('.bnr-item') && tries < 5) {
-            tries++;
-            attempt();
-          }
-        }, 2500 * (tries + 1));
-      } else {
-        bnrList = [];
-        renderBanners();
-      }
-    };
-    attempt();
+    /* 1) 先用本地缓存立即渲染，后台秒开 */
+    var m = localStorage.getItem(BNR_KEY);
+    try { bnrList = m ? JSON.parse(m) : []; } catch (e) { bnrList = []; }
+    renderBanners();
+    /* 2) 云端异步刷新，回来后静默更新 */
+    if (window.HKDB && HKDB.listBanners) {
+      HKDB.listBanners().then(function (rows) {
+        if (rows && rows.length !== undefined) {
+          bnrList = rows || [];
+          try { localStorage.setItem(BNR_KEY, JSON.stringify(bnrList)); } catch (e) {}
+          renderBanners();
+        }
+      }, function () {});
+    }
   }
 
   function sortBnr() {
@@ -2014,27 +1993,19 @@ a {
   function loadVideos() {
     var box = document.getElementById('videoList');
     if (!box) return;
-    var fromMirror = function () {
-      var m = localStorage.getItem(VID_KEY);
-      try { vidList = m ? JSON.parse(m) : []; } catch (e) { vidList = []; }
-      if (!vidList.length) {
-        box.innerHTML = '<p class="af-note" style="margin:8px 0 0;">暂无视频。在上方表单添加第一条医患故事视频。</p>';
-        return;
-      }
-      renderVideos();
-    };
+    /* 1) 先用本地缓存立即渲染 */
+    var m = localStorage.getItem(VID_KEY);
+    try { vidList = m ? JSON.parse(m) : []; } catch (e) { vidList = []; }
+    renderVideos();
+    /* 2) 云端异步刷新 */
     if (window.HKDB && HKDB.listVideos) {
       HKDB.listVideos().then(function (rows) {
         if (rows && rows.length !== undefined) {
-          vidList = rows;
+          vidList = rows || [];
           try { localStorage.setItem(VID_KEY, JSON.stringify(vidList)); } catch (e) {}
           renderVideos();
-        } else {
-          fromMirror();
         }
-      }, fromMirror);
-    } else {
-      fromMirror();
+      }, function () {});
     }
   }
 
