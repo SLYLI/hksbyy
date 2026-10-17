@@ -1996,11 +1996,11 @@ a {
     var m = localStorage.getItem(VID_KEY);
     try { vidList = m ? JSON.parse(m) : []; } catch (e) { vidList = []; }
     renderVideos();
-    /* 2) 云端异步刷新 */
+    /* 2) 云端异步刷新（仅云端有数据时才覆盖本地，防止新表空数据清空本机视频） */
     if (window.HKDB && HKDB.listVideos) {
       HKDB.listVideos().then(function (rows) {
-        if (rows && rows.length !== undefined) {
-          vidList = rows || [];
+        if (rows && rows.length > 0) {
+          vidList = rows;
           try { localStorage.setItem(VID_KEY, JSON.stringify(vidList)); } catch (e) {}
           renderVideos();
         }

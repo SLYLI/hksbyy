@@ -1491,10 +1491,11 @@ a {
   }
   if (window.HKDB && HKDB.listVideos) {
     HKDB.listVideos().then(function (rows) {
-      if (rows && rows.length !== undefined) {
+      if (rows && rows.length > 0) {
         try { localStorage.setItem(VKEY, JSON.stringify(rows)); } catch (e) {}
         render(rows);
       } else {
+        /* 云端为空（如表刚建）：保留本机已添加的视频 */
         loadFromMirror();
       }
     }, loadFromMirror);
