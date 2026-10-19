@@ -179,6 +179,7 @@ a.float-btn {
     width: 100%;
     height: 100%;
     object-fit: cover;
+    object-position: left center;
     display: block;
 }
 
@@ -228,30 +229,33 @@ a.float-btn {
     z-index: 1;
 }
 
-/* 中间功能卡片组：靠左排列 */
+/* 功能卡片组：位于轮播图下方横排展示，不遮挡大图 */
 .card-group {
-    position: absolute;
-    top: 110px;
-    left: 80px;
+    position: relative;
+    top: auto;
+    left: auto;
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 20px;
-    z-index: 3;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 24px;
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 34px 40px 44px;
+    z-index: auto;
 }
 
 .card-green,
 .card-beige,
 .card-trans {
-    width: 180px;
-    height: 200px;
+    width: 100%;
+    height: 168px;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    border-radius: 4px;
+    border-radius: 6px;
     cursor: pointer;
     transition: 0.3s ease;
-    letter-spacing: 4px;
+    letter-spacing: 3px;
     font-size: 17px;
     font-weight: 600;
     color: #fff8dc;
@@ -849,6 +853,7 @@ a.feature-card {
         gap: 16px;
         margin: 0 auto;
         max-width: 400px;
+        padding: 20px 16px 24px;
     }
 
     .card-green,
@@ -935,49 +940,6 @@ a.feature-card {
     <div class="banner-slides" id="bannerSlides"></div>
     <div class="banner-overlay"></div>
 
-    <!-- 中间功能卡片：左侧排列 -->
-    <div class="card-group">
-        <a class="card-green card-huanglian" href="specialty-care.html">
-            <div class="card-icon">
-                <svg viewBox="0 0 24 24" aria-hidden="true">
-                    <path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z"/>
-                    <path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12"/>
-                </svg>
-            </div>
-            <div class="card-label">特色医疗</div>
-        </a>
-        <a class="card-green card-renshen" href="schedule.html">
-            <div class="card-icon">
-                <svg viewBox="0 0 24 24" aria-hidden="true">
-                    <rect width="18" height="18" x="3" y="4" rx="2" ry="2"/>
-                    <line x1="16" x2="16" y1="2" y2="6"/>
-                    <line x1="8" x2="8" y1="2" y2="6"/>
-                    <line x1="3" x2="21" y1="10" y2="10"/>
-                </svg>
-            </div>
-            <div class="card-label">出诊信息</div>
-        </a>
-        <a class="card-trans card-gouqi" href="emergency-guide.html">
-            <div class="card-icon">
-                <svg viewBox="0 0 24 24" aria-hidden="true">
-                    <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/>
-                    <circle cx="12" cy="10" r="3"/>
-                </svg>
-            </div>
-            <div class="card-label">门急诊指南</div>
-        </a>
-        <a class="card-beige card-dengcheng" href="appointment.html">
-            <div class="card-icon">
-                <svg viewBox="0 0 24 24" aria-hidden="true">
-                    <rect width="8" height="4" x="8" y="2" rx="1" ry="1"/>
-                    <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/>
-                    <path d="m9 14 2 2 4-4"/>
-                </svg>
-            </div>
-            <div class="card-label">预约挂号</div>
-        </a>
-    </div>
-
     <!-- 右下角浮动条 -->
     <div class="float-right-box">
         <a class="float-btn" href="info-disclosure.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 8h.01"/><path d="M11 12h1v4h1"/></svg><span>信息公开</span></a>
@@ -988,6 +950,49 @@ a.feature-card {
 
     <!-- 轮播指示点 -->
     <div class="banner-dots" id="bannerDots"></div>
+</div>
+
+<!-- 功能卡片组：轮播图下方 -->
+<div class="card-group">
+    <a class="card-green card-huanglian" href="specialty-care.html">
+        <div class="card-icon">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z"/>
+                <path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12"/>
+            </svg>
+        </div>
+        <div class="card-label">特色医疗</div>
+    </a>
+    <a class="card-green card-renshen" href="schedule.html">
+        <div class="card-icon">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+                <rect width="18" height="18" x="3" y="4" rx="2" ry="2"/>
+                <line x1="16" x2="16" y1="2" y2="6"/>
+                <line x1="8" x2="8" y1="2" y2="6"/>
+                <line x1="3" x2="21" y1="10" y2="10"/>
+            </svg>
+        </div>
+        <div class="card-label">出诊信息</div>
+    </a>
+    <a class="card-trans card-gouqi" href="emergency-guide.html">
+        <div class="card-icon">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/>
+                <circle cx="12" cy="10" r="3"/>
+            </svg>
+        </div>
+        <div class="card-label">门急诊指南</div>
+    </a>
+    <a class="card-beige card-dengcheng" href="appointment.html">
+        <div class="card-icon">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+                <rect width="8" height="4" x="8" y="2" rx="1" ry="1"/>
+                <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/>
+                <path d="m9 14 2 2 4-4"/>
+            </svg>
+        </div>
+        <div class="card-label">预约挂号</div>
+    </a>
 </div>
 
 <!-- 下方内容区域 -->
@@ -1177,6 +1182,8 @@ a.feature-card {
             var im = document.createElement('img');
             im.src = it.img;
             im.alt = it.title || '轮播图';
+            /* 第2张（医生形象，文字居中）保持居中裁切；其余文字在左侧，靠左显示保证文字完整 */
+            im.style.objectPosition = (i === 1) ? 'center' : 'left center';
             s.appendChild(im);
             if (it.link) {
                 s.style.cursor = 'pointer';
