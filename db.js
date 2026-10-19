@@ -18,6 +18,8 @@
         'Authorization': 'Bearer ' + KEY,
         'Content-Type': 'application/json'
       },
+      /* 禁用浏览器缓存，确保后台/首页总是拿到云端最新数据 */
+      cache: 'no-store',
       signal: ctrl ? ctrl.signal : undefined
     };
     if (body !== undefined && body !== null) opts.body = JSON.stringify(body);

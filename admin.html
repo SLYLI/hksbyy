@@ -1850,14 +1850,18 @@ a {
   var BNR_KEY = 'hksb_banners';
   var bnrList = [];
 
-  function loadBanners() {
+  function loadBanners(forceCloud) {
     var box = document.getElementById('bannerList');
     if (!box) return;
-    /* 1) 先用本地缓存立即渲染，后台秒开 */
-    var m = localStorage.getItem(BNR_KEY);
-    try { bnrList = m ? JSON.parse(m) : []; } catch (e) { bnrList = []; }
-    renderBanners();
-    /* 2) 云端异步刷新，回来后静默更新 */
+    if (forceCloud) {
+      box.innerHTML = '<p class="af-note" style="margin:8px 0 0;">正在从云端加载最新轮播图…</p>';
+    } else {
+      /* 1) 先用本地缓存立即渲染，后台秒开 */
+      var m = localStorage.getItem(BNR_KEY);
+      try { bnrList = m ? JSON.parse(m) : []; } catch (e) { bnrList = []; }
+      renderBanners();
+    }
+    /* 2) 云端异步刷新，回来后静默更新（云端为唯一权威数据） */
     if (window.HKDB && HKDB.listBanners) {
       HKDB.listBanners().then(function (rows) {
         if (rows && rows.length !== undefined) {
@@ -2381,7 +2385,7 @@ a {
     }
   };
   var bnrRefreshEl = document.getElementById('btnBnrRefresh');
-  if (bnrRefreshEl) bnrRefreshEl.onclick = function () { loadBanners(); setMsg('已刷新轮播图列表。', true); };
+  if (bnrRefreshEl) bnrRefreshEl.onclick = function () { loadBanners(true); setMsg('正在从云端刷新轮播图列表…', true); };
 
   if (logged()) { showArea(); }
 })();
