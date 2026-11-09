@@ -231,29 +231,32 @@ a.float-btn {
 
 /* 功能卡片组：悬浮在轮播图左侧（原位置） */
 .card-group {
-    position: absolute;
-    top: 130px;
-    left: 12px;
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 8px;
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: stretch;
+    gap: 20px;
+    padding: 22px 20px;
+    background: #f2ead9;
     z-index: 3;
 }
 
 .card-green,
 .card-beige,
 .card-trans {
-    width: 68px;
-    height: 68px;
+    flex: 0 1 160px;
+    height: 100px;
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     align-items: center;
     justify-content: center;
-    border-radius: 6px;
+    gap: 10px;
+    border-radius: 8px;
     cursor: pointer;
     transition: 0.3s ease;
-    letter-spacing: 0;
-    font-size: 10px;
+    letter-spacing: 2px;
+    font-size: 15px;
     font-weight: 600;
     color: #fff8dc;
     position: relative;
@@ -261,7 +264,7 @@ a.float-btn {
     background-size: cover;
     background-position: center;
     border: 1px solid rgba(184, 134, 70, 0.5);
-    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.25);
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.18);
 }
 
 /* 卡片深色渐变遮罩 */
@@ -300,9 +303,9 @@ a.float-btn {
 
 /* 规范线描图标 */
 .card-icon {
-    width: 24px;
-    height: 24px;
-    margin-bottom: 2px;
+    width: 36px;
+    height: 36px;
+    margin-bottom: 0;
     position: relative;
     z-index: 1;
     color: #fff8dc;
